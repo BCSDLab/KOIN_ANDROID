@@ -4,6 +4,7 @@ import `in`.koreatech.koin.domain.model.notification.Notification
 import `in`.koreatech.koin.domain.model.notification.NotificationPermissionInfo
 import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
+import java.time.LocalDateTime
 import kotlinx.coroutines.flow.Flow
 
 @Suppress("Detekt.TooManyFunctions")
@@ -35,4 +36,6 @@ interface NotificationRepository {
     suspend fun deleteNotificationFromLocal(id: Int): Result<Unit>
 
     suspend fun deleteNotificationsFromLocal(ids: List<Int>): Result<Unit>
+
+    suspend fun deleteOldNotificationsFromLocal(before: LocalDateTime): Result<Unit>
 }

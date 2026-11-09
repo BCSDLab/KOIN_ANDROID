@@ -14,6 +14,7 @@ import `in`.koreatech.koin.domain.model.notification.SubscribesDetailType
 import `in`.koreatech.koin.domain.model.notification.SubscribesType
 import `in`.koreatech.koin.domain.repository.NotificationRepository
 import `in`.koreatech.koin.domain.util.suspendRunCatching
+import java.time.LocalDateTime
 import javax.inject.Inject
 import kotlin.collections.map
 import kotlinx.coroutines.flow.Flow
@@ -138,6 +139,12 @@ class NotificationRepositoryImpl @Inject constructor(
     override suspend fun deleteNotificationsFromLocal(ids: List<Int>): Result<Unit> {
         return suspendRunCatching {
             notificationLocalDataSource.deleteNotifications(ids)
+        }
+    }
+
+    override suspend fun deleteOldNotificationsFromLocal(before: LocalDateTime): Result<Unit> {
+        return suspendRunCatching {
+            notificationLocalDataSource.deleteOldNotifications(before)
         }
     }
 }
