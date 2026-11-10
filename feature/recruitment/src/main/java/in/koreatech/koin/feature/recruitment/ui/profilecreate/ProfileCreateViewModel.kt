@@ -10,6 +10,7 @@ import `in`.koreatech.koin.domain.usecase.dept.GetDeptNamesUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.GetTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.recruitment.SaveTeamRecruitmentProfileUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserInfoUseCase
+import `in`.koreatech.koin.domain.usecase.user.UpdateStudentAcademicInfoUseCase
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentActivityEntry
 import `in`.koreatech.koin.feature.recruitment.mapper.toRecruitmentErrorMessage
 import `in`.koreatech.koin.feature.recruitment.mapper.toTeamRecruitmentActivityInput
@@ -33,6 +34,7 @@ class ProfileCreateViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTeamRecruitmentProfileUseCase: GetTeamRecruitmentProfileUseCase,
     private val saveTeamRecruitmentProfileUseCase: SaveTeamRecruitmentProfileUseCase,
+    private val updateStudentAcademicInfoUseCase: UpdateStudentAcademicInfoUseCase,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getDeptNamesUseCase: GetDeptNamesUseCase
 ) : ViewModel(), ContainerHost<ProfileCreateState, ProfileCreateSideEffect> {
@@ -233,25 +235,41 @@ class ProfileCreateViewModel @Inject constructor(
     fun saveProfile() = intent {
         reduce { state.copy(isSaving = true, showSaveConfirmDialog = false, errorMessage = null) }
 
-        saveTeamRecruitmentProfileUseCase(
-            profileNickname = state.nickname,
-            preferredRole = state.preferredRole,
-            skills = state.skills.map { it.text }.filter { it.isNotBlank() },
-            activities = state.activities.map { it.toTeamRecruitmentActivityInput() },
-            selfIntroduction = state.selfIntroduction,
-            academicInfo = state.toAcademicInfoInputOrNull(),
-            onAcademicInfoUpdated = { info ->
-                reduce {
-                    state.copy(
-                        originalDepartment = info.department ?: state.department,
-                        originalMajor = info.major,
-                        originalStudentId = info.studentNumber ?: state.studentId
-                    )
-                }
+        suspend fun saveTeamRecruitmentProfile() {
+            saveTeamRecruitmentProfileUseCase(
+                profileNickname = state.nickname,
+                preferredRole = state.preferredRole,
+                skills = state.skills.map { it.text }.filter { it.isNotBlank() },
+                activities = state.activities.map { it.toTeamRecruitmentActivityInput() },
+                selfIntroduction = state.selfIntroduction
+            ).onSuccess {
+                reduce { state.copy(isSaving = false) }
+                postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+            }.onFailure { throwable ->
+                reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
+                postSideEffect(ProfileCreateSideEffect.SaveFailure)
             }
-        ).onSuccess {
-            reduce { state.copy(isSaving = false) }
-            postSideEffect(ProfileCreateSideEffect.SaveSuccess)
+        }
+
+        val academicInfo = state.toAcademicInfoInputOrNull()
+        if (academicInfo == null) {
+            saveTeamRecruitmentProfile()
+            return@intent
+        }
+
+        updateStudentAcademicInfoUseCase(
+            department = academicInfo.department,
+            major = academicInfo.major,
+            studentNumber = academicInfo.studentNumber
+        ).onSuccess { updatedAcademicInfo ->
+            reduce {
+                state.copy(
+                    originalDepartment = updatedAcademicInfo.department ?: state.department,
+                    originalMajor = updatedAcademicInfo.major,
+                    originalStudentId = updatedAcademicInfo.studentNumber ?: state.studentId
+                )
+            }
+            saveTeamRecruitmentProfile()
         }.onFailure { throwable ->
             reduce { state.copy(isSaving = false, errorMessage = throwable.toRecruitmentErrorMessage()) }
             postSideEffect(ProfileCreateSideEffect.SaveFailure)
