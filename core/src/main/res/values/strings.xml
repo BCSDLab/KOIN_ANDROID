@@ -271,6 +271,24 @@
     <!-- Developer setting -->
     <string name="developer_setting_delivery_title">배달 스프린트 활성화</string>
 
+    <!-- Day of week (short) -->
+    <string name="day_of_week_monday_short">월</string>
+    <string name="day_of_week_tuesday_short">화</string>
+    <string name="day_of_week_wednesday_short">수</string>
+    <string name="day_of_week_thursday_short">목</string>
+    <string name="day_of_week_friday_short">금</string>
+    <string name="day_of_week_saturday_short">토</string>
+    <string name="day_of_week_sunday_short">일</string>
+
+    <!-- Day of week (full) -->
+    <string name="day_of_week_monday_full">월요일</string>
+    <string name="day_of_week_tuesday_full">화요일</string>
+    <string name="day_of_week_wednesday_full">수요일</string>
+    <string name="day_of_week_thursday_full">목요일</string>
+    <string name="day_of_week_friday_full">금요일</string>
+    <string name="day_of_week_saturday_full">토요일</string>
+    <string name="day_of_week_sunday_full">일요일</string>
+
     <!-- etc -->
     <string name="copyright_2024">Copyright 2024. BCSD Lab. All rights reserved.</string>
 </resources>

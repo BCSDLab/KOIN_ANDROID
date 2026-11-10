@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.core.developer.DeveloperOption
 import `in`.koreatech.koin.core.developer.DeveloperOptionUtil
+import `in`.koreatech.koin.core.util.fullNameRes
+import `in`.koreatech.koin.core.util.toDayOfWeekOrNull
 import `in`.koreatech.koin.domain.error.store.KoinStoreException
 import `in`.koreatech.koin.domain.model.cart.CartType
 import `in`.koreatech.koin.domain.usecase.orderShop.GetOrderShopMenuUseCase
@@ -30,7 +32,6 @@ import `in`.koreatech.koin.feature.store.model.toStoreIndoModel
 import `in`.koreatech.koin.feature.store.model.toStoreInfoModel
 import `in`.koreatech.koin.feature.store.navigation.IS_ORDERABLE_SHOP
 import `in`.koreatech.koin.feature.store.navigation.STORE_ID
-import `in`.koreatech.koin.feature.store.util.toKoreanWeek
 import javax.inject.Inject
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -100,7 +101,7 @@ class StoreDetailViewModel @Inject constructor(
                         phone = result.phone ?: "",
                         openTime = result.openTime,
                         closeTime = result.closeTime,
-                        closedDays = result.closedDays.map { it.toKoreanWeek() },
+                        closedDayResIds = result.closedDays.mapNotNull { it.toDayOfWeekOrNull()?.fullNameRes() },
                         deliveryTips = result.deliveryTips.map { tips ->
                             DeliveryTipModel(
                                 fromAmount = tips.fromAmount,
@@ -176,7 +177,7 @@ class StoreDetailViewModel @Inject constructor(
                         phone = result.phone,
                         openTime = result.open.openTime,
                         closeTime = result.open.closeTime,
-                        closedDays = emptyList(),
+                        closedDayResIds = emptyList(),
                         deliveryTips = DeliveryTipModel(
                             fromAmount = 0,
                             toAmount = null,

@@ -4,29 +4,6 @@ import androidx.compose.ui.graphics.Color
 import java.time.DayOfWeek
 import java.time.LocalTime
 
-enum class DayOfWeekKorean(
-    val koreanName: String
-) {
-    MONDAY("월"),
-    TUESDAY("화"),
-    WEDNESDAY("수"),
-    THURSDAY("목"),
-    FRIDAY("금"),
-    SATURDAY("토"),
-    SUNDAY("일")
-}
-
-fun DayOfWeek.toKorean(): String =
-    when (this) {
-        DayOfWeek.MONDAY -> "월요일"
-        DayOfWeek.TUESDAY -> "화요일"
-        DayOfWeek.WEDNESDAY -> "수요일"
-        DayOfWeek.THURSDAY -> "목요일"
-        DayOfWeek.FRIDAY -> "금요일"
-        DayOfWeek.SATURDAY -> "토요일"
-        DayOfWeek.SUNDAY -> "일요일"
-    }
-
 data class TimetableColor(
     val header: Color,
     val content: Color
@@ -55,16 +32,4 @@ data class TimetableEvent(
 
         return Pair(startPrefix + startSuffix, endPrefix + endSuffix)
     }
-
-    fun dayOfWeekToKorean(): String =
-        when (dayOfWeek) {
-            DayOfWeek.MONDAY -> DayOfWeekKorean.MONDAY.koreanName
-            DayOfWeek.TUESDAY -> DayOfWeekKorean.TUESDAY.koreanName
-            DayOfWeek.WEDNESDAY -> DayOfWeekKorean.WEDNESDAY.koreanName
-            DayOfWeek.THURSDAY -> DayOfWeekKorean.THURSDAY.koreanName
-            DayOfWeek.FRIDAY -> DayOfWeekKorean.FRIDAY.koreanName
-            DayOfWeek.SATURDAY -> DayOfWeekKorean.SATURDAY.koreanName
-            DayOfWeek.SUNDAY -> DayOfWeekKorean.SUNDAY.koreanName
-            else -> ""
-        }
 }

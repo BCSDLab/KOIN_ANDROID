@@ -6,7 +6,13 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 
 object TimetableConstants {
-    val days = listOf("월", "화", "수", "목", "금")
+    val days = listOf(
+        DayOfWeek.MONDAY,
+        DayOfWeek.TUESDAY,
+        DayOfWeek.WEDNESDAY,
+        DayOfWeek.THURSDAY,
+        DayOfWeek.FRIDAY
+    )
     const val eventHeight = 64
 }
 

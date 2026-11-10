@@ -23,11 +23,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.domain.model.timetable.response.Lecture
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
@@ -102,7 +104,7 @@ fun LectureBox(
             FlowRow {
                 events.forEach {
                     Text(
-                        text = it.toLectureTime(),
+                        text = it.toLectureTime(it.dayOfWeek?.let { day -> stringResource(day.shortNameRes()) }.orEmpty()),
                         style = RebrandKoinTheme.typography.regular12,
                         color = RebrandKoinTheme.colors.neutral800
                     )

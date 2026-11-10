@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +30,7 @@ import androidx.compose.ui.util.fastFirst
 import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.util.fastMapNotNull
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.feature.profile.model.ProfileTimetableLecture
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
@@ -118,7 +120,7 @@ fun ProfileTimetable(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = day,
+                                text = stringResource(day.shortNameRes()),
                                 textAlign = TextAlign.Center,
                                 color = RebrandKoinTheme.colors.neutral500,
                                 style = RebrandKoinTheme.typography.regular12

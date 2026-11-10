@@ -17,12 +17,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.ParentDataModifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventTime
 import `in`.koreatech.koin.feature.timetable.component.TimetableEventType
 import `in`.koreatech.koin.feature.timetable.model.TimetableConstants
@@ -73,12 +75,12 @@ fun TimetableContent(
                     modifier =
                     Modifier.then(
                         object : ParentDataModifier {
-                            override fun Density.modifyParentData(parentData: Any?): String = day
+                            override fun Density.modifyParentData(parentData: Any?): DayOfWeek = day
                         }
                     )
                 ) {
                     Text(
-                        text = day,
+                        text = stringResource(day.shortNameRes()),
                         style = RebrandKoinTheme.typography.medium13,
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),

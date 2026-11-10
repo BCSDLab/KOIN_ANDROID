@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.component.FilledTextButton
 import `in`.koreatech.koin.feature.timetable.model.TimetableColor
@@ -68,7 +69,7 @@ fun ScheduleDuplicationDialog(
                     stringResource(
                         R.string.schedule_duplication_content,
                         timetableEvent.name,
-                        calculateTimeContent(timetableEvent)
+                        calculateTimeContent(timetableEvent, timetableEvent.dayOfWeek?.let { day -> stringResource(day.shortNameRes()) }.orEmpty())
                     ),
                     style = RebrandKoinTheme.typography.regular14,
                     color = RebrandKoinTheme.colors.neutral600,
@@ -88,7 +89,7 @@ fun ScheduleDuplicationDialog(
     }
 }
 
-private fun calculateTimeContent(timetableEvent: TimetableEvent): String {
+private fun calculateTimeContent(timetableEvent: TimetableEvent, dayName: String): String {
     val startHour = "${timetableEvent.start.hour}"
     val endHour =
         if (timetableEvent.end == LocalTime.of(23, 59)) {
@@ -112,7 +113,7 @@ private fun calculateTimeContent(timetableEvent: TimetableEvent): String {
                 ":${timetableEvent.end.minute}"
             }
         }
-    return "(${timetableEvent.dayOfWeekToKorean()} ${startHour}$startMinutes-${endHour}$endMinutes)"
+    return "($dayName ${startHour}$startMinutes-${endHour}$endMinutes)"
 }
 
 @Preview

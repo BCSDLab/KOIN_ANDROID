@@ -55,6 +55,7 @@ import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.feature.club.CONTENT_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.CONTENT_MIN_LINES
 import `in`.koreatech.koin.feature.club.R
@@ -63,7 +64,6 @@ import `in`.koreatech.koin.feature.club.component.KoinClubDatePickerDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubDateSelectBox
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialog
 import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
-import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import java.time.LocalDate
 import org.orbitmvi.orbit.compose.collectAsState
@@ -280,7 +280,7 @@ fun ClubRecruitCreateScreenImpl(
                             recruitStartDate.year,
                             recruitStartDate.monthValue,
                             recruitStartDate.dayOfMonth,
-                            getDayOfWeek(recruitStartDate.dayOfWeek)
+                            stringResource(recruitStartDate.dayOfWeek.shortNameRes())
                         ),
                         onClick = {
                             isStartDateSelected = true
@@ -298,7 +298,7 @@ fun ClubRecruitCreateScreenImpl(
                             recruitEndDate.year,
                             recruitEndDate.monthValue,
                             recruitEndDate.dayOfMonth,
-                            getDayOfWeek(recruitEndDate.dayOfWeek)
+                            stringResource(recruitEndDate.dayOfWeek.shortNameRes())
                         ),
                         onClick = {
                             isStartDateSelected = false
