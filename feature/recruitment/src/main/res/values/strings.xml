@@ -298,4 +298,6 @@
     <string name="recruitment_elapsed_just_now">방금 전</string>
 
     <string name="recruitment_error_default">요청을 처리하지 못했어요. 잠시 후 다시 시도해주세요.</string>
+
+    <string name="recruitment_chat_date_format">yyyy년 M월 d일</string>
 </resources>
