@@ -14,7 +14,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
@@ -112,16 +112,14 @@ fun ApplicantManagementPostCard(
                     applicantText = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants),
                     modifier = Modifier.weight(1f)
                 )
-                IconButton(
-                    onClick = onChat,
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
-                        contentDescription = null,
-                        tint = RebrandKoinTheme.colors.primary500
-                    )
-                }
+                Icon(
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_recruitment_chat),
+                    contentDescription = null,
+                    tint = RebrandKoinTheme.colors.primary500,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .noRippleClickable { onChat() }
+                )
             }
         }
     }
