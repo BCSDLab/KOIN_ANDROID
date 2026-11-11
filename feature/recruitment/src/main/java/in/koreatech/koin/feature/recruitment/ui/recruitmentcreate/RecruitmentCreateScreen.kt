@@ -451,7 +451,7 @@ private fun RecruitmentCreateScreenImpl(
 
         if (state.errorMessage != null) {
             Text(
-                text = state.errorMessage,
+                text = state.errorMessage.ifBlank { stringResource(R.string.recruitment_error_default) },
                 style = RebrandKoinTheme.typography.regular13,
                 color = RebrandKoinTheme.colors.danger700
             )

@@ -2,7 +2,9 @@ package `in`.koreatech.koin.feature.recruitment.mapper
 
 import `in`.koreatech.koin.domain.error.recruitment.KoinRecruitmentException
 
-private const val DEFAULT_RECRUITMENT_ERROR_MESSAGE = "요청을 처리하지 못했어요. 잠시 후 다시 시도해주세요."
-
-fun Throwable.toRecruitmentErrorMessage(default: String = DEFAULT_RECRUITMENT_ERROR_MESSAGE): String =
-    (this as? KoinRecruitmentException)?.message ?: default
+/**
+ * 서버가 내려준 에러 메시지를 반환한다.
+ * 서버 메시지가 없으면 빈 문자열을 반환하며, 화면에서 비어 있을 때 기본 문구(recruitment_error_default)를 표시한다.
+ */
+fun Throwable.toRecruitmentErrorMessage(): String =
+    (this as? KoinRecruitmentException)?.message.orEmpty()
