@@ -31,6 +31,7 @@ import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentFilterButton
 import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentPaginationListState
@@ -245,7 +246,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                         RecruitmentRole("백엔드", 1),
                         RecruitmentRole("디자인", 1)
                     ),
-                    location = "온라인",
+                    location = RecruitmentLocation.ONLINE,
                     dateRange = PREVIEW_DATE_RANGE,
                     currentApplicants = 0,
                     maxApplicants = 3
@@ -255,7 +256,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                     status = RecruitmentStatus.Complete,
                     title = "2026 대외활동 팀원 모집",
-                    location = "온·오프라인",
+                    location = RecruitmentLocation.MIXED,
                     dateRange = PREVIEW_DATE_RANGE,
                     currentApplicants = 5,
                     maxApplicants = 5
@@ -265,7 +266,7 @@ private fun MyRecruitmentScreenWithPostsPreview() {
                     category = RecruitmentCategory.STUDY,
                     status = RecruitmentStatus.Complete,
                     title = "2026 스터디 팀원 모집",
-                    location = "온·오프라인",
+                    location = RecruitmentLocation.MIXED,
                     dateRange = PREVIEW_DATE_RANGE,
                     currentApplicants = 3,
                     maxApplicants = 3

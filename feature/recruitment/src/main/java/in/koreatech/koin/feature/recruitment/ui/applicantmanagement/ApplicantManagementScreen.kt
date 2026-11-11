@@ -37,6 +37,7 @@ import `in`.koreatech.koin.core.notification.FirebaseMessagingType
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.navigation.APPLICANT_STATE_UPDATE
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantListItem
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.component.ApplicantManagementEmptyState
@@ -191,15 +192,15 @@ private fun ApplicantManagementScreenWithApplicantsPreview() {
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
-                location = "온라인",
+                location = RecruitmentLocation.ONLINE,
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 2,
                 maxApplicants = 3
             ),
             applicants = persistentListOf(
-                Applicant(1, "김철수", "백엔드", "컴퓨터공학부", "23학번", ApplicantStatus.REJECTED),
-                Applicant(2, "김철수", "디자인", "컴퓨터공학부", "23학번", ApplicantStatus.APPROVED, hasChatRoom = true),
-                Applicant(3, "김철수", "프론트엔드", "컴퓨터공학부", "23학번", ApplicantStatus.PENDING)
+                Applicant(1, "김철수", "백엔드", "컴퓨터공학부", 23, ApplicantStatus.REJECTED),
+                Applicant(2, "김철수", "디자인", "컴퓨터공학부", 23, ApplicantStatus.APPROVED, hasChatRoom = true),
+                Applicant(3, "김철수", "프론트엔드", "컴퓨터공학부", 23, ApplicantStatus.PENDING)
             )
         )
     }
@@ -215,7 +216,7 @@ private fun ApplicantManagementScreenEmptyPreview() {
                 category = RecruitmentCategory.CONTEST,
                 status = RecruitmentStatus.Recruiting(daysLeft = 5),
                 title = "AI 아이디어 공모전 팀원 모집",
-                location = "온라인",
+                location = RecruitmentLocation.ONLINE,
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 0,
                 maxApplicants = 3

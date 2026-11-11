@@ -288,4 +288,12 @@
     <string name="recruitment_delete_dialog_message">해당 모집글을 삭제하시겠습니까?</string>
     <string name="recruitment_delete_dialog_cancel">취소하기</string>
     <string name="recruitment_delete_dialog_confirm">삭제하기</string>
+
+    <string name="recruitment_applicant_student_number">%1$d학번</string>
+    <string name="recruitment_activity_period_range">%1$s - %2$s</string>
+
+    <string name="recruitment_elapsed_days">%1$d일 전</string>
+    <string name="recruitment_elapsed_hours">%1$d시간 전</string>
+    <string name="recruitment_elapsed_minutes">%1$d분 전</string>
+    <string name="recruitment_elapsed_just_now">방금 전</string>
 </resources>

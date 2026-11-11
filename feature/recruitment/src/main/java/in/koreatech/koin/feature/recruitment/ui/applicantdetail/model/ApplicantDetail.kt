@@ -5,7 +5,6 @@ import `in`.koreatech.koin.domain.model.recruitment.ApplicantDetail as DomainApp
 import `in`.koreatech.koin.domain.model.recruitment.TeamRecruitmentActivity
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.model.toApplicantStatus
-import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.model.toStudentNumberLabel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -15,7 +14,7 @@ data class ApplicantDetail(
     val name: String,
     val role: String,
     val department: String,
-    val studentNumber: String,
+    val studentNumber: Int,
     val status: ApplicantStatus,
     val skills: ImmutableList<String>,
     val activities: ImmutableList<ApplicantActivity>,
@@ -28,7 +27,8 @@ data class ApplicantDetail(
 @Immutable
 data class ApplicantActivity(
     val title: String,
-    val period: String,
+    val startedAt: String,
+    val endedAt: String?,
     val content: String
 )
 
@@ -39,7 +39,7 @@ fun DomainApplicantDetail.toUiModel(): ApplicantDetail {
         name = profile.nickname,
         role = role?.name ?: profile.preferredRole,
         department = profile.department,
-        studentNumber = profile.studentYear.toStudentNumberLabel(),
+        studentNumber = profile.studentYear % 100,
         status = status.toApplicantStatus(),
         skills = profile.skills.toImmutableList(),
         activities = profile.activities.map { it.toApplicantActivity() }.toImmutableList(),
@@ -52,7 +52,8 @@ fun DomainApplicantDetail.toUiModel(): ApplicantDetail {
 
 private fun TeamRecruitmentActivity.toApplicantActivity() = ApplicantActivity(
     title = title,
-    period = "${startedAt.toDotDate()} - ${endedAt?.toDotDate() ?: "진행중"}",
+    startedAt = startedAt.toDotDate(),
+    endedAt = endedAt?.toDotDate(),
     content = description
 )
 

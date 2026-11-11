@@ -37,6 +37,7 @@ import `in`.koreatech.koin.core.designsystem.component.button.OutlinedBoxButton
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentPostMetaInfo
@@ -118,7 +119,7 @@ fun RecruitmentPostCard(
                     }
                 }
                 RecruitmentPostMetaInfo(
-                    location = post.location,
+                    location = stringResource(post.location.labelRes),
                     dateRange = post.dateRange,
                     applicantText = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants),
                     applicantColor = applicantColor
@@ -223,7 +224,7 @@ private fun RecruitmentPostCardRecruitingPreview() {
                     RecruitmentRole("백엔드", 1),
                     RecruitmentRole("디자인", 1)
                 ),
-                location = "온라인",
+                location = RecruitmentLocation.ONLINE,
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 0,
                 maxApplicants = 3
@@ -246,7 +247,7 @@ private fun RecruitmentPostCardCompletePreview() {
                 category = RecruitmentCategory.STUDY,
                 status = RecruitmentStatus.Complete,
                 title = "2026 스터디 팀원 모집",
-                location = "온·오프라인",
+                location = RecruitmentLocation.MIXED,
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 3,
                 maxApplicants = 3
@@ -269,7 +270,7 @@ private fun RecruitmentPostCardExternalActivityPreview() {
                 category = RecruitmentCategory.EXTERNAL_ACTIVITY,
                 status = RecruitmentStatus.Complete,
                 title = "2026 대외활동 팀원 모집",
-                location = "온·오프라인",
+                location = RecruitmentLocation.MIXED,
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 5,
                 maxApplicants = 5

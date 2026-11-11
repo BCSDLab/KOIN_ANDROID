@@ -39,6 +39,7 @@ import `in`.koreatech.koin.feature.recruitment.ui.component.rememberRecruitmentP
 import `in`.koreatech.koin.feature.recruitment.ui.notification.component.RecruitmentNotificationItem
 import `in`.koreatech.koin.feature.recruitment.ui.notification.component.RecruitmentNotificationMenuButton
 import `in`.koreatech.koin.feature.recruitment.ui.notification.model.RecruitmentNotification
+import `in`.koreatech.koin.feature.recruitment.ui.notification.model.asString
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -197,7 +198,7 @@ private fun RecruitmentNotificationScreenImpl(
                 category = notification.category,
                 senderNickname = notification.senderNickname,
                 content = notification.content,
-                timestamp = notification.timestamp,
+                timestamp = notification.timestamp.asString(),
                 isRead = notification.isRead,
                 onClick = remember(notification.id) { { onNotificationClick(notification) } }
             )

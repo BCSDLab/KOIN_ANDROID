@@ -4,9 +4,9 @@ import androidx.compose.runtime.Immutable
 import `in`.koreatech.koin.domain.model.recruitment.ApplicantRecruitment as DomainApplicantRecruitment
 import `in`.koreatech.koin.domain.model.recruitment.ApplicantSummary as DomainApplicantSummary
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.toDateRange
 import `in`.koreatech.koin.feature.recruitment.model.toRecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.model.toRecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.MyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model.RecruitmentStatus
 
@@ -16,7 +16,7 @@ data class Applicant(
     val name: String,
     val role: String,
     val department: String,
-    val studentNumber: String,
+    val studentNumber: Int,
     val status: ApplicantStatus,
     val hasChatRoom: Boolean = false
 )
@@ -26,12 +26,10 @@ fun DomainApplicantSummary.toApplicant() = Applicant(
     name = nickname,
     role = role?.name.orEmpty(),
     department = department,
-    studentNumber = studentYear.toStudentNumberLabel(),
+    studentNumber = studentYear % 100,
     status = status.toApplicantStatus(),
     hasChatRoom = canOpenDirectChat
 )
-
-internal fun Int.toStudentNumberLabel(): String = "${this % 100}학번"
 
 internal fun String.toApplicantStatus(): ApplicantStatus = when (this) {
     "ACCEPTED" -> ApplicantStatus.APPROVED
@@ -46,7 +44,7 @@ fun DomainApplicantRecruitment.toMyRecruitmentPost() = MyRecruitmentPost(
         ?.let { RecruitmentStatus.Recruiting(it) }
         ?: RecruitmentStatus.Complete,
     title = title,
-    location = meetingType.toRecruitmentLocation(),
+    location = RecruitmentLocation.from(meetingType),
     dateRange = activityStartDate.toDateRange(activityEndDate),
     currentApplicants = currentParticipants,
     maxApplicants = maxParticipants,
