@@ -98,13 +98,13 @@ fun RecruitmentCreateScreen(
             state = state,
             modifier = Modifier.padding(contentPadding),
             onCategorySelected = { category ->
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.RECRUIT_CATEGORY, category.label)
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.RECRUIT_CATEGORY, category.analyticsLabel)
                 viewModel.setCategory(category)
             },
             onCategoryDropdownExpandChange = viewModel::setCategoryDropdownExpanded,
             onTitleChange = viewModel::setTitle,
             onProgressTypeSelected = { type ->
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.RECRUIT_METHOD, type.label)
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.RECRUIT_METHOD, type.analyticsLabel)
                 viewModel.setProgressType(type)
             },
             onStartDateClick = { viewModel.showDatePickerDialog(DateSelectionTarget.RECRUIT_START) },
@@ -233,10 +233,10 @@ private fun RecruitmentCreateScreenImpl(
     ) {
         FormSection(title = stringResource(R.string.recruitment_create_category), isRequired = true) {
             RecruitmentDropdown(
-                text = state.category.label,
+                text = stringResource(state.category.labelRes),
                 // category는 non-nullable이라 항상 선택된 값이 있음 → placeholder 상태 자체가 없음
                 isPlaceholder = false,
-                items = TeamRecruitmentCategory.entries.map { it.label }.toImmutableList(),
+                items = TeamRecruitmentCategory.entries.map { stringResource(it.labelRes) }.toImmutableList(),
                 isExpanded = state.isCategoryDropdownExpanded,
                 onExpandedChange = onCategoryDropdownExpandChange,
                 onItemSelected = { index -> onCategorySelected(TeamRecruitmentCategory.entries[index]) }

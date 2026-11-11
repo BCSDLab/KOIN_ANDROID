@@ -1,7 +1,10 @@
 package `in`.koreatech.koin.feature.recruitment.model
 
-enum class ApplicantStatus(val label: String) {
-    PENDING("대기"),
-    APPROVED("승인"),
-    REJECTED("거절")
+import androidx.annotation.StringRes
+import `in`.koreatech.koin.feature.recruitment.R
+
+enum class ApplicantStatus(@StringRes val labelRes: Int) {
+    PENDING(R.string.recruitment_applied_status_pending),
+    APPROVED(R.string.recruitment_applied_status_approved),
+    REJECTED(R.string.recruitment_applied_status_rejected)
 }
