@@ -73,14 +73,9 @@ fun MenuTagChipGroup(
 @Preview(showBackground = false)
 @Composable
 private fun MenuTagChipGroupPreview() {
-    val tagList = listOf(
-        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "닭발", "계란찜", "1인 매운 닭발",
-        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발"
-    )
-
     RebrandKoinTheme {
         MenuTagChipGroup(
-            menuTags = tagList,
+            menuTags = previewMenuTags,
             modifier = Modifier,
             onClick = {}
         )
@@ -90,14 +85,9 @@ private fun MenuTagChipGroupPreview() {
 @Preview(showBackground = false)
 @Composable
 private fun MenuTagChipGroupNoIconPreview() {
-    val tagList = listOf(
-        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "닭발", "계란찜", "1인 매운 닭발",
-        "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발", "계란찜", "1인 매운 닭발"
-    )
-
     RebrandKoinTheme {
         MenuTagChipGroup(
-            menuTags = tagList,
+            menuTags = previewMenuTags,
             modifier = Modifier,
             isIconVisibility = false,
             onClick = {}
