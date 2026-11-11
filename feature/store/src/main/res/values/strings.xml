@@ -153,6 +153,8 @@
     <string name="store_fab_delivery_eta">%1$s 도착예정</string>
     <string name="store_fab_takeout_eta">%1$s 포장 수령가능</string>
     <string name="store_fab_eta_unavailable">도착 미정</string>
+    <string name="store_fab_eta_time_pattern">a h시 m분</string>
+    <string name="store_order_history_date_pattern">M월 d일 (E)</string>
 
     <string name="order_detail">주문상세</string>
     <string name="write_review">리뷰 쓰기</string>
@@ -228,6 +230,15 @@
     <string name="review_report_header_title">신고 이유를 선택해주세요.</string>
     <string name="review_report_header_description">접수된 신고는 관계자 확인 하에 블라인드 처리됩니다.\n블라인드 처리까지 시간이 소요될 수 있습니다. </string>
     <string name="review_report_other_reason">신고 사유를 입력해주세요.</string>
+    <string name="review_report_reason_off_topic_title">주제에 맞지 않음</string>
+    <string name="review_report_reason_off_topic_description">분실물과 관련 없는 글입니다.</string>
+    <string name="review_report_reason_spam_title">스팸</string>
+    <string name="review_report_reason_spam_description">광고가 포함된 글입니다.</string>
+    <string name="review_report_reason_inappropriate_language_title">욕설</string>
+    <string name="review_report_reason_inappropriate_language_description">욕설, 성적인 언어, 비방하는 글이 포함된 글입니다.</string>
+    <string name="review_report_reason_privacy_title">개인정보</string>
+    <string name="review_report_reason_privacy_description">개인정보가 포함된 글입니다.</string>
+    <string name="review_report_reason_other">기타</string>
     <string name="review_submit_notice">리뷰를 남겨주시면 사장님과 다른 분들에게 도움이 됩니다.\n또한, 악의적인 리뷰는 관리자에 의해 삭제될 수 있습니다.</string>
     <string name="photo">사진</string>
     <string name="review_image_upload_description">리뷰와 관련된 사진을 업로드해주세요.</string>
