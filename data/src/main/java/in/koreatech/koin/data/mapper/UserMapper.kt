@@ -6,12 +6,14 @@ import `in`.koreatech.koin.data.request.user.StudentUserRequest
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.RefreshResponse
+import `in`.koreatech.koin.data.response.user.StudentAcademicInfoResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
 import `in`.koreatech.koin.domain.model.user.Gender
 import `in`.koreatech.koin.domain.model.user.Graduated
+import `in`.koreatech.koin.domain.model.user.StudentAcademicInfo
 import `in`.koreatech.koin.domain.model.user.User
 
 fun StudentUserResponse.toUser() =
@@ -148,3 +150,10 @@ fun ABTestEntity.toABTest() = ABTest(
     variableName = variableName,
     accessHistoryId = accessHistoryId
 )
+
+fun StudentAcademicInfoResponse.toStudentAcademicInfo() =
+    StudentAcademicInfo(
+        studentNumber = this.studentNumber,
+        department = this.department,
+        major = this.major
+    )

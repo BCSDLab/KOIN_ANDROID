@@ -3,6 +3,7 @@ package `in`.koreatech.koin.domain.repository
 import `in`.koreatech.koin.domain.model.user.ABTest
 import `in`.koreatech.koin.domain.model.user.AuthToken
 import `in`.koreatech.koin.domain.model.user.CodeCount
+import `in`.koreatech.koin.domain.model.user.StudentAcademicInfo
 import `in`.koreatech.koin.domain.model.user.User
 import kotlin.Result
 import kotlinx.coroutines.flow.Flow
@@ -35,6 +36,12 @@ interface UserRepository {
     suspend fun isUserEmailDuplicated(email: String): Result<Boolean> // TODO: Remove after new sign up release
 
     suspend fun updateUser(user: User): Result<Unit>
+
+    suspend fun updateStudentAcademicInfo(
+        department: String,
+        major: String?,
+        studentNumber: String?
+    ): Result<StudentAcademicInfo>
 
     suspend fun deleteDeviceToken(): Result<Unit>
 

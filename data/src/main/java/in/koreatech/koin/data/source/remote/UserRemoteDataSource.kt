@@ -17,6 +17,7 @@ import `in`.koreatech.koin.data.request.user.NewPasswordRequest
 import `in`.koreatech.koin.data.request.user.PasswordRequest
 import `in`.koreatech.koin.data.request.user.SmsSendRequest
 import `in`.koreatech.koin.data.request.user.SmsVerifyRequest
+import `in`.koreatech.koin.data.request.user.StudentAcademicInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequest
 import `in`.koreatech.koin.data.request.user.StudentInfoRequestV2
 import `in`.koreatech.koin.data.request.user.StudentUserRequest
@@ -32,6 +33,7 @@ import `in`.koreatech.koin.data.response.user.AuthResponse
 import `in`.koreatech.koin.data.response.user.CodeRequestCountResponse
 import `in`.koreatech.koin.data.response.user.GeneralUserResponse
 import `in`.koreatech.koin.data.response.user.LoginIdResponse
+import `in`.koreatech.koin.data.response.user.StudentAcademicInfoResponse
 import `in`.koreatech.koin.data.response.user.StudentUserResponse
 import `in`.koreatech.koin.data.response.user.UserTypeResponse
 
@@ -77,6 +79,12 @@ class UserRemoteDataSource(
 
     suspend fun updateStudentUser(studentUserRequest: StudentUserRequest): StudentUserResponse {
         return userAuthApi.putStudentUser(studentUserRequest)
+    }
+
+    suspend fun updateStudentAcademicInfo(
+        studentAcademicInfoRequest: StudentAcademicInfoRequest
+    ): StudentAcademicInfoResponse {
+        return userAuthApi.putStudentAcademicInfo(studentAcademicInfoRequest)
     }
 
     suspend fun updateGeneralUser(generalUserRequest: GeneralUserRequest): GeneralUserResponse {
