@@ -96,4 +96,12 @@
     <string name="download_description">다운로드 하시겠어요?</string>
 
     <string name="timetable_save_permission_needed">시간표를 저장하기 위해서는 권한이 필요해요.</string>
+    <string name="timetable_lecture_professor_unassigned">미배정</string>
+    <string name="timetable_download_box_title">시간표 다운로드</string>
+    <string name="timetable_search_placeholder">검색어를 입력해주세요.</string>
+    <string name="semester_edit_dialog_add_title">학기 추가(중복 가능)</string>
+    <string name="semester_edit_dialog_year_title">연도 선택</string>
+    <string name="timetable_schedule_add_semester">학기 추가하기</string>
+    <string name="timetable_schedule_year">%1$s년</string>
+    <string name="timetable_schedule_year_semester">%1$s년 %2$s학기</string>
 </resources>
