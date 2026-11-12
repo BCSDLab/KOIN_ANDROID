@@ -2,11 +2,18 @@ package `in`.koreatech.koin.feature.profile.component
 
 import androidx.compose.ui.graphics.Color
 import `in`.koreatech.koin.feature.profile.model.ProfileTimetableColor
+import java.time.DayOfWeek
 
 internal object ProfileTimetableDefaults {
     const val START_HOUR = 9
     const val END_HOUR = 18
-    val days = listOf("월", "화", "수", "목", "금")
+    val days = listOf(
+        DayOfWeek.MONDAY,
+        DayOfWeek.TUESDAY,
+        DayOfWeek.WEDNESDAY,
+        DayOfWeek.THURSDAY,
+        DayOfWeek.FRIDAY
+    )
 
     val gridLineColor = Color(0xFFF5F5F5)
 

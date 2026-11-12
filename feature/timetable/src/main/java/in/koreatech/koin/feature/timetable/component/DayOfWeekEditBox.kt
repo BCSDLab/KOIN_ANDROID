@@ -25,13 +25,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.component.icon.StableIcon
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.fullNameRes
 import `in`.koreatech.koin.feature.timetable.R
-import `in`.koreatech.koin.feature.timetable.model.toKorean
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import java.time.DayOfWeek
 
@@ -79,7 +80,7 @@ fun DayOfWeekEditBox(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = day.toKorean(),
+                            text = stringResource(day.fullNameRes()),
                             style = RebrandKoinTheme.typography.bold12,
                             color = RebrandKoinTheme.colors.neutral800,
                             modifier = Modifier.fillMaxWidth(),
@@ -122,7 +123,7 @@ fun DayOfWeekEditBox(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = customContent.dayOfWeek.toKorean(),
+                text = stringResource(customContent.dayOfWeek.fullNameRes()),
                 style = RebrandKoinTheme.typography.bold12,
                 color = RebrandKoinTheme.colors.neutral800,
                 modifier = Modifier.padding(start = (3.5).dp)

@@ -174,10 +174,11 @@ fun ShopOriginInfoScreen(
                             Text(uiState.shopDescription.address)
                             Text(stringResource(R.string.open_to_close_time, uiState.shopDescription.openTime, uiState.shopDescription.closeTime))
                             Text(
-                                text = if (uiState.shopDescription.closedDays.isEmpty()) {
+                                text = if (uiState.shopDescription.closedDayResIds.isEmpty()) {
                                     ""
                                 } else {
-                                    stringResource(R.string.closed_days_description, uiState.shopDescription.closedDays.joinToString(", "))
+                                    val closedDayNames = uiState.shopDescription.closedDayResIds.map { stringResource(it) }
+                                    stringResource(R.string.closed_days_description, closedDayNames.joinToString(", "))
                                 }
                             )
                             Text(uiState.shopDescription.phone)

@@ -26,14 +26,17 @@ import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.LostAndFoundAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.feature.lostandfound.R
 import `in`.koreatech.koin.feature.lostandfound.component.LostItemTypeChip
 import `in`.koreatech.koin.feature.lostandfound.enums.LostItemCategory
 import `in`.koreatech.koin.feature.lostandfound.enums.LostOrFoundType
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.component.LostAndFoundStatusChip
 import `in`.koreatech.koin.feature.lostandfound.util.formatLostAndFoundTitle
-import `in`.koreatech.koin.feature.lostandfound.util.getKoreanMMddEForm
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
+private val registeredDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM.dd")
 
 /**
  * 분실물 아이템
@@ -143,7 +146,13 @@ fun ListItem(
             ) {
                 Text(text = author)
                 Text(text = "•", color = RebrandKoinTheme.colors.neutral400)
-                Text(text = registeredAt.getKoreanMMddEForm())
+                Text(
+                    text = stringResource(
+                        R.string.lost_and_found_date_with_day_of_week,
+                        registeredAt.format(registeredDateFormatter),
+                        stringResource(registeredAt.dayOfWeek.shortNameRes())
+                    )
+                )
             }
         }
     }

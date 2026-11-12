@@ -78,7 +78,7 @@ data class StoreDescriptionModel(
     val phone: String,
     val openTime: String,
     val closeTime: String,
-    val closedDays: List<String>,
+    val closedDayResIds: List<Int>,
     val deliveryTips: List<DeliveryTipModel>?,
     val origins: List<OriginModel>?,
     val ownerInfo: OwnerInfoModel?
@@ -93,7 +93,7 @@ data class StoreDescriptionModel(
             phone = "",
             openTime = "",
             closeTime = "",
-            closedDays = emptyList(),
+            closedDayResIds = emptyList(),
             deliveryTips = null,
             origins = listOf(OriginModel.empty()),
             ownerInfo = OwnerInfoModel.empty()

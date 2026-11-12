@@ -58,6 +58,7 @@ import coil.compose.SubcomposeAsyncImage
 import `in`.koreatech.koin.core.designsystem.component.button.FilledButton
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
 import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.util.shortNameRes
 import `in`.koreatech.koin.feature.club.CONTENT_MAX_LENGTH
 import `in`.koreatech.koin.feature.club.CONTENT_MIN_LINES
 import `in`.koreatech.koin.feature.club.EVENT_INTRO_MAX_LENGTH
@@ -71,7 +72,6 @@ import `in`.koreatech.koin.feature.club.component.KoinClubExtraSmallDialogDanger
 import `in`.koreatech.koin.feature.club.component.KoinClubTextFieldAlert
 import `in`.koreatech.koin.feature.club.component.KoinClubTimePickerDialog
 import `in`.koreatech.koin.feature.club.ui.clubeventmodify.ClubEventModifyViewModel.Companion.MAX_IMAGE_LIMIT
-import `in`.koreatech.koin.feature.club.utils.getDayOfWeek
 import `in`.koreatech.koin.feature.club.utils.pickMedia
 import `in`.koreatech.koin.feature.club.utils.pickMultipleMedia
 import java.time.LocalDate
@@ -424,7 +424,7 @@ fun ClubEventCreateScreenImpl(
                             eventStartDateTime.year,
                             eventStartDateTime.monthValue,
                             eventStartDateTime.dayOfMonth,
-                            getDayOfWeek(eventStartDateTime.dayOfWeek)
+                            stringResource(eventStartDateTime.dayOfWeek.shortNameRes())
                         ),
                         onClick = {
                             isStartDateSelected = true
@@ -459,7 +459,7 @@ fun ClubEventCreateScreenImpl(
                             eventEndDateTime.year,
                             eventEndDateTime.monthValue,
                             eventEndDateTime.dayOfMonth,
-                            getDayOfWeek(eventEndDateTime.dayOfWeek)
+                            stringResource(eventEndDateTime.dayOfWeek.shortNameRes())
                         ),
                         onClick = {
                             isStartDateSelected = false
