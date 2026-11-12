@@ -1,8 +1,10 @@
 package `in`.koreatech.koin.feature.timetable.state
 
+import androidx.annotation.StringRes
+
 sealed class TimetableSideEffect {
     data class SnackBar(
-        val message: String
+        @StringRes val messageRes: Int
     ) : TimetableSideEffect()
 
     data class Toast(
