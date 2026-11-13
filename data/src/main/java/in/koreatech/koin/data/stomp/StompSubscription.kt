@@ -1,5 +1,7 @@
 package `in`.koreatech.koin.data.stomp
 
+import `in`.koreatech.koin.domain.util.suspendRunCatching
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -26,9 +28,12 @@ internal class StompSubscription(private val destination: String) {
 
     fun attach(session: StompSession, scope: CoroutineScope) {
         receiver = scope.launch {
-            val messages = try {
-                session.subscribe(StompSubscribeHeaders(destination))
-            } catch (error: Exception) {
+            val result = try {
+                suspendRunCatching { session.subscribe(StompSubscribeHeaders(destination)) }
+            } catch (error: CancellationException) {
+                Result.failure(error)
+            }
+            val messages = result.getOrElse { error ->
                 subscribed.completeExceptionally(error)
                 frames.close(error)
                 return@launch

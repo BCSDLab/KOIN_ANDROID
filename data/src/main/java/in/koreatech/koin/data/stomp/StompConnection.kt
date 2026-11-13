@@ -1,5 +1,6 @@
 package `in`.koreatech.koin.data.stomp
 
+import `in`.koreatech.koin.domain.util.suspendRunCatching
 import kotlin.coroutines.CoroutineContext
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
@@ -87,9 +88,10 @@ internal class StompConnection(
         }
         if (!registered) throw ended.await() ?: SessionDisconnectedException("STOMP connection is closed")
         val cleanup = currentCoroutineContext().job.invokeOnCompletion { release(subscription) }
+        var ready = false
         try {
             subscription.awaitSubscribed()
-            return flow {
+            val messages = flow {
                 try {
                     emitAll(subscription.messages)
                 } finally {
@@ -97,10 +99,13 @@ internal class StompConnection(
                     release(subscription)
                 }
             }
-        } catch (error: Throwable) {
-            cleanup.dispose()
-            release(subscription)
-            throw error
+            ready = true
+            return messages
+        } finally {
+            if (!ready) {
+                cleanup.dispose()
+                release(subscription)
+            }
         }
     }
 
@@ -118,7 +123,7 @@ internal class StompConnection(
         var attempt = 0
         var retryDelay = 1.seconds
         while (true) {
-            val error = runSession()
+            val error = runSession().exceptionOrNull()?.connectionFailure() ?: return
             if (status.value == KoinStompConnectionState.Connecting || !error.isRecoverable()) {
                 finish(error)
                 return
@@ -133,34 +138,43 @@ internal class StompConnection(
         }
     }
 
-    private suspend fun runSession(): Throwable = try {
-        coroutineScope {
-            val session = client.connect(
-                url = url,
-                customStompConnectHeaders = mapOf("Authorization" to "Bearer $token"),
-                sessionCoroutineContext = currentCoroutineContext()
-            )
-            try {
-                synchronized(lock) {
-                    activeSession = ActiveSession(session, this)
-                    subscriptions?.forEach { it.attach(session, this) }
-                    status.value = KoinStompConnectionState.Connected
-                }
-                awaitCancellation()
-            } finally {
-                synchronized(lock) { activeSession = null }
-                withContext(NonCancellable) {
+    private suspend fun runSession(): Result<Unit> {
+        val result: Result<Unit> = try {
+            suspendRunCatching {
+                coroutineScope {
+                    val session = client.connect(
+                        url = url,
+                        customStompConnectHeaders = mapOf("Authorization" to "Bearer $token"),
+                        sessionCoroutineContext = currentCoroutineContext()
+                    )
                     try {
-                        session.disconnect()
-                    } catch (error: Exception) {
-                        Timber.d(error, "STOMP session already closed")
+                        synchronized(lock) {
+                            activeSession = ActiveSession(session, this)
+                            subscriptions?.forEach { it.attach(session, this) }
+                            status.value = KoinStompConnectionState.Connected
+                        }
+                        awaitCancellation()
+                    } finally {
+                        synchronized(lock) { activeSession = null }
+                        withContext(NonCancellable) {
+                            val disconnected = try {
+                                suspendRunCatching { session.disconnect() }
+                            } catch (error: CancellationException) {
+                                Result.failure(error)
+                            }
+                            disconnected.onFailure { error ->
+                                Timber.d(error, "STOMP session already closed")
+                            }
+                        }
                     }
                 }
             }
+        } catch (error: CancellationException) {
+            // Krossbow may cancel its session without cancelling this connection's owner.
+            Result.failure(error)
         }
-    } catch (error: Exception) {
         currentCoroutineContext().ensureActive()
-        error.connectionFailure()
+        return result
     }
 
     private fun finish(error: Throwable?) {

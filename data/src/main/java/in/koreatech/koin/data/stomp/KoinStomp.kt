@@ -36,11 +36,12 @@ class KoinStomp(
 
     suspend fun connect(): Result<Unit> = suspendRunCatching {
         val connection = acquireConnection()
+        var connected = false
         try {
             connection.awaitConnected()
-        } catch (error: Exception) {
-            releaseConnection(connection)
-            throw error
+            connected = true
+        } finally {
+            if (!connected) releaseConnection(connection)
         }
     }
 
