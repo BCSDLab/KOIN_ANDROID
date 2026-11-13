@@ -7,9 +7,11 @@ import `in`.koreatech.koin.domain.model.chat.ChatRoom
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
-    suspend fun connectWS()
+    /** Returns connection failures; coroutine cancellation is propagated. */
+    suspend fun connectWS(): Result<Unit>
 
-    suspend fun disconnectWS()
+    /** Returns disconnection failures; coroutine cancellation is propagated. */
+    suspend fun disconnectWS(): Result<Unit>
 
     fun observeConnectionState(): Flow<ChatConnectionState>
 
