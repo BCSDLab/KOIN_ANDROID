@@ -18,6 +18,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient
 import org.hildan.krossbow.stomp.config.HeartBeat
+import org.hildan.krossbow.stomp.config.HeartBeatTolerance
 import org.hildan.krossbow.websocket.okhttp.OkHttpWebSocketClient
 
 @Module
@@ -71,6 +72,9 @@ object NetworkModule {
                     minSendPeriod = 4000.milliseconds, // Follow backend recommendation
                     expectedPeriod = 4000.milliseconds
                 )
+            // Spring's 10s broker tick can postpone a heartbeat after a normal MESSAGE.
+            // Allow one extra tick plus the default 500ms transport margin.
+            heartBeatTolerance = HeartBeatTolerance(incomingMargin = 10_500.milliseconds)
         }
     }
 
