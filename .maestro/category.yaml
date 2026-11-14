@@ -1,0 +1,19 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 카테고리
+---
+- runFlow: common/open_category.yaml
+- assertVisible: "교내 활동 팀원 구하기"
+- assertVisible: "분실물 신고/조회하기"
+- assertVisible: "학교 부서정보"
+- scrollUntilVisible:
+    element:
+      text: "코인 for Business"
+    direction: DOWN
+    timeout: 15000
+- assertVisible: "복덕방"
+- assertVisible: "채팅"
+- tapOn:
+    id: bottom_navigation_home
+- extendedWaitUntil:
+    visible: "오늘의 식단"
+    timeout: 15000

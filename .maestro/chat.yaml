@@ -1,0 +1,15 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 채팅 접근
+---
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "채팅"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "채팅"
+- extendedWaitUntil:
+    visible: "아이디(Koreatech ID/전화번호)"
+    timeout: 15000
+- assertVisible: "비밀번호"
+- assertVisible: "회원가입"

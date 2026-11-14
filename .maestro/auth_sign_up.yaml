@@ -1,0 +1,11 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/launch_home.yaml
+- openLink: "koin://signup/navigation"
+- extendedWaitUntil:
+    visible: "회원가입"
+    timeout: 15000
+- assertVisible: "1. 약관 동의"
+- assertVisible: "모두 동의합니다."
+- assertVisible: "개인정보 이용약관 (필수)"
+- assertVisible: "코인 이용약관 (필수)"

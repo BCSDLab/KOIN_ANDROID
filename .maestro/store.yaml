@@ -1,0 +1,18 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 주변상점 화면
+---
+- runFlow: common/launch_home.yaml
+- openLink: "koin://store"
+- extendedWaitUntil:
+    visible: "주변상점"
+    timeout: 30000
+- assertVisible: "검색어를 입력해주세요."
+- tapOn: "검색어를 입력해주세요."
+- extendedWaitUntil:
+    visible: "검색"
+    timeout: 15000
+- hideKeyboard
+- pressKey: BACK
+- extendedWaitUntil:
+    visible: "주변상점"
+    timeout: 15000

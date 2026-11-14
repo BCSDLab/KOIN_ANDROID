@@ -1,0 +1,21 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 프로필
+---
+- runFlow: common/launch_home.yaml
+- tapOn:
+    id: bottom_navigation_profile
+- extendedWaitUntil:
+    visible: "로그인해주세요."
+    timeout: 15000
+- assertVisible: "설정"
+- assertVisible: "내 시간표"
+- tapOn:
+    text: "로그인"
+- extendedWaitUntil:
+    visible: "아이디(Koreatech ID/전화번호)"
+    timeout: 15000
+- assertVisible: "비밀번호"
+- pressKey: BACK
+- extendedWaitUntil:
+    visible: "로그인해주세요."
+    timeout: 15000

@@ -1,0 +1,19 @@
+appId: in.koreatech.koin.dev
+---
+- launchApp:
+    clearState: true
+    permissions:
+      notifications: allow
+- openLink: "koin://main/navigation"
+- extendedWaitUntil:
+    visible:
+      text: "닫기|오늘의 식단"
+    timeout: 30000
+- runFlow:
+    when:
+      visible: "닫기"
+    commands:
+      - tapOn: "닫기"
+- extendedWaitUntil:
+    visible: "오늘의 식단"
+    timeout: 30000

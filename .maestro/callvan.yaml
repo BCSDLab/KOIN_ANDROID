@@ -1,0 +1,31 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "콜밴팟"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "콜밴팟"
+- extendedWaitUntil:
+    visible: "콜밴팟"
+    timeout: 15000
+- assertVisible: "필터"
+- tapOn: "필터"
+- extendedWaitUntil:
+    visible: "모집 상태"
+    timeout: 10000
+- assertVisible: "출발지"
+- tapOn: "내 게시물"
+- scrollUntilVisible:
+    element:
+      text: "도착지"
+    direction: DOWN
+    timeout: 10000
+- assertVisible: "도착지"
+- assertVisible: "적용하기"
+- tapOn: "적용하기"
+- extendedWaitUntil:
+    visible: "콜밴팟에 참여하려면 로그인이 필요해요."
+    timeout: 10000
+- assertVisible: "로그인하기"

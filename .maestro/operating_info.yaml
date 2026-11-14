@@ -1,0 +1,13 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 교내 시설물 정보 화면
+---
+- runFlow: common/open_category.yaml
+- tapOn: "교내 시설물 정보"
+- extendedWaitUntil:
+    visible: "교내 시설물 정보"
+    timeout: 30000
+- extendedWaitUntil:
+    visible: "학생식당"
+    timeout: 30000
+- assertVisible: "아침"
+- assertVisible: "점심"
