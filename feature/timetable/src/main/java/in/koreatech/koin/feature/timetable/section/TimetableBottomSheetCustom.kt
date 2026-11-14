@@ -45,6 +45,7 @@ fun TimetableBottomSheetCustom(
             TimetableInputField(
                 text = customContents.schedule,
                 title = stringResource(id = R.string.timetable_input_field_title_schedule),
+                maxLength = 100,
                 optional = false,
                 isError = customContents.isScheduleError,
                 onValueChange = onScheduleNameChange
@@ -53,6 +54,7 @@ fun TimetableBottomSheetCustom(
             TimetableInputField(
                 text = customContents.professor,
                 title = stringResource(id = R.string.timetable_input_field_title_professor),
+                maxLength = 30,
                 onValueChange = onProfessorNameChange
             )
             Spacer(modifier = Modifier.height(8.dp))

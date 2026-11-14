@@ -88,6 +88,7 @@ fun BottomSheetCustomExtraContent(
             TimetableInputField(
                 text = customContent.place,
                 title = stringResource(id = R.string.timetable_input_field_title_place),
+                maxLength = 30,
                 onValueChange = {
                     onPlaceNameChange(customContent.id, it)
                 }
