@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
@@ -588,6 +587,8 @@ private fun DiningDetailScreenImpl(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         diningFilterList.forEachIndexed { index, dining ->
+                            val shareProfileText = dining.toShareProfileText()
+                            val shareViewAllText = stringResource(R.string.kakao_share_view_all)
                             Box(
                                 contentAlignment = Alignment.BottomCenter
                             ) {
@@ -610,7 +611,7 @@ private fun DiningDetailScreenImpl(
                                             DiningAnalyticsConstant.Label.SHARE_KAKAO,
                                             DiningAnalyticsConstant.Value.SHARE
                                         )
-                                        val messageTemplate = createFeedMessageTemplate(context, dining)
+                                        val messageTemplate = createFeedMessageTemplate(dining, shareProfileText, shareViewAllText)
 
                                         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
                                             ShareClient.instance.shareDefault(
@@ -1064,14 +1065,28 @@ private fun handleImage(
     }
 }
 
-@StringRes
-private fun String.toShareTypeRes(): Int = when (this) {
-    DiningType.Lunch.typeEnglish -> R.string.kakao_share_type_lunch
-    DiningType.Dinner.typeEnglish -> R.string.kakao_share_type_dinner
-    else -> R.string.kakao_share_type_breakfast
+@Composable
+private fun Dining.toShareProfileText(): String {
+    val dateText = when {
+        TimeUtil.isToday(date) -> stringResource(R.string.kakao_share_today)
+        TimeUtil.isTomorrow(date) -> stringResource(R.string.kakao_share_tomorrow)
+        else -> TimeUtil.formatDateToKorean(date)
+    }
+    val typeText = stringResource(
+        when (type) {
+            DiningType.Lunch.typeEnglish -> R.string.kakao_share_type_lunch
+            DiningType.Dinner.typeEnglish -> R.string.kakao_share_type_dinner
+            else -> R.string.kakao_share_type_breakfast
+        }
+    )
+    return stringResource(R.string.kakao_share_profile_text, dateText, typeText)
 }
 
-private fun createFeedMessageTemplate(context: Context, dining: Dining): FeedTemplate {
+private fun createFeedMessageTemplate(
+    dining: Dining,
+    profileText: String,
+    viewAllText: String
+): FeedTemplate {
     val executionParams = mapOf(
         PARAMS_DATE to dining.date,
         PARAMS_TYPE to dining.type,
@@ -1088,17 +1103,7 @@ private fun createFeedMessageTemplate(context: Context, dining: Dining): FeedTem
             link = link
         ),
         itemContent = ItemContent(
-            profileText = context.getString(
-                R.string.kakao_share_profile_text,
-                if (TimeUtil.isToday(dining.date)) {
-                    context.getString(R.string.kakao_share_today)
-                } else if (TimeUtil.isTomorrow(dining.date)) {
-                    context.getString(R.string.kakao_share_tomorrow)
-                } else {
-                    TimeUtil.formatDateToKorean(dining.date)
-                },
-                context.getString(dining.type.toShareTypeRes())
-            ),
+            profileText = profileText,
             items = listOf(
                 ItemInfo(
                     item = dining.place,
@@ -1107,7 +1112,7 @@ private fun createFeedMessageTemplate(context: Context, dining: Dining): FeedTem
             )
         ),
         buttons = listOf(
-            Button(context.getString(R.string.kakao_share_view_all), link)
+            Button(viewAllText, link)
         )
     )
 }
