@@ -96,6 +96,8 @@ class ChatListViewModel @Inject constructor(
         if (state.userId == -1) return@intent // If userId is not set, don't connect websocket
         chatWSConnectUseCase().onSuccess {
             subscribeChatList(state.userId)
+        }.onFailure {
+            Timber.e(it)
         }
     }
 

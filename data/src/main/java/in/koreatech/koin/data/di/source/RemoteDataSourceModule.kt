@@ -45,6 +45,7 @@ import `in`.koreatech.koin.data.source.remote.UserRemoteDataSource
 import `in`.koreatech.koin.data.source.remote.VersionRemoteDataSource
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import javax.inject.Singleton
+import kotlinx.serialization.json.Json
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -148,9 +149,10 @@ object RemoteDataSourceModule {
     fun provideChatRemoteDataSource(
         chatApi: ChatApi,
         chatAuthApi: ChatAuthApi,
-        koinStomp: KoinStomp
+        koinStomp: KoinStomp,
+        json: Json
     ): ChatRemoteDataSource {
-        return ChatRemoteDataSource(chatApi, chatAuthApi, koinStomp)
+        return ChatRemoteDataSource(chatApi, chatAuthApi, koinStomp, json)
     }
 
     @Provides
