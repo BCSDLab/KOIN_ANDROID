@@ -6,6 +6,7 @@ import javax.inject.Inject
 class ChatBlockUserUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
+    @Deprecated("")
     suspend operator fun invoke(
         articleId: Int,
         chatRoomId: Int

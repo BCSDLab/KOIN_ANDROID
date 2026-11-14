@@ -6,6 +6,7 @@ import javax.inject.Inject
 class SubscribeChatRoomUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
+    @Deprecated("")
     operator fun invoke(
         articleId: Int,
         chatRoomId: Int
