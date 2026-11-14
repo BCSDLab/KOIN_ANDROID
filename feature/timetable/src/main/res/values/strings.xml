@@ -107,6 +107,7 @@
     <string name="timetable_snackbar_time_duplicated">시간이 중복됩니다.</string>
     <string name="timetable_snackbar_place_comma_not_allowed">쉼표 문자 (,)를 제외하고 입력해 주세요.</string>
     <string name="timetable_snackbar_extra_content_limit">\"시간 및 장소 추가\" 는 최대 5개까지 가능합니다.</string>
+    <string name="timetable_frame_deleted">%1$s가 삭제되었어요</string>
     <string name="timetable_image_saved">이미지가 저장되었어요.</string>
     <string name="timetable_image_save_failed">이미지 저장을 실패했어요.</string>
     <string name="timetable_error_network">인터넷 연결을 확인하고 다시 시도해주세요.</string>
