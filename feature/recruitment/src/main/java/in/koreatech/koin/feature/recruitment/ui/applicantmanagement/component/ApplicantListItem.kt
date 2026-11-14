@@ -77,7 +77,7 @@ fun ApplicantListItem(
                 }
             }
             Text(
-                text = stringResource(R.string.recruitment_applicant_role_info, applicant.role, applicant.department, applicant.studentNumber),
+                text = stringResource(R.string.recruitment_applicant_role_info, applicant.role, applicant.department, stringResource(R.string.recruitment_applicant_student_number, applicant.studentNumber)),
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral500
             )
@@ -101,7 +101,7 @@ private fun ApplicantListItemPendingPreview() {
                 name = "김철수",
                 role = "프론트엔드",
                 department = "컴퓨터공학부",
-                studentNumber = "23학번",
+                studentNumber = 23,
                 status = ApplicantStatus.PENDING
             ),
             onClick = {}
@@ -119,7 +119,7 @@ private fun ApplicantListItemApprovedPreview() {
                 name = "김철수",
                 role = "디자인",
                 department = "컴퓨터공학부",
-                studentNumber = "23학번",
+                studentNumber = 23,
                 status = ApplicantStatus.APPROVED,
                 hasChatRoom = true
             ),
@@ -138,7 +138,7 @@ private fun ApplicantListItemRejectedPreview() {
                 name = "김철수",
                 role = "백엔드",
                 department = "컴퓨터공학부",
-                studentNumber = "23학번",
+                studentNumber = 23,
                 status = ApplicantStatus.REJECTED
             ),
             onClick = {}

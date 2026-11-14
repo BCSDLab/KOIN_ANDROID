@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.model.ApplicantStatus
@@ -21,7 +22,7 @@ fun ApplicantStatusText(
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = status.label,
+        text = stringResource(status.labelRes),
         style = RebrandKoinTheme.typography.medium12,
         color = applicantStatusColor(status),
         modifier = modifier

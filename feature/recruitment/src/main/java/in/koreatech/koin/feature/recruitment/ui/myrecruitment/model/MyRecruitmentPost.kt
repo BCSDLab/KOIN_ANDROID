@@ -2,10 +2,10 @@ package `in`.koreatech.koin.feature.recruitment.ui.myrecruitment.model
 
 import `in`.koreatech.koin.domain.model.recruitment.MyRecruitmentPost as DomainMyRecruitmentPost
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.model.toDateRange
 import `in`.koreatech.koin.feature.recruitment.model.toRecruitmentCategory
-import `in`.koreatech.koin.feature.recruitment.model.toRecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.toRecruitmentRole
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -17,7 +17,7 @@ data class MyRecruitmentPost(
     val status: RecruitmentStatus,
     val title: String,
     val roles: ImmutableList<RecruitmentRole> = persistentListOf(),
-    val location: String,
+    val location: RecruitmentLocation,
     val dateRange: String,
     val currentApplicants: Int,
     val maxApplicants: Int,
@@ -33,7 +33,7 @@ fun DomainMyRecruitmentPost.toMyRecruitmentPost() = MyRecruitmentPost(
     },
     title = title,
     roles = roles.map { it.toRecruitmentRole() }.toPersistentList(),
-    location = meetingType.toRecruitmentLocation(),
+    location = RecruitmentLocation.from(meetingType),
     dateRange = activityStartDate.toDateRange(activityEndDate),
     currentApplicants = currentParticipants,
     maxApplicants = maxParticipants,

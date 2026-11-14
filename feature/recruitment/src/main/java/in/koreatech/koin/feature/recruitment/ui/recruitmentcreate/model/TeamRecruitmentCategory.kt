@@ -1,9 +1,16 @@
 package `in`.koreatech.koin.feature.recruitment.ui.recruitmentcreate.model
 
-enum class TeamRecruitmentCategory(val label: String) {
-    CONTEST("공모전"),
-    EXTERNAL_ACTIVITY("대외활동"),
-    STUDY("스터디"),
-    PROJECT("프로젝트"),
-    OTHER("기타")
+import androidx.annotation.StringRes
+import `in`.koreatech.koin.feature.recruitment.R
+
+/** [analyticsLabel] 은 이벤트 로깅용 값이다. */
+enum class TeamRecruitmentCategory(
+    @StringRes val labelRes: Int,
+    val analyticsLabel: String
+) {
+    CONTEST(R.string.recruitment_category_contest, "공모전"),
+    EXTERNAL_ACTIVITY(R.string.recruitment_category_activity, "대외활동"),
+    STUDY(R.string.recruitment_category_study, "스터디"),
+    PROJECT(R.string.recruitment_category_project, "프로젝트"),
+    OTHER(R.string.recruitment_category_etc, "기타")
 }

@@ -33,6 +33,7 @@ import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentPostMetaInfo
@@ -108,7 +109,7 @@ fun AppliedRecruitmentPostCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RecruitmentPostMetaInfo(
-                    location = post.location,
+                    location = stringResource(post.location.labelRes),
                     dateRange = post.dateRange,
                     applicantText = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants)
                 )
@@ -180,7 +181,7 @@ private fun AppliedPostCardApprovedPreview() {
                     RecruitmentRole("프론트엔드", 1),
                     RecruitmentRole("백엔드", 1)
                 ),
-                location = "온라인",
+                location = RecruitmentLocation.ONLINE,
                 dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 2,
                 maxApplicants = 3,
@@ -204,7 +205,7 @@ private fun AppliedPostCardPendingPreview() {
                 applicationStatus = AppliedRecruitmentStatus.Pending,
                 daysLeft = 3,
                 title = "2026 스터디 팀원 모집",
-                location = "온·오프라인",
+                location = RecruitmentLocation.MIXED,
                 dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 1,
                 maxApplicants = 5
@@ -226,7 +227,7 @@ private fun AppliedPostCardRejectedPreview() {
                 applicationStatus = AppliedRecruitmentStatus.Rejected,
                 daysLeft = null,
                 title = "2026 대외활동 팀원 모집",
-                location = "온·오프라인",
+                location = RecruitmentLocation.MIXED,
                 dateRange = PREVIEW_DATE_RANGE,
                 currentApplicants = 5,
                 maxApplicants = 5

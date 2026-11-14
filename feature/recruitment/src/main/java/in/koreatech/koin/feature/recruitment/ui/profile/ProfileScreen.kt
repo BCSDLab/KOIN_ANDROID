@@ -157,7 +157,7 @@ private fun ProfileScreenImpl(
 
             is ProfileLoadState.Error -> {
                 Text(
-                    text = loadState.message.orEmpty(),
+                    text = loadState.message.orEmpty().ifBlank { stringResource(R.string.recruitment_error_default) },
                     style = RebrandKoinTheme.typography.regular14,
                     color = RebrandKoinTheme.colors.neutral500,
                     modifier = Modifier

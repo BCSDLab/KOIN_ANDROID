@@ -1,6 +1,9 @@
 package `in`.koreatech.koin.feature.recruitment.ui.notification.model
 
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import `in`.koreatech.koin.domain.model.recruitment.RecruitmentNotification as DomainRecruitmentNotification
+import `in`.koreatech.koin.feature.recruitment.R
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
@@ -12,7 +15,7 @@ internal data class RecruitmentNotification(
     val category: RecruitmentNotificationCategory,
     val senderNickname: String?,
     val content: String,
-    val timestamp: String,
+    val timestamp: ElapsedTime,
     val isRead: Boolean,
     val applicationId: Int?,
     val chatRoomId: Int?
@@ -46,14 +49,29 @@ private fun String.toRecruitmentNotificationCategory(): RecruitmentNotificationC
 
 private val CREATED_AT_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss")
 
-private fun String.toDatetimeDiff(): String {
+private fun String.toDatetimeDiff(): ElapsedTime {
     val createdAt = LocalDateTime.parse(this, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
     val now = LocalDateTime.now()
     val days = ChronoUnit.DAYS.between(createdAt, now)
-    if (days > 0) return "${days}일 전"
+    if (days > 0) return ElapsedTime.Days(days)
     val hours = ChronoUnit.HOURS.between(createdAt, now)
-    if (hours > 0) return "${hours}시간 전"
+    if (hours > 0) return ElapsedTime.Hours(hours)
     val minutes = ChronoUnit.MINUTES.between(createdAt, now)
-    if (minutes > 0) return "${minutes}분 전"
-    return "방금 전"
+    if (minutes > 0) return ElapsedTime.Minutes(minutes)
+    return ElapsedTime.JustNow
+}
+
+internal sealed interface ElapsedTime {
+    data class Days(val value: Long) : ElapsedTime
+    data class Hours(val value: Long) : ElapsedTime
+    data class Minutes(val value: Long) : ElapsedTime
+    data object JustNow : ElapsedTime
+}
+
+@Composable
+internal fun ElapsedTime.asString(): String = when (this) {
+    is ElapsedTime.Days -> stringResource(R.string.recruitment_elapsed_days, value)
+    is ElapsedTime.Hours -> stringResource(R.string.recruitment_elapsed_hours, value)
+    is ElapsedTime.Minutes -> stringResource(R.string.recruitment_elapsed_minutes, value)
+    ElapsedTime.JustNow -> stringResource(R.string.recruitment_elapsed_just_now)
 }

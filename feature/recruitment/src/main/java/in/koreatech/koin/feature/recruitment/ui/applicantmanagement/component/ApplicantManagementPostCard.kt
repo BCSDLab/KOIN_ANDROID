@@ -28,6 +28,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.recruitment.R
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentCategory
+import `in`.koreatech.koin.feature.recruitment.model.RecruitmentLocation
 import `in`.koreatech.koin.feature.recruitment.model.RecruitmentRole
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentCategoryBadge
 import `in`.koreatech.koin.feature.recruitment.ui.component.RecruitmentPostMetaInfo
@@ -107,7 +108,7 @@ fun ApplicantManagementPostCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 RecruitmentPostMetaInfo(
-                    location = post.location,
+                    location = stringResource(post.location.labelRes),
                     dateRange = post.dateRange,
                     applicantText = stringResource(R.string.recruitment_applicant_count, post.currentApplicants, post.maxApplicants),
                     modifier = Modifier.weight(1f)
@@ -140,7 +141,7 @@ private fun ApplicantManagementPostCardPreview() {
                     RecruitmentRole("백엔드", 1),
                     RecruitmentRole("디자인", 1)
                 ),
-                location = "온라인",
+                location = RecruitmentLocation.ONLINE,
                 dateRange = "2026.07.26 ~ 2026.08.07",
                 currentApplicants = 0,
                 maxApplicants = 3

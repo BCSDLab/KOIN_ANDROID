@@ -26,7 +26,7 @@ fun ApplicantDetailProfileCard(
     name: String,
     role: String,
     department: String,
-    studentNumber: String,
+    studentNumber: Int,
     status: ApplicantStatus,
     modifier: Modifier = Modifier
 ) {
@@ -61,7 +61,7 @@ fun ApplicantDetailProfileCard(
                     ApplicantStatusText(status = status)
                 }
                 Text(
-                    text = stringResource(R.string.recruitment_applicant_role_info, role, department, studentNumber),
+                    text = stringResource(R.string.recruitment_applicant_role_info, role, department, stringResource(R.string.recruitment_applicant_student_number, studentNumber)),
                     style = RebrandKoinTheme.typography.regular12,
                     color = RebrandKoinTheme.colors.neutral500
                 )
@@ -78,7 +78,7 @@ private fun ApplicantDetailProfileCardPreview() {
             name = "김철수",
             role = "프론트엔드",
             department = "컴퓨터공학부",
-            studentNumber = "23학번",
+            studentNumber = 23,
             status = ApplicantStatus.PENDING
         )
     }

@@ -201,7 +201,11 @@ private fun ApplicantDetailScreenImpl(
                     applicant.activities.forEach { activity ->
                         ApplicantActivityInfoBox(
                             title = activity.title,
-                            period = activity.period,
+                            period = stringResource(
+                                R.string.recruitment_activity_period_range,
+                                activity.startedAt,
+                                activity.endedAt ?: stringResource(R.string.recruitment_activity_ongoing)
+                            ),
                             content = activity.content
                         )
                     }
@@ -244,13 +248,14 @@ private fun ApplicantDetailScreenPreview() {
                 name = "김철수",
                 role = "프론트엔드",
                 department = "컴퓨터공학부",
-                studentNumber = "23학번",
+                studentNumber = 23,
                 status = ApplicantStatus.PENDING,
                 skills = persistentListOf("정보처리기사"),
                 activities = persistentListOf(
                     ApplicantActivity(
                         title = "AI 공모전",
-                        period = "2026.03.23 - 2026.04.06",
+                        startedAt = "2026.03.23",
+                        endedAt = "2026.04.06",
                         content = "AI 공모전에서 기획을 담당했고 @@@를 주제로 @@@를 만들었습니다"
                     )
                 ),

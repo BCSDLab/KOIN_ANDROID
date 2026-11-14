@@ -121,7 +121,7 @@ fun RecruitmentModifyScreen(
             onCategoryDropdownExpandChange = viewModel::setCategoryDropdownExpanded,
             onTitleChange = viewModel::setTitle,
             onProgressTypeSelected = { type ->
-                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_METHOD, type.label)
+                EventLogger.logCampusClickEvent(AnalyticsConstant.Label.TeamRecruitment.POST_EDIT_METHOD, type.analyticsLabel)
                 viewModel.setProgressType(type)
             },
             onStartDateClick = { viewModel.showDatePickerDialog(DateSelectionTarget.RECRUIT_START) },

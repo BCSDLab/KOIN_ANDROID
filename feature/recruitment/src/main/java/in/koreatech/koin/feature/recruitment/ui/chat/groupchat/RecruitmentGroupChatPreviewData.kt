@@ -2,6 +2,7 @@ package `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat
 
 import `in`.koreatech.koin.feature.recruitment.ui.chat.model.RecruitmentChatMessage
 import `in`.koreatech.koin.feature.recruitment.ui.chat.model.RecruitmentChatMessageGroup
+import java.time.LocalDate
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -10,7 +11,7 @@ object RecruitmentGroupChatPreviewData {
     const val TITLE = "AI 공모전 팀원 모집"
     const val CURRENT_MEMBER_COUNT = 6
     const val MAX_MEMBER_COUNT = 8
-    const val DATE = "2025년 7월 22일"
+    val DATE: LocalDate = LocalDate.of(2025, 7, 22)
 
     fun messages(): ImmutableList<RecruitmentChatMessageGroup> = persistentListOf(
         RecruitmentChatMessageGroup(

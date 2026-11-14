@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
-private val CHAT_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy년 M월 d일")
 private val CHAT_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 fun List<DomainRecruitmentChatMessage>.toRecruitmentChatMessageGroups(
@@ -13,7 +12,7 @@ fun List<DomainRecruitmentChatMessage>.toRecruitmentChatMessageGroups(
 ): ImmutableList<RecruitmentChatMessageGroup> = groupBy { it.timestamp.toLocalDate() }
     .map { (date, messagesForDate) ->
         RecruitmentChatMessageGroup(
-            date = date.format(CHAT_DATE_FORMATTER),
+            date = date,
             messages = messagesForDate.mapIndexed { index, message ->
                 val previous = messagesForDate.getOrNull(index - 1)
                 RecruitmentChatMessage(
