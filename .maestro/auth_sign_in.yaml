@@ -1,0 +1,23 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/launch_home.yaml
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 15000
+- assertVisible: "아이디(Koreatech ID/전화번호)"
+- assertVisible: "비밀번호"
+- assertVisible: "회원가입"
+- assertVisible: "아이디 찾기"
+- assertVisible: "비밀번호 찾기"
+- tapOn: "회원가입"
+- extendedWaitUntil:
+    visible: "모두 동의합니다."
+    timeout: 15000
+- assertVisible: "1. 약관 동의"
+- openLink: "koin://login/navigation"
+- extendedWaitUntil:
+    visible: "로그인"
+    timeout: 15000
+- assertVisible: "아이디(Koreatech ID/전화번호)"
+- assertVisible: "비밀번호"

@@ -1,0 +1,30 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 홈 화면
+---
+- runFlow: common/launch_home.yaml
+- assertVisible: "홈"
+- assertVisible: "오늘의 식단"
+- scrollUntilVisible:
+    element:
+      text: "콜밴팟"
+    direction: DOWN
+    timeout: 15000
+- assertVisible: "같이 콜밴 탈 사람을 찾아요"
+- scrollUntilVisible:
+    element:
+      text: "버스 시간표"
+    direction: DOWN
+    timeout: 15000
+- assertVisible: "버스 노선 조회"
+- scrollUntilVisible:
+    element:
+      text: "많이 찾는 상점.*둘러보기"
+    direction: DOWN
+    timeout: 15000
+- assertVisible: "주변 상점"
+- scrollUntilVisible:
+    element:
+      text: "오늘의 식단"
+    direction: UP
+    timeout: 15000
+- assertVisible: "홈"

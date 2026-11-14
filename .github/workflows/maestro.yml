@@ -1,0 +1,160 @@
+name: Maestro E2E
+
+on:
+  pull_request:
+    branches: [production]
+    types: [opened]
+  schedule:
+    - cron: '0 15 * * 0' # Monday 00:00 KST
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build stage QA APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      date: ${{ steps.date.outputs.date }}
+    steps:
+      - uses: actions/checkout@v4
+        # Scheduled workflows run on the default branch; test production explicitly.
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'production' || github.ref }}
+
+
+      - name: Get execution date (KST)
+        id: date
+        run: echo "date=$(TZ=Asia/Seoul date +'%Y-%m-%d')" >> "$GITHUB_OUTPUT"
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+      - name: Configure Firebase
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          mkdir -p ./koin/src/qa
+          echo "$FIREBASE" | base64 -di > ./koin/google-services.json
+          echo "$FIREBASE_STAGE" | base64 -di > ./koin/src/qa/google-services.json
+
+      - name: Build QA APK
+        run: ./gradlew :koin:assembleQa
+
+      - name: Upload stage QA APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: koin-qa-apk
+          path: koin/build/outputs/apk/qa/**/*.apk
+          if-no-files-found: error
+          retention-days: 1
+
+  test:
+    name: Maestro ${{ matrix.feature }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        feature:
+          - home
+          - category
+          - profile
+          - notification
+          - department
+          - recruitment
+          - chat
+          - article
+          - dining
+          - store
+          - club
+          - lost_and_found
+          - land
+          - operating_info
+          - banner
+          - auth_sign_in
+          - auth_sign_up
+          - auth_find_id
+          - auth_find_password
+          - bus
+          - timetable
+          - callvan
+          - settings
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'schedule' && 'production' || github.ref }}
+
+      - name: Download stage QA APK
+        uses: actions/download-artifact@v4
+        with:
+          name: koin-qa-apk
+          path: ./artifacts
+
+      - name: Select APK
+        run: |
+          apk=$(find ./artifacts -type f -name '*.apk' -print -quit)
+          test -n "$apk"
+          cp "$apk" ./koin-qa.apk
+
+      - name: Install Maestro 2.2.0
+        run: |
+          export MAESTRO_VERSION=2.2.0
+          curl -fsSL "https://get.maestro.mobile.dev" | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          "$HOME/.maestro/bin/maestro" --version
+
+      - name: Enable KVM permissions
+        run: sudo chmod 666 /dev/kvm
+
+      - name: Run ${{ matrix.feature }} on Android emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          avd-name: maestro-${{ matrix.feature }}
+          emulator-port: 5554
+          emulator-boot-timeout: 180
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect
+          disable-animations: true
+          script: bash .github/scripts/run_maestro_suite.sh "${{ matrix.feature }}" emulator-5554 ./koin-qa.apk
+
+      - name: Upload Maestro recordings and artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-${{ matrix.feature }}-${{ needs.build.outputs.date }}
+          overwrite: true
+          path: build/maestro/${{ matrix.feature }}/**
+          if-no-files-found: warn
+          retention-days: 7
+
+  notify:
+    name: Notify Maestro results
+    needs: [build, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send results to Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ needs.build.result == 'success' && needs.test.result == 'success' && 'success' || 'failure' }}
+          author_name: Android Maestro UI Tests
+          text: |
+            Maestro E2E 결과
+            QA 빌드: ${{ needs.build.result }}
+            기능별 테스트: ${{ needs.test.result }}
+            ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

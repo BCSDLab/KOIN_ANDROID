@@ -1,0 +1,21 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/open_category.yaml
+- tapOn: "시간표"
+- extendedWaitUntil:
+    visible: "시간표"
+    timeout: 15000
+- assertVisible: "시간표 다운로드"
+- assertVisible: "월"
+- assertVisible: "금"
+- tapOn:
+    text: "[0-9]{4}년 .*학기"
+- extendedWaitUntil:
+    visible: "시간표 목록"
+    timeout: 15000
+- assertVisible:
+    text: "(?s)로그인.*계절학기.*"
+- pressKey: BACK
+- extendedWaitUntil:
+    visible: "시간표 다운로드"
+    timeout: 15000

@@ -1,0 +1,8 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: launch_home.yaml
+- tapOn:
+    id: bottom_navigation_category
+- extendedWaitUntil:
+    visible: "캠퍼스"
+    timeout: 15000

@@ -1,0 +1,37 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "버스 시간표"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "버스 시간표"
+- extendedWaitUntil:
+    visible: "버스 시간표"
+    timeout: 15000
+- assertVisible: "셔틀버스 시간표"
+- tapOn: "대성"
+- extendedWaitUntil:
+    visible: "대성버스 시간표"
+    timeout: 15000
+- pressKey: BACK
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "교통편 조회하기"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "교통편 조회하기"
+- extendedWaitUntil:
+    visible: "출발지 선택"
+    timeout: 15000
+- assertVisible: "도착지 선택"
+- tapOn: "출발지 선택"
+- extendedWaitUntil:
+    visible: "어디서 출발하시나요?"
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "코리아텍"
+    timeout: 10000
+- assertVisible: "천안역"

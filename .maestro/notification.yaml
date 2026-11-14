@@ -1,0 +1,15 @@
+appId: in.koreatech.koin.dev
+name: 알림함
+---
+- runFlow: common/launch_home.yaml
+- tapOn:
+    text: "알림"
+- extendedWaitUntil:
+    visible: "14일이 지난 알림은 자동으로 삭제됩니다."
+    timeout: 15000
+- assertVisible: "알림"
+- assertVisible: "아직 알림이 없어요"
+- pressKey: BACK
+- extendedWaitUntil:
+    visible: "오늘의 식단"
+    timeout: 15000

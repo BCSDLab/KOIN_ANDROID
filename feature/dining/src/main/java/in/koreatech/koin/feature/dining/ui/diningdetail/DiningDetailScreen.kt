@@ -347,7 +347,7 @@ fun DiningDetailScreen(
                                 onTopbarActionClick()
                             },
                         imageVector = ImageVector.vectorResource(R.drawable.ic_notice),
-                        contentDescription = ""
+                        contentDescription = stringResource(R.string.dining_notice_appbar_title)
                     )
                 },
                 onNavigationIconClick = onTopbarBackClick
