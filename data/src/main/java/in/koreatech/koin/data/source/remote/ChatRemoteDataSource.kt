@@ -7,6 +7,7 @@ import `in`.koreatech.koin.data.request.chat.ChatReadRequest
 import `in`.koreatech.koin.data.request.chat.SendChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
+import `in`.koreatech.koin.data.response.chat.ChatRoomEventResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomInfoResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
@@ -15,6 +16,7 @@ import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
@@ -110,6 +112,11 @@ class ChatRemoteDataSource @Inject constructor(
         beforeMessageId: String?,
         limit: Int
     ): List<ChatRoomMessageResponse> = chatAuthApi.getChatRoomMessages(roomId, afterMessageId, beforeMessageId, limit)
+
+    suspend fun subscribeChatRoomEvents(roomId: String): Flow<ChatRoomEventResponse> {
+        val frames = koinStomp.subscribe("/topic/chatrooms/$roomId")
+        return frames.map { json.decodeFromString(ChatRoomEventResponse.serializer(), it) }
+    }
 
     suspend fun sendChatMessage(roomId: String, message: SendChatMessageRequest): ChatRoomMessageResponse =
         chatAuthApi.sendChatMessage(roomId, message)

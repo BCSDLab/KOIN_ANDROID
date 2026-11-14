@@ -5,6 +5,7 @@ import `in`.koreatech.koin.domain.model.chat.ChatDomainType
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
+import `in`.koreatech.koin.domain.model.chat.ChatRoomEvent
 import `in`.koreatech.koin.domain.model.chat.ChatRoomInfo
 import `in`.koreatech.koin.domain.model.chat.ChatRoomMessage
 import kotlinx.coroutines.flow.Flow
@@ -62,6 +63,9 @@ interface ChatRepository {
         beforeMessageId: String? = null,
         limit: Int = 100
     ): Result<List<ChatRoomMessage>>
+
+    /** Registers this subscription before returning; cancellation releases only its own subscription. */
+    suspend fun subscribeChatRoomEvents(roomId: String): Flow<ChatRoomEvent>
 
     suspend fun sendChatMessage(roomId: String, content: String, isImage: Boolean): Result<ChatRoomMessage>
 

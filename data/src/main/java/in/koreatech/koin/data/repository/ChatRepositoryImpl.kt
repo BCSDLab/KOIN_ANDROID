@@ -1,6 +1,7 @@
 package `in`.koreatech.koin.data.repository
 
 import `in`.koreatech.koin.data.mapper.toChatMessageRequest
+import `in`.koreatech.koin.data.mapper.toChatRoomEvent
 import `in`.koreatech.koin.data.mapper.toChatRoomInfo
 import `in`.koreatech.koin.data.mapper.toChatRoomMessage
 import `in`.koreatech.koin.data.request.chat.ChatReadRequest
@@ -15,6 +16,7 @@ import `in`.koreatech.koin.domain.model.chat.ChatDomainType
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
+import `in`.koreatech.koin.domain.model.chat.ChatRoomEvent
 import `in`.koreatech.koin.domain.model.chat.ChatRoomInfo
 import `in`.koreatech.koin.domain.model.chat.ChatRoomMessage
 import `in`.koreatech.koin.domain.repository.ChatRepository
@@ -113,6 +115,9 @@ class ChatRepositoryImpl @Inject constructor(
     ): Result<List<ChatRoomMessage>> = suspendRunCatching {
         chatRemoteDataSource.getChatRoomMessages(roomId, afterMessageId, beforeMessageId, limit).map { it.toChatRoomMessage() }
     }.mapChatFailure()
+
+    override suspend fun subscribeChatRoomEvents(roomId: String): Flow<ChatRoomEvent> =
+        chatRemoteDataSource.subscribeChatRoomEvents(roomId).map { it.toChatRoomEvent() }
 
     override suspend fun sendChatMessage(roomId: String, content: String, isImage: Boolean): Result<ChatRoomMessage> = suspendRunCatching {
         chatRemoteDataSource.sendChatMessage(roomId, SendChatMessageRequest(content, isImage)).toChatRoomMessage()
