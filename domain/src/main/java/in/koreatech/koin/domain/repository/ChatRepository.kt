@@ -1,9 +1,12 @@
 package `in`.koreatech.koin.domain.repository
 
 import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
+import `in`.koreatech.koin.domain.model.chat.ChatDomainType
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.chat.ChatRoom
+import `in`.koreatech.koin.domain.model.chat.ChatRoomInfo
+import `in`.koreatech.koin.domain.model.chat.ChatRoomMessage
 import kotlinx.coroutines.flow.Flow
 
 interface ChatRepository {
@@ -48,4 +51,21 @@ interface ChatRepository {
         articleId: Int,
         chatRoomId: Int
     ): Result<Unit>
+
+    suspend fun getChatRooms(domainType: ChatDomainType? = null): Result<List<ChatRoomInfo>>
+
+    suspend fun getChatRoomInfo(roomId: String): Result<ChatRoomInfo>
+
+    suspend fun getChatRoomMessages(
+        roomId: String,
+        afterMessageId: String? = null,
+        beforeMessageId: String? = null,
+        limit: Int = 100
+    ): Result<List<ChatRoomMessage>>
+
+    suspend fun sendChatMessage(roomId: String, content: String, isImage: Boolean): Result<ChatRoomMessage>
+
+    suspend fun markChatRead(roomId: String, messageId: String): Result<Unit>
+
+    suspend fun createLostItemChatRoom(articleId: Int): Result<ChatRoomInfo>
 }

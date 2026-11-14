@@ -3,8 +3,12 @@ package `in`.koreatech.koin.data.source.remote
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.request.chat.ChatMessageRequest
+import `in`.koreatech.koin.data.request.chat.ChatReadRequest
+import `in`.koreatech.koin.data.request.chat.SendChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
+import `in`.koreatech.koin.data.response.chat.ChatRoomInfoResponse
+import `in`.koreatech.koin.data.response.chat.ChatRoomMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
@@ -14,6 +18,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
+// Keep deprecated APIs alongside common APIs until their callers migrate.
+@Suppress("TooManyFunctions")
 class ChatRemoteDataSource @Inject constructor(
     private val chatApi: ChatApi,
     private val chatAuthApi: ChatAuthApi,
@@ -92,4 +98,22 @@ class ChatRemoteDataSource @Inject constructor(
             return Result.failure(Exception(response.message()))
         }
     }
+
+    suspend fun getChatRooms(domainType: String?): List<ChatRoomInfoResponse> =
+        chatAuthApi.getChatRooms(domainType)
+
+    suspend fun getChatRoomInfo(roomId: String): ChatRoomInfoResponse = chatAuthApi.getChatRoomInfo(roomId)
+
+    suspend fun getChatRoomMessages(
+        roomId: String,
+        afterMessageId: String?,
+        beforeMessageId: String?,
+        limit: Int
+    ): List<ChatRoomMessageResponse> = chatAuthApi.getChatRoomMessages(roomId, afterMessageId, beforeMessageId, limit)
+
+    suspend fun sendChatMessage(roomId: String, message: SendChatMessageRequest): ChatRoomMessageResponse =
+        chatAuthApi.sendChatMessage(roomId, message)
+
+    suspend fun markChatRead(roomId: String, request: ChatReadRequest): Unit =
+        chatAuthApi.markChatRead(roomId, request)
 }
