@@ -1,27 +1,34 @@
 package `in`.koreatech.bus.util
 
+import android.content.res.Resources
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import `in`.koreatech.koin.core.util.shortNameRes
+import `in`.koreatech.koin.feature.bus.R
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 
 /**
  * 버스 조회 결과 뷰에서 쓰이는 날짜 포맷 String.
  *
  * 오늘, 내일 그리고 이후부터는 ex) 11월 27일(수)
  */
-internal fun LocalDate.formatDateValue(): String {
+internal fun LocalDate.formatDateValue(resources: Resources): String {
     if (LocalDate.now() == this) {
-        return "오늘"
+        return resources.getString(R.string.today)
     }
     if (LocalDate.now().plusDays(1) == this) {
-        return "내일"
+        return resources.getString(R.string.bus_tomorrow)
     }
 
-    return this.format(
-        DateTimeFormatter.ofPattern("M월 d일(E)", Locale.KOREA)
-    ).replace("요일", "")
+    return resources.getString(
+        R.string.bus_date_format,
+        monthValue,
+        dayOfMonth,
+        resources.getString(dayOfWeek.shortNameRes())
+    )
 }
 
 /** 버스 조회 결과 뷰에서 쓰이는 출발 시각 포맷 String.
@@ -66,6 +73,7 @@ internal fun LocalTime.formatTime(): String {
  * ex) 14분 전
  * ex) 2시간 33분 전
  */
+@Composable
 internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
     val (hour, minute) =
         this.minusHours(compareTo.hour.toLong()).minusMinutes(compareTo.minute.toLong()).let {
@@ -73,9 +81,9 @@ internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
         }
 
     return if (hour == 0) {
-        "${minute}분 전"
+        stringResource(R.string.bus_before_minute, minute)
     } else {
-        "${hour}시간 ${minute.coerceAtLeast(0)}분 전"
+        stringResource(R.string.bus_before_hour_minute, hour, minute.coerceAtLeast(0))
     }
 }
 
@@ -84,8 +92,7 @@ internal fun LocalTime.formatBeforeTime(compareTo: LocalTime): String {
  *
  * ex) 2024년 9월 2일
  */
+@Composable
 internal fun LocalDate.formatPeriod(): String {
-    return this.format(
-        DateTimeFormatter.ofPattern("yyyy년 M월 d일")
-    )
+    return stringResource(R.string.bus_period_format, year, monthValue, dayOfMonth)
 }

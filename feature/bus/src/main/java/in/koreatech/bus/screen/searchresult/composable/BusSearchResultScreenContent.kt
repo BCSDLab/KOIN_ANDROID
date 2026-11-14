@@ -368,7 +368,7 @@ private fun BusSearchResultScreenPreview() {
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Success(busSearchResultsMock),
         dateList =
-        List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
+        List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue(LocalContext.current.resources) }
             .toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),
@@ -391,7 +391,7 @@ private fun BusSearchResultScreenLoadingPreview() {
         modifier = Modifier.fillMaxSize(),
         searchResultUiState = BusSearchResultUiState.Loading,
         dateList =
-        List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue() }
+        List(365) { LocalDate.now().plusDays(it.toLong()) }.map { it.formatDateValue(LocalContext.current.resources) }
             .toImmutableList(),
         daytimeList = listOf("오전", "오후").toImmutableList(),
         hourList = (1..12).map { it.toString() }.toImmutableList(),

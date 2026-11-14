@@ -7,6 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.bus.component.BusTypeChip
@@ -17,6 +18,7 @@ import `in`.koreatech.bus.type.BusType
 import `in`.koreatech.bus.util.formatBeforeTime
 import `in`.koreatech.bus.util.formatTime
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.bus.R
 import java.time.LocalTime
 
 @Composable
@@ -38,7 +40,7 @@ fun BusSearchResultItem(
                 if (result.busType == BusType.CITY) {
                     Text(
                         modifier = Modifier.padding(start = 6.dp),
-                        text = result.busName + "번",
+                        text = stringResource(R.string.bus_search_result_city_bus_name, result.busName),
                         style = RebrandKoinTheme.typography.medium14,
                         color = RebrandKoinTheme.colors.neutral800
                     )
