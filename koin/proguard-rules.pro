@@ -16,6 +16,9 @@
 # 에러 발생시 라인 표시
 -keepattributes SourceFile,LineNumberTable
 
+# Keep exception type names readable in Crashlytics reports.
+-keep,allowshrinking,allowoptimization class * extends java.lang.Exception
+
 # jdk 컴파일할 때 발생하는 오류 메시지 방지
 -keepattributes EnclosingMethod
 
