@@ -587,6 +587,8 @@ private fun DiningDetailScreenImpl(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         diningFilterList.forEachIndexed { index, dining ->
+                            val shareProfileText = dining.toShareProfileText()
+                            val shareViewAllText = stringResource(R.string.kakao_share_view_all)
                             Box(
                                 contentAlignment = Alignment.BottomCenter
                             ) {
@@ -609,7 +611,7 @@ private fun DiningDetailScreenImpl(
                                             DiningAnalyticsConstant.Label.SHARE_KAKAO,
                                             DiningAnalyticsConstant.Value.SHARE
                                         )
-                                        val messageTemplate = createFeedMessageTemplate(dining)
+                                        val messageTemplate = createFeedMessageTemplate(dining, shareProfileText, shareViewAllText)
 
                                         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
                                             ShareClient.instance.shareDefault(
@@ -1063,7 +1065,28 @@ private fun handleImage(
     }
 }
 
-private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
+@Composable
+private fun Dining.toShareProfileText(): String {
+    val dateText = when {
+        TimeUtil.isToday(date) -> stringResource(R.string.kakao_share_today)
+        TimeUtil.isTomorrow(date) -> stringResource(R.string.kakao_share_tomorrow)
+        else -> TimeUtil.formatDateToKorean(date)
+    }
+    val typeText = stringResource(
+        when (type) {
+            DiningType.Lunch.typeEnglish -> R.string.kakao_share_type_lunch
+            DiningType.Dinner.typeEnglish -> R.string.kakao_share_type_dinner
+            else -> R.string.kakao_share_type_breakfast
+        }
+    )
+    return stringResource(R.string.kakao_share_profile_text, dateText, typeText)
+}
+
+private fun createFeedMessageTemplate(
+    dining: Dining,
+    profileText: String,
+    viewAllText: String
+): FeedTemplate {
     val executionParams = mapOf(
         PARAMS_DATE to dining.date,
         PARAMS_TYPE to dining.type,
@@ -1080,15 +1103,7 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
             link = link
         ),
         itemContent = ItemContent(
-            profileText = "${
-                if (TimeUtil.isToday(dining.date)) {
-                    "오늘"
-                } else if (TimeUtil.isTomorrow(dining.date)) {
-                    "내일"
-                } else {
-                    TimeUtil.formatDateToKorean(dining.date)
-                }
-            } ${DiningUtil.getKoreanName(dining.type)} 식단",
+            profileText = profileText,
             items = listOf(
                 ItemInfo(
                     item = dining.place,
@@ -1097,7 +1112,7 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
             )
         ),
         buttons = listOf(
-            Button("코인에서 식단 전체보기", link)
+            Button(viewAllText, link)
         )
     )
 }
