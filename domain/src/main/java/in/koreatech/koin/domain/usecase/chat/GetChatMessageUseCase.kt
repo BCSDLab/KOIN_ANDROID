@@ -7,6 +7,7 @@ import javax.inject.Inject
 class GetChatMessageUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
+    @Deprecated("")
     suspend operator fun invoke(
         articleId: Int,
         chatRoomId: Int

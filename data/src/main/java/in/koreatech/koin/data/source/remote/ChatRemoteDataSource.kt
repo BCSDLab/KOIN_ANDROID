@@ -38,14 +38,17 @@ class ChatRemoteDataSource @Inject constructor(
         return koinStomp.disconnect()
     }
 
+    @Deprecated("")
     suspend fun getChatRoomList(): List<ChatListItemResponse> {
         return chatAuthApi.getChatRoomList()
     }
 
+    @Deprecated("")
     suspend fun getChatRoomFromArticleId(articleId: Int): ChatRoomResponse {
         return chatAuthApi.getChatRoomFromArticleId(articleId)
     }
 
+    @Deprecated("")
     suspend fun getChatRoom(
         articleId: Int,
         chatRoomId: Int
@@ -53,6 +56,7 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatRoom(articleId, chatRoomId)
     }
 
+    @Deprecated("")
     suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
@@ -60,6 +64,7 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatMessages(articleId, chatRoomId)
     }
 
+    @Deprecated("")
     fun subscribeChatRoom(
         articleId: Int,
         chatRoomId: Int
@@ -69,6 +74,7 @@ class ChatRemoteDataSource @Inject constructor(
         }
     }
 
+    @Deprecated("")
     fun subscribeChatList(
         userId: Int
     ): Flow<List<ChatListItemResponse>> = flow {
@@ -77,6 +83,7 @@ class ChatRemoteDataSource @Inject constructor(
         }
     }
 
+    @Deprecated("")
     suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
@@ -89,6 +96,7 @@ class ChatRemoteDataSource @Inject constructor(
         )
     }
 
+    @Deprecated("")
     suspend fun blockUser(
         articleId: Int,
         chatRoomId: Int

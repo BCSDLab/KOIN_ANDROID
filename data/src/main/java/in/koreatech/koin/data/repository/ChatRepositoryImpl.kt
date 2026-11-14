@@ -41,12 +41,14 @@ class ChatRepositoryImpl @Inject constructor(
         return chatRemoteDataSource.connectionState.map { it.toChatConnectionState() }
     }
 
+    @Deprecated("")
     override suspend fun getChatRoomList(): Flow<List<ChatListItem>> {
         return flow {
             emit(chatRemoteDataSource.getChatRoomList().map { it.toChatListItem() })
         }
     }
 
+    @Deprecated("")
     override suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom> {
         return suspendRunCatching {
             chatRemoteDataSource.getChatRoomFromArticleId(articleId).toChatRoom()
@@ -55,6 +57,7 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
+    @Deprecated("")
     override suspend fun getChatRoom(
         articleId: Int,
         chatRoomId: Int
@@ -64,6 +67,7 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
+    @Deprecated("")
     override suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
@@ -73,6 +77,7 @@ class ChatRepositoryImpl @Inject constructor(
         }
     }
 
+    @Deprecated("")
     override fun subscribeChatRoom(
         articleId: Int,
         chatRoomId: Int
@@ -80,10 +85,12 @@ class ChatRepositoryImpl @Inject constructor(
         return chatRemoteDataSource.subscribeChatRoom(articleId, chatRoomId).map { it.toChatMessage() }
     }
 
+    @Deprecated("")
     override fun subscribeChatList(userId: Int): Flow<List<ChatListItem>> {
         return chatRemoteDataSource.subscribeChatList(userId).map { it.map { it.toChatListItem() } }
     }
 
+    @Deprecated("")
     override suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
@@ -92,6 +99,7 @@ class ChatRepositoryImpl @Inject constructor(
         return chatRemoteDataSource.sendMessage(articleId, chatRoomId, message.toChatMessageRequest())
     }
 
+    @Deprecated("")
     override suspend fun blockUser(
         articleId: Int,
         chatRoomId: Int

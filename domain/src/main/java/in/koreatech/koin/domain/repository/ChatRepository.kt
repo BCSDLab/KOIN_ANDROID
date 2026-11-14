@@ -19,35 +19,43 @@ interface ChatRepository {
 
     fun observeConnectionState(): Flow<ChatConnectionState>
 
+    @Deprecated("")
     suspend fun getChatRoomList(): Flow<List<ChatListItem>>
 
+    @Deprecated("")
     suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom>
 
+    @Deprecated("")
     suspend fun getChatRoom(
         articleId: Int,
         chatRoomId: Int
     ): Result<ChatRoom>
 
+    @Deprecated("")
     suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
     ): Result<List<ChatMessage>>
 
+    @Deprecated("")
     fun subscribeChatRoom(
         articleId: Int,
         chatRoomId: Int
     ): Flow<ChatMessage>
 
+    @Deprecated("")
     fun subscribeChatList(
         userId: Int
     ): Flow<List<ChatListItem>>
 
+    @Deprecated("")
     suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
         message: ChatMessage
     ): Result<Unit>
 
+    @Deprecated("")
     suspend fun blockUser(
         articleId: Int,
         chatRoomId: Int

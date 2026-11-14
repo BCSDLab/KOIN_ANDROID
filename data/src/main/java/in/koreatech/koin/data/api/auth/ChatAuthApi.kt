@@ -16,26 +16,31 @@ import retrofit2.http.Query
 
 interface ChatAuthApi {
     @GET("chatroom/lost-item")
+    @Deprecated("")
     suspend fun getChatRoomList(): List<ChatListItemResponse>
 
     @POST("chatroom/lost-item/{article_id}")
+    @Deprecated("")
     suspend fun getChatRoomFromArticleId(
         @Path("article_id") articleId: Int
     ): ChatRoomResponse
 
     @GET("chatroom/lost-item/{article_id}/{chat_room_id}")
+    @Deprecated("")
     suspend fun getChatRoom(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): ChatRoomResponse
 
     @GET("chatroom/lost-item/{article_id}/{chat_room_id}/messages")
+    @Deprecated("")
     suspend fun getChatMessages(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
     ): List<ChatMessageResponse>
 
     @POST("chatroom/lost-item/{article_id}/{chat_room_id}/block")
+    @Deprecated("")
     suspend fun blockUser(
         @Path("article_id") articleId: Int,
         @Path("chat_room_id") chatRoomId: Int
