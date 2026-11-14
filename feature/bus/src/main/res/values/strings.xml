@@ -59,6 +59,12 @@
     <string name="departure_now">지금 출발</string>
     <string name="complete">완료</string>
     <string name="today">오늘</string>
+    <string name="bus_tomorrow">내일</string>
+    <string name="bus_date_format">%1$d월 %2$d일(%3$s)</string>
+    <string name="bus_before_minute">%1$d분 전</string>
+    <string name="bus_before_hour_minute">%1$d시간 %2$d분 전</string>
+    <string name="bus_period_format">%1$d년 %2$d월 %3$d일</string>
+    <string name="bus_search_result_city_bus_name">%1$s번</string>
     <string name="search_result_direction_title">%s → %s</string>
     <string name="select_bus_type_content_description">버스 종류 선택하기</string>
 

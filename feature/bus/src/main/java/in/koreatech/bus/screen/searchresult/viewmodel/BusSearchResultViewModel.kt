@@ -41,7 +41,6 @@ class BusSearchResultViewModel @Inject constructor(
     val arrival = arguments.arrival
 
     val localDates = List(TOTAL_DATE_COUNT) { LocalDate.now().plusDays(it.toLong()) }
-    val daytimeList = listOf("오전", "오후")
     val hourList = (1..12).map { it.toString() }
     val minuteList = (0..59).map { it.toString() }
 
@@ -65,7 +64,7 @@ class BusSearchResultViewModel @Inject constructor(
             LocalDateTime.of(
                 localDates[dateIndex],
                 LocalTime.of(
-                    if (daytimeList[daytimeIndex] == "오전") {
+                    if (daytimeIndex == DAYTIME_AM_INDEX) {
                         (hourList[hourIndex].toInt() + 12) % 12
                     } else {
                         (hourList[hourIndex].toInt() % 12) + 12
@@ -168,6 +167,7 @@ class BusSearchResultViewModel @Inject constructor(
 
     companion object {
         private const val TOTAL_DATE_COUNT = 120
+        private const val DAYTIME_AM_INDEX = 0
         private const val KEY_SELECTED_BUS_TYPE_MENU = "selectedBusTypeMenu"
     }
 }
