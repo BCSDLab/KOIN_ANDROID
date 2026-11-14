@@ -49,8 +49,9 @@ fun OrderHistoryCard(
     onReorderClick: () -> Unit = {}
 ) {
     val textColor = if (orderHistoryData.orderStatus in listOf(OrderStatus.DELIVERED, OrderStatus.PICKED_UP)) RebrandKoinTheme.colors.primary500 else RebrandKoinTheme.colors.neutral400
-    val dateFormatter = remember {
-        DateTimeFormatter.ofPattern("M월 d일 (E)", Locale("ko", "KR"))
+    val datePattern = stringResource(R.string.store_order_history_date_pattern)
+    val dateFormatter = remember(datePattern) {
+        DateTimeFormatter.ofPattern(datePattern, Locale("ko", "KR"))
     }
 
     Card(
