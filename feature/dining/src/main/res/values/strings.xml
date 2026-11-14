@@ -27,6 +27,13 @@
 
     <string name="kakaolink_host">kakaolink</string>
     <string name="kakao_share_unable">카카오톡 공유에 실패했습니다.</string>
+    <string name="kakao_share_today">오늘</string>
+    <string name="kakao_share_tomorrow">내일</string>
+    <string name="kakao_share_profile_text">%1$s %2$s 식단</string>
+    <string name="kakao_share_view_all">코인에서 식단 전체보기</string>
+    <string name="kakao_share_type_breakfast">아침</string>
+    <string name="kakao_share_type_lunch">점심</string>
+    <string name="kakao_share_type_dinner">저녁</string>
 
     <string name="dining_menu_dislike">오늘 학식 메뉴가 별로라면?</string>
     <string name="view_nearby_stores">주변상점 보기</string>

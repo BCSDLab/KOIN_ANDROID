@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.VectorConverter
@@ -609,7 +610,7 @@ private fun DiningDetailScreenImpl(
                                             DiningAnalyticsConstant.Label.SHARE_KAKAO,
                                             DiningAnalyticsConstant.Value.SHARE
                                         )
-                                        val messageTemplate = createFeedMessageTemplate(dining)
+                                        val messageTemplate = createFeedMessageTemplate(context, dining)
 
                                         if (ShareClient.instance.isKakaoTalkSharingAvailable(context)) {
                                             ShareClient.instance.shareDefault(
@@ -1063,7 +1064,14 @@ private fun handleImage(
     }
 }
 
-private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
+@StringRes
+private fun String.toShareTypeRes(): Int = when (this) {
+    DiningType.Lunch.typeEnglish -> R.string.kakao_share_type_lunch
+    DiningType.Dinner.typeEnglish -> R.string.kakao_share_type_dinner
+    else -> R.string.kakao_share_type_breakfast
+}
+
+private fun createFeedMessageTemplate(context: Context, dining: Dining): FeedTemplate {
     val executionParams = mapOf(
         PARAMS_DATE to dining.date,
         PARAMS_TYPE to dining.type,
@@ -1080,15 +1088,17 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
             link = link
         ),
         itemContent = ItemContent(
-            profileText = "${
+            profileText = context.getString(
+                R.string.kakao_share_profile_text,
                 if (TimeUtil.isToday(dining.date)) {
-                    "오늘"
+                    context.getString(R.string.kakao_share_today)
                 } else if (TimeUtil.isTomorrow(dining.date)) {
-                    "내일"
+                    context.getString(R.string.kakao_share_tomorrow)
                 } else {
                     TimeUtil.formatDateToKorean(dining.date)
-                }
-            } ${DiningUtil.getKoreanName(dining.type)} 식단",
+                },
+                context.getString(dining.type.toShareTypeRes())
+            ),
             items = listOf(
                 ItemInfo(
                     item = dining.place,
@@ -1097,7 +1107,7 @@ private fun createFeedMessageTemplate(dining: Dining): FeedTemplate {
             )
         ),
         buttons = listOf(
-            Button("코인에서 식단 전체보기", link)
+            Button(context.getString(R.string.kakao_share_view_all), link)
         )
     )
 }
