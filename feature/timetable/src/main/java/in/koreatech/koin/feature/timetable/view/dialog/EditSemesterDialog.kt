@@ -117,7 +117,7 @@ private fun EditSemesterDialog(
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 Text(
-                    text = "학기 추가(중복 가능)",
+                    text = stringResource(id = R.string.semester_edit_dialog_add_title),
                     style = RebrandKoinTheme.typography.medium18.copy(
                         fontWeight = FontWeight.SemiBold,
                         color = RebrandKoinTheme.colors.primary500
@@ -182,7 +182,7 @@ private fun SelectYearDialog(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Text(
-                text = "연도 선택",
+                text = stringResource(id = R.string.semester_edit_dialog_year_title),
                 style = RebrandKoinTheme.typography.medium18.copy(
                     fontWeight = FontWeight.SemiBold,
                     color = RebrandKoinTheme.colors.primary500

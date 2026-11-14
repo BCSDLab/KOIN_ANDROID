@@ -91,7 +91,7 @@ class TimetableActivity : ComponentActivity() {
             } else {
                 viewModel.updateSideEffect(
                     TimetableSideEffect.SnackBar(
-                        getString(R.string.timetable_save_permission_needed)
+                        R.string.timetable_save_permission_needed
                     )
                 )
                 if (!shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -224,11 +224,11 @@ class TimetableActivity : ComponentActivity() {
                                 saveTimetable(graphicsLayer.toImageBitmap().asAndroidBitmap()) {
                                     if (it) {
                                         viewModel.updateSideEffect(
-                                            TimetableSideEffect.SnackBar("이미지가 저장되었어요.")
+                                            TimetableSideEffect.SnackBar(R.string.timetable_image_saved)
                                         )
                                     } else {
                                         viewModel.updateSideEffect(
-                                            TimetableSideEffect.SnackBar("이미지 저장을 실패했어요.")
+                                            TimetableSideEffect.SnackBar(R.string.timetable_image_save_failed)
                                         )
                                     }
                                     viewModel.updateIsDownloadDialogVisible(false)
@@ -347,7 +347,7 @@ class TimetableActivity : ComponentActivity() {
                         state.semesters.ifEmpty {
                             viewModel.updateSideEffect(
                                 TimetableSideEffect.SnackBar(
-                                    getString(R.string.timetable_error_no_semester)
+                                    R.string.timetable_error_no_semester
                                 )
                             )
                             return@ifEmpty
@@ -391,7 +391,7 @@ class TimetableActivity : ComponentActivity() {
                 when (val effect = sideEffect) {
                     is TimetableSideEffect.SnackBar -> {
                         snackBarHost.showSnackbar(
-                            message = effect.message,
+                            message = getString(effect.messageRes),
                             duration = KoinSnackbarDuration.Short
                         )
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
@@ -400,7 +400,7 @@ class TimetableActivity : ComponentActivity() {
                     is TimetableSideEffect.Toast -> {
                         Timber.d("TimetableSideEffect.Toast| ${effect.message}")
                         snackBarHost.showSnackbar(
-                            message = "인터넷 연결을 확인하고 다시 시도해주세요.",
+                            message = getString(R.string.timetable_error_network),
                             duration = KoinSnackbarDuration.Short
                         )
                     }
