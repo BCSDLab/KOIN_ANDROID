@@ -13,6 +13,7 @@ import `in`.koreatech.koin.data.stomp.KoinStomp
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.milliseconds
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.hildan.krossbow.stomp.StompClient
@@ -59,6 +60,10 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideJson(): Json = Json { ignoreUnknownKeys = true }
+
+    @Provides
+    @Singleton
     fun provideStompClient(okHttpWebSocketClient: OkHttpWebSocketClient): StompClient {
         return StompClient(okHttpWebSocketClient) {
             heartBeat =
@@ -74,12 +79,14 @@ object NetworkModule {
     fun provideKoinStomp(
         @ServerUrl baseUrl: String,
         tokenLocalDataSource: TokenLocalDataSource,
-        stompClient: StompClient
+        stompClient: StompClient,
+        json: Json
     ): KoinStomp {
         return KoinStomp(
             baseUrl = baseUrl,
             tokenProvider = { tokenLocalDataSource.getAccessToken() ?: "" },
-            stompClient = stompClient
+            stompClient = stompClient,
+            json = json
         )
     }
 }
