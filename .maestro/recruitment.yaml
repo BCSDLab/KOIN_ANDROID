@@ -1,0 +1,31 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 팀원모집
+---
+- runFlow: common/open_category.yaml
+- tapOn:
+    text: "팀원 모집"
+- extendedWaitUntil:
+    visible: "팀원모집"
+    timeout: 30000
+- assertVisible: "모집하기"
+- tapOn: "필터"
+- extendedWaitUntil:
+    visible: "모집 상태"
+    timeout: 15000
+- assertVisible: "정렬"
+- tapOn: "모집 중"
+- tapOn: "적용하기"
+- extendedWaitUntil:
+    notVisible: "적용하기"
+    timeout: 15000
+- assertVisible: "팀원모집"
+- tapOn: "모집하기"
+- extendedWaitUntil:
+    visible: "로그인이 필요해요"
+    timeout: 15000
+- assertVisible: "모집글 작성은 로그인 후 이용할 수 있어요."
+- tapOn: "취소"
+- extendedWaitUntil:
+    notVisible: "로그인이 필요해요"
+    timeout: 15000
+- assertVisible: "팀원모집"

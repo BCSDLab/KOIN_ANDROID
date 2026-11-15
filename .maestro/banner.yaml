@@ -1,0 +1,21 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 홈 배너
+---
+- launchApp:
+    clearState: true
+    permissions:
+      notifications: allow
+- openLink: "koin://main/navigation"
+- extendedWaitUntil:
+    visible: "일주일 동안 그만 보기|오늘의 식단"
+    timeout: 30000
+- runFlow:
+    when:
+      visible: "일주일 동안 그만 보기"
+    commands:
+      - assertVisible: "닫기"
+      - tapOn: "닫기"
+- extendedWaitUntil:
+    visible: "오늘의 식단"
+    timeout: 30000
+- assertVisible: "홈"

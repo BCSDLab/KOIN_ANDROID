@@ -1,0 +1,14 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/open_category.yaml
+- tapOn:
+    id: bottom_navigation_profile
+- extendedWaitUntil:
+    visible: "설정"
+    timeout: 15000
+- tapOn: "설정"
+- extendedWaitUntil:
+    visible: "설정"
+    timeout: 15000
+- assertVisible: "개인정보 처리방침"
+- assertVisible: "앱 버전"

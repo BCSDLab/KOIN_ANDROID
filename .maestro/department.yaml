@@ -1,0 +1,25 @@
+appId: in.koreatech.koin.dev
+name: 학교 부서정보
+---
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "학교 부서정보"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "학교 부서정보"
+- extendedWaitUntil:
+    visible: "학사 / 수업"
+    timeout: 30000
+- assertVisible: "검색어를 입력해주세요."
+- assertVisible: "학생지원 / 행정"
+- tapOn: "학사 / 수업"
+- extendedWaitUntil:
+    visible: "업무"
+    timeout: 30000
+- assertVisible: "전화번호"
+- pressKey: BACK
+- extendedWaitUntil:
+    visible: "학교 부서정보"
+    timeout: 15000
+- assertVisible: "학사 / 수업"

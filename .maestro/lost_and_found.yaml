@@ -1,0 +1,16 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 분실물 화면
+---
+- runFlow: common/open_category.yaml
+- tapOn: "분실물"
+- extendedWaitUntil:
+    visible: "검색어를 입력해주세요."
+    timeout: 30000
+- assertVisible: "분실물"
+- assertVisible: "필터"
+- tapOn: "필터"
+- assertVisible: "물품 카테고리"
+- assertVisible: "분실물"
+- assertVisible: "습득물"
+- pressKey: BACK
+- assertVisible: "검색어를 입력해주세요."

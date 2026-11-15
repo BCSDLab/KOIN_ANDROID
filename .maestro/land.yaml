@@ -1,0 +1,44 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 복덕방 화면
+---
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "복덕방"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "복덕방"
+- extendedWaitUntil:
+    visible: "검색"
+    timeout: 30000
+- assertVisible: "복덕방"
+- extendedWaitUntil:
+    visible:
+      id: "in.koreatech.koin.dev:id/land_name_textview"
+    timeout: 30000
+- copyTextFrom:
+    id: "in.koreatech.koin.dev:id/land_name_textview"
+    index: 0
+- tapOn: "검색"
+- inputText: "maestro-no-matching-land"
+- hideKeyboard
+- extendedWaitUntil:
+    notVisible:
+      id: "in.koreatech.koin.dev:id/land_name_textview"
+    timeout: 15000
+# Keep the cursor at the end of the query; tapping again moves it into the text.
+- eraseText
+- extendedWaitUntil:
+    visible:
+      id: "in.koreatech.koin.dev:id/land_name_textview"
+      text: "${maestro.copiedText}"
+    timeout: 15000
+- tapOn:
+    id: "in.koreatech.koin.dev:id/land_name_textview"
+    index: 0
+- extendedWaitUntil:
+    visible: "원룸 정보"
+    timeout: 30000
+- assertVisible:
+    id: "in.koreatech.koin.dev:id/land_detail_name_textview"
+    text: "${maestro.copiedText}"

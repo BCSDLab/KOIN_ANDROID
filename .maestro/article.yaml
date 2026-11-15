@@ -1,0 +1,14 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 공지사항 화면
+---
+- runFlow: common/launch_home.yaml
+- tapOn:
+    id: bottom_navigation_article
+- extendedWaitUntil:
+    visible: "전체공지"
+    timeout: 30000
+- assertVisible: "장학"
+- tapOn: "일반"
+- assertVisible:
+    text: "일반"
+    selected: true

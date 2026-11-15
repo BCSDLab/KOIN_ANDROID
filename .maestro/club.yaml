@@ -1,0 +1,30 @@
+appId: in.koreatech.koin.dev
+name: 비로그인 동아리 화면
+---
+- runFlow: common/open_category.yaml
+- scrollUntilVisible:
+    element:
+      text: "복덕방"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "복덕방"
+- extendedWaitUntil:
+    visible: "복덕방"
+    timeout: 30000
+- tapOn:
+    id: "in.koreatech.koin.dev:id/base_appbar_dark_right_button"
+- scrollUntilVisible:
+    element:
+      text: "동아리"
+    direction: DOWN
+    timeout: 15000
+- tapOn: "동아리"
+- extendedWaitUntil:
+    visible: "동아리 목록"
+    timeout: 30000
+- assertVisible: "동아리 생성하기"
+- tapOn: "동아리 생성하기"
+- assertVisible: "로그인이 필요한 기능입니다."
+- assertVisible: "로그인하기"
+- pressKey: BACK
+- assertVisible: "동아리 목록"

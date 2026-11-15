@@ -1,0 +1,11 @@
+appId: in.koreatech.koin.dev
+---
+- runFlow: common/launch_home.yaml
+- openLink: "koin://findid/navigation"
+- extendedWaitUntil:
+    visible: "아이디 찾기"
+    timeout: 15000
+- assertVisible: "휴대전화 번호"
+- assertVisible: "인증번호 발송"
+- tapOn: "이메일로 찾기"
+- assertVisible: "이메일"
