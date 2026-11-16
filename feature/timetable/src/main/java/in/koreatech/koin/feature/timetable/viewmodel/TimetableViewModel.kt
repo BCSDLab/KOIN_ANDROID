@@ -14,13 +14,13 @@ import `in`.koreatech.koin.domain.usecase.timetable.DeleteTimetableLectureUseCas
 import `in`.koreatech.koin.domain.usecase.timetable.GetLecturesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetTimetableFramesUseCase
 import `in`.koreatech.koin.domain.usecase.timetable.GetUserSemestersUseCase
-import `in`.koreatech.koin.feature.timetable.R
 import `in`.koreatech.koin.feature.timetable.model.TimetableEvent
 import `in`.koreatech.koin.feature.timetable.state.BottomSheetUI
 import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import `in`.koreatech.koin.feature.timetable.state.SearchEngineState
 import `in`.koreatech.koin.feature.timetable.state.TimetableDialogState
+import `in`.koreatech.koin.feature.timetable.state.TimetableMessage
 import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
 import `in`.koreatech.koin.feature.timetable.state.TimetableState
 import `in`.koreatech.koin.feature.timetable.utils.calculateEndTime
@@ -589,13 +589,13 @@ class TimetableViewModel @Inject constructor(
 
         customContentState.value.permuteDuplicationLecture()?.let {
             _customContentState.value = _customContentState.value.copy(data = it.toImmutableList())
-            _sideEffect.value = TimetableSideEffect.SnackBar(R.string.timetable_snackbar_time_duplicated)
+            _sideEffect.value = TimetableSideEffect.Message(TimetableMessage.TIME_DUPLICATED)
             return
         }
 
         customContentState.value.isValidationPlace().let {
             if (it.not()) {
-                _sideEffect.value = TimetableSideEffect.SnackBar(R.string.timetable_snackbar_place_comma_not_allowed)
+                _sideEffect.value = TimetableSideEffect.Message(TimetableMessage.PLACE_COMMA_NOT_ALLOWED)
                 return
             }
         }
@@ -689,7 +689,7 @@ class TimetableViewModel @Inject constructor(
 
     fun addCustomExtraContent() {
         if (customContentState.value.data.size >= 5) {
-            _sideEffect.value = TimetableSideEffect.SnackBar(R.string.timetable_snackbar_extra_content_limit)
+            _sideEffect.value = TimetableSideEffect.Message(TimetableMessage.EXTRA_CONTENT_LIMIT)
             return
         }
         val editContent = customContentState.value.data.toMutableList()

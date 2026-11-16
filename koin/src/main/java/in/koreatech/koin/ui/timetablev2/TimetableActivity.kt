@@ -397,6 +397,14 @@ class TimetableActivity : ComponentActivity() {
                         viewModel.updateSideEffect(TimetableSideEffect.Nothing)
                     }
 
+                    is TimetableSideEffect.Message -> {
+                        snackBarHost.showSnackbar(
+                            message = getString(effect.message.messageRes),
+                            duration = KoinSnackbarDuration.Short
+                        )
+                        viewModel.updateSideEffect(TimetableSideEffect.Nothing)
+                    }
+
                     is TimetableSideEffect.Toast -> {
                         Timber.d("TimetableSideEffect.Toast| ${effect.message}")
                         snackBarHost.showSnackbar(

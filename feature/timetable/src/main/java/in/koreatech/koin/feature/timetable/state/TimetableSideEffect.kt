@@ -7,6 +7,10 @@ sealed class TimetableSideEffect {
         @StringRes val messageRes: Int
     ) : TimetableSideEffect()
 
+    data class Message(
+        val message: TimetableMessage
+    ) : TimetableSideEffect()
+
     data class Toast(
         val message: String
     ) : TimetableSideEffect()
