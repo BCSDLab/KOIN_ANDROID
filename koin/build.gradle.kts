@@ -147,6 +147,7 @@ dependencies {
     implementation(projects.feature.notification)
     implementation(projects.feature.category)
     implementation(projects.feature.department)
+    implementation(projects.feature.land)
 
     implementation(libs.guava)
 
