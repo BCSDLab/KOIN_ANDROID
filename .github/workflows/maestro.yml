@@ -91,8 +91,9 @@ jobs:
           - settings
     steps:
       - uses: actions/checkout@v4
+        # Keep the runner and flows on the workflow revision, not the APK's production ref.
         with:
-          ref: ${{ github.event_name == 'schedule' && 'production' || github.ref }}
+          ref: ${{ github.workflow_sha }}
 
       - name: Download stage QA APK
         uses: actions/download-artifact@v4
@@ -118,6 +119,8 @@ jobs:
 
       - name: Run ${{ matrix.feature }} on Android emulator
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          USER_PASSWORD: ${{ secrets.MAESTRO_USER_PASSWORD }}
         with:
           api-level: 35
           target: google_apis
