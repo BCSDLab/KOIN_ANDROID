@@ -322,7 +322,7 @@ private fun StoreHomeOrderInProgress(
                     OrderType.DELIVERY -> R.string.store_fab_delivery_eta
                     OrderType.TAKE_OUT -> R.string.store_fab_takeout_eta
                 },
-                order.estimatedAt?.format(DateTimeFormatter.ofPattern("a h시 m분"))
+                order.estimatedAt?.format(DateTimeFormatter.ofPattern(stringResource(R.string.store_fab_eta_time_pattern)))
                     ?: stringResource(R.string.store_fab_eta_unavailable)
             )
 

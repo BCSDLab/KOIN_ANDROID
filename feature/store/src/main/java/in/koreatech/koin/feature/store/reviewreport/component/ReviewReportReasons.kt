@@ -96,15 +96,17 @@ fun LostAndFoundReportReasonItem(
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             Text(
-                text = reportReason.title,
+                text = stringResource(reportReason.titleRes),
                 style = KoinTheme.typography.medium16,
                 color = KoinTheme.colors.neutral800
             )
-            Text(
-                text = reportReason.description,
-                style = KoinTheme.typography.regular14,
-                color = KoinTheme.colors.neutral500
-            )
+            reportReason.descriptionRes?.let { descriptionRes ->
+                Text(
+                    text = stringResource(descriptionRes),
+                    style = KoinTheme.typography.regular14,
+                    color = KoinTheme.colors.neutral500
+                )
+            }
         }
     }
 }
@@ -139,7 +141,7 @@ fun LostAndFoundReportReasonOtherItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = ReportReason.OTHER.title,
+                    text = stringResource(ReportReason.OTHER.titleRes),
                     style = KoinTheme.typography.medium16,
                     color = KoinTheme.colors.neutral800
                 )
