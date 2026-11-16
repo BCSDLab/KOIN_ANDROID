@@ -35,5 +35,6 @@ data class LandDetail(
     val name: String,
     val deposit: String,
     val optMicrowave: Boolean,
-    val roomType: String
+    val roomType: String,
+    val permalink: String
 )

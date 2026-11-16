@@ -8,13 +8,16 @@ import `in`.koreatech.koin.domain.model.land.LandDetail
 fun LandResponse.toLand() =
     Land(
         internalName = internalName ?: "-",
-        monthlyFee = monthlyFee ?: "-",
+        monthlyFee = monthlyFee,
         latitude = latitude,
-        charterFee = charterFee ?: "X",
+        charterFee = charterFee,
         name = name ?: "-",
         id = id,
         longitude = longitude,
-        roomType = roomType ?: "-"
+        roomType = roomType ?: "-",
+        address = address ?: "",
+        isMonthlyAvailable = isMonthlyAvailable,
+        isCharterAvailable = isCharterAvailable
     )
 
 fun LandDetailResponse.toLandDetail() =
@@ -47,11 +50,12 @@ fun LandDetailResponse.toLandDetail() =
         longitude = longitude,
         address = address ?: "",
         optBed = optBed,
-        size = size?.toString() ?: "",
+        size = size ?: "",
         phone = phone ?: "",
         optAirConditioner = optAirConditioner,
         name = name ?: "",
         deposit = deposit ?: "",
         optMicrowave = optMicrowave,
-        roomType = roomType ?: ""
+        roomType = roomType ?: "",
+        permalink = permalink.orEmpty()
     )
