@@ -63,13 +63,13 @@ class LostAndFoundReportViewModel @Inject constructor(
             state.selectedReason.forEach {
                 if (lostAndFoundReportReasonList[it] == ReportReason.OTHER) {
                     reportReasonList.add(
-                        ArticleLostAndFoundReportItem(lostAndFoundReportReasonList[it].title, state.reportReasonDescription)
+                        ArticleLostAndFoundReportItem(lostAndFoundReportReasonList[it].apiTitle, state.reportReasonDescription)
                     )
                 } else {
                     reportReasonList.add(
                         ArticleLostAndFoundReportItem(
-                            lostAndFoundReportReasonList[it].title,
-                            lostAndFoundReportReasonList[it].description
+                            lostAndFoundReportReasonList[it].apiTitle,
+                            lostAndFoundReportReasonList[it].apiDescription
                         )
                     )
                 }
