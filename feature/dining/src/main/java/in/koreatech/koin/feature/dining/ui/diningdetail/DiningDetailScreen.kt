@@ -572,6 +572,9 @@ private fun DiningDetailScreenImpl(
                             }
                         }
                     }
+                    val shareViewAllText = stringResource(R.string.kakao_share_view_all)
+                    val soldOutReportIcon = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report)
+                    val soldOutReportDescription = stringResource(R.string.dining_sold_out_report_title)
                     Column(
                         modifier = Modifier
                             .verticalScroll(
@@ -588,7 +591,6 @@ private fun DiningDetailScreenImpl(
                     ) {
                         diningFilterList.forEachIndexed { index, dining ->
                             val shareProfileText = dining.toShareProfileText()
-                            val shareViewAllText = stringResource(R.string.kakao_share_view_all)
                             Box(
                                 contentAlignment = Alignment.BottomCenter
                             ) {
@@ -639,9 +641,9 @@ private fun DiningDetailScreenImpl(
                                                         ) {
                                                             onReport(DiningPlace.entries.first { it.place == dining.place })
                                                         },
-                                                    imageVector = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report),
+                                                    imageVector = soldOutReportIcon,
                                                     tint = RebrandKoinTheme.colors.primary500,
-                                                    contentDescription = stringResource(R.string.dining_sold_out_report_title)
+                                                    contentDescription = soldOutReportDescription
                                                 )
                                             }
 
