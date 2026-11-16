@@ -1,6 +1,5 @@
 package `in`.koreatech.bus.util
 
-import android.content.res.Resources
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import `in`.koreatech.koin.core.util.shortNameRes
@@ -15,19 +14,20 @@ import java.time.format.DateTimeFormatter
  *
  * 오늘, 내일 그리고 이후부터는 ex) 11월 27일(수)
  */
-internal fun LocalDate.formatDateValue(resources: Resources): String {
+@Composable
+internal fun LocalDate.formatDateValue(): String {
     if (LocalDate.now() == this) {
-        return resources.getString(R.string.today)
+        return stringResource(R.string.today)
     }
     if (LocalDate.now().plusDays(1) == this) {
-        return resources.getString(R.string.bus_tomorrow)
+        return stringResource(R.string.bus_tomorrow)
     }
 
-    return resources.getString(
+    return stringResource(
         R.string.bus_date_format,
         monthValue,
         dayOfMonth,
-        resources.getString(dayOfWeek.shortNameRes())
+        stringResource(dayOfWeek.shortNameRes())
     )
 }
 

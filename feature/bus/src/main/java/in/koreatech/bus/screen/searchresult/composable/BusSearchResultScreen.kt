@@ -5,7 +5,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,10 +27,7 @@ fun BusSearchResultScreen(
     val selectedMinuteIndex by viewModel.selectedMinuteIndex.collectAsStateWithLifecycle()
     val currentTime by viewModel.currentTime.collectAsStateWithLifecycle()
     val selectedBusMenu by viewModel.selectedBusTypeMenu.collectAsStateWithLifecycle()
-    val resources = LocalContext.current.resources
-    val dateList = remember(viewModel.localDates, resources) {
-        viewModel.localDates.map { it.formatDateValue(resources) }.toImmutableList()
-    }
+    val dateList = viewModel.localDates.map { it.formatDateValue() }.toImmutableList()
     val amText = stringResource(R.string.am)
     val pmText = stringResource(R.string.pm)
     val daytimeList = remember(amText, pmText) { listOf(amText, pmText).toImmutableList() }
