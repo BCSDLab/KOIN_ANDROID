@@ -92,7 +92,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         # Keep the runner and flows on the workflow revision, not the APK's production ref.
-        # These non-login flows do not require MAESTRO_USER_PASSWORD.
         with:
           ref: ${{ github.workflow_sha }}
 
@@ -120,6 +119,8 @@ jobs:
 
       - name: Run ${{ matrix.feature }} on Android emulator
         uses: reactivecircus/android-emulator-runner@v2
+        env:
+          USER_PASSWORD: ${{ secrets.MAESTRO_USER_PASSWORD }}
         with:
           api-level: 35
           target: google_apis
