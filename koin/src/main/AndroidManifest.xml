@@ -171,17 +171,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.land.LandActivity"
-            android:exported="false"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing" />
-        <activity
-            android:name=".ui.land.LandDetailActivity"
-            android:exported="false"
-            android:label="코인 커뮤니티"
-            android:theme="@style/KAPTheme.NoActionBar" />
-        <activity
             android:name=".ui.error.ErrorActivity"
             android:exported="false"
             android:label="코인 커뮤니티"
