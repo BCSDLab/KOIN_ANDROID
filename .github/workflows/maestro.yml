@@ -91,8 +91,10 @@ jobs:
           - settings
     steps:
       - uses: actions/checkout@v4
+        # Keep the runner and flows on the workflow revision, not the APK's production ref.
+        # These non-login flows do not require MAESTRO_USER_PASSWORD.
         with:
-          ref: ${{ github.event_name == 'schedule' && 'production' || github.ref }}
+          ref: ${{ github.workflow_sha }}
 
       - name: Download stage QA APK
         uses: actions/download-artifact@v4
