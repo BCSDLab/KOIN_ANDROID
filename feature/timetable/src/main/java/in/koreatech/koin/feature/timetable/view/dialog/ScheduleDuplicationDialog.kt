@@ -81,7 +81,7 @@ fun ScheduleDuplicationDialog(
                     Modifier
                         .height(48.dp)
                         .fillMaxWidth(),
-                    text = "확인",
+                    text = stringResource(id = R.string.common_confirmation),
                     onClick = { onConfirm(false) }
                 )
             }
