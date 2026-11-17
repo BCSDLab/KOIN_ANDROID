@@ -48,6 +48,7 @@ import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.notification.component.NotificationItem
 import `in`.koreatech.koin.feature.notification.model.LocalNotification
 import `in`.koreatech.koin.feature.notification.model.NotificationCategory
+import `in`.koreatech.koin.feature.notification.model.asString
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -216,7 +217,7 @@ private fun NotificationScreenImpl(
                 type = notification.type,
                 title = notification.title,
                 content = notification.content,
-                timestamp = notification.datetimeDiff,
+                timestamp = notification.datetimeDiff.asString(),
                 isRead = notification.isRead,
                 onDelete = remember(notification.id) {
                     {
