@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class GetChatListUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
+    @Deprecated("")
     suspend operator fun invoke(): Flow<List<ChatListItem>> {
         return chatRepository.getChatRoomList()
     }

@@ -3,17 +3,25 @@ package `in`.koreatech.koin.data.source.remote
 import `in`.koreatech.koin.data.api.ChatApi
 import `in`.koreatech.koin.data.api.auth.ChatAuthApi
 import `in`.koreatech.koin.data.request.chat.ChatMessageRequest
+import `in`.koreatech.koin.data.request.chat.ChatReadRequest
+import `in`.koreatech.koin.data.request.chat.SendChatMessageRequest
 import `in`.koreatech.koin.data.response.chat.ChatListItemResponse
 import `in`.koreatech.koin.data.response.chat.ChatMessageResponse
+import `in`.koreatech.koin.data.response.chat.ChatRoomEventResponse
+import `in`.koreatech.koin.data.response.chat.ChatRoomInfoResponse
+import `in`.koreatech.koin.data.response.chat.ChatRoomMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import `in`.koreatech.koin.data.stomp.KoinStomp
 import `in`.koreatech.koin.data.stomp.KoinStompConnectionState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
+// Keep deprecated APIs alongside common APIs until their callers migrate.
+@Suppress("TooManyFunctions")
 class ChatRemoteDataSource @Inject constructor(
     private val chatApi: ChatApi,
     private val chatAuthApi: ChatAuthApi,
@@ -30,14 +38,17 @@ class ChatRemoteDataSource @Inject constructor(
         return koinStomp.disconnect()
     }
 
+    @Deprecated("")
     suspend fun getChatRoomList(): List<ChatListItemResponse> {
         return chatAuthApi.getChatRoomList()
     }
 
+    @Deprecated("")
     suspend fun getChatRoomFromArticleId(articleId: Int): ChatRoomResponse {
         return chatAuthApi.getChatRoomFromArticleId(articleId)
     }
 
+    @Deprecated("")
     suspend fun getChatRoom(
         articleId: Int,
         chatRoomId: Int
@@ -45,6 +56,7 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatRoom(articleId, chatRoomId)
     }
 
+    @Deprecated("")
     suspend fun getChatMessages(
         articleId: Int,
         chatRoomId: Int
@@ -52,6 +64,7 @@ class ChatRemoteDataSource @Inject constructor(
         return chatAuthApi.getChatMessages(articleId, chatRoomId)
     }
 
+    @Deprecated("")
     fun subscribeChatRoom(
         articleId: Int,
         chatRoomId: Int
@@ -61,6 +74,7 @@ class ChatRemoteDataSource @Inject constructor(
         }
     }
 
+    @Deprecated("")
     fun subscribeChatList(
         userId: Int
     ): Flow<List<ChatListItemResponse>> = flow {
@@ -69,6 +83,7 @@ class ChatRemoteDataSource @Inject constructor(
         }
     }
 
+    @Deprecated("")
     suspend fun sendMessage(
         articleId: Int,
         chatRoomId: Int,
@@ -81,6 +96,7 @@ class ChatRemoteDataSource @Inject constructor(
         )
     }
 
+    @Deprecated("")
     suspend fun blockUser(
         articleId: Int,
         chatRoomId: Int
@@ -92,4 +108,27 @@ class ChatRemoteDataSource @Inject constructor(
             return Result.failure(Exception(response.message()))
         }
     }
+
+    suspend fun getChatRooms(domainType: String?): List<ChatRoomInfoResponse> =
+        chatAuthApi.getChatRooms(domainType)
+
+    suspend fun getChatRoomInfo(roomId: String): ChatRoomInfoResponse = chatAuthApi.getChatRoomInfo(roomId)
+
+    suspend fun getChatRoomMessages(
+        roomId: String,
+        afterMessageId: String?,
+        beforeMessageId: String?,
+        limit: Int
+    ): List<ChatRoomMessageResponse> = chatAuthApi.getChatRoomMessages(roomId, afterMessageId, beforeMessageId, limit)
+
+    suspend fun subscribeChatRoomEvents(roomId: String): Flow<ChatRoomEventResponse> {
+        val frames = koinStomp.subscribe("/topic/chatrooms/$roomId")
+        return frames.map { json.decodeFromString(ChatRoomEventResponse.serializer(), it) }
+    }
+
+    suspend fun sendChatMessage(roomId: String, message: SendChatMessageRequest): ChatRoomMessageResponse =
+        chatAuthApi.sendChatMessage(roomId, message)
+
+    suspend fun markChatRead(roomId: String, request: ChatReadRequest): Unit =
+        chatAuthApi.markChatRead(roomId, request)
 }
