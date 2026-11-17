@@ -8,9 +8,9 @@ import javax.inject.Inject
 class GetLandListUseCase @Inject constructor(
     private val landRepository: LandRepository
 ) {
-    suspend operator fun invoke(): Result<List<Land>> {
+    suspend operator fun invoke(query: String = ""): Result<List<Land>> {
         return try {
-            Result.success(landRepository.getLandList())
+            Result.success(landRepository.getLandList(query))
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {

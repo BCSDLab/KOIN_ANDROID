@@ -8,7 +8,7 @@ import javax.inject.Inject
 class LandRemoteDataSource @Inject constructor(
     private val landApi: LandApi
 ) {
-    suspend fun getLandList(): LandsResponse = landApi.getLandList()
+    suspend fun getLandList(query: String): LandsResponse = landApi.getLandList(query)
 
     suspend fun getLandDetail(id: Int): LandDetailResponse = landApi.getLandDetail(id)
 }

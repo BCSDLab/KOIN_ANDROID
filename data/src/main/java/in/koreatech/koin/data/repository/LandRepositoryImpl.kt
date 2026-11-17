@@ -11,8 +11,8 @@ import javax.inject.Inject
 class LandRepositoryImpl @Inject constructor(
     private val landRemoteDataSource: LandRemoteDataSource
 ) : LandRepository {
-    override suspend fun getLandList(): List<Land> {
-        return landRemoteDataSource.getLandList().lands.map {
+    override suspend fun getLandList(query: String): List<Land> {
+        return landRemoteDataSource.getLandList(query).lands.map {
             it.toLand()
         }
     }

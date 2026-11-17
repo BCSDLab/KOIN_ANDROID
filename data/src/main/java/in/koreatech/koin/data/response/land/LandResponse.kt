@@ -18,7 +18,13 @@ data class LandResponse(
     @SerializedName("longitude")
     val longitude: Double,
     @SerializedName("room_type")
-    val roomType: String?
+    val roomType: String?,
+    @SerializedName("address")
+    val address: String?,
+    @SerializedName("is_monthly_available")
+    val isMonthlyAvailable: Boolean,
+    @SerializedName("is_charter_available")
+    val isCharterAvailable: Boolean
 )
 
 data class LandsResponse(

@@ -2,11 +2,14 @@ package `in`.koreatech.koin.domain.model.land
 
 data class Land(
     val internalName: String,
-    val monthlyFee: String,
+    val monthlyFee: String?,
     val latitude: Double,
-    val charterFee: String,
+    val charterFee: String?,
     val name: String,
     val id: Int,
     val longitude: Double,
-    val roomType: String
+    val roomType: String,
+    val address: String,
+    val isMonthlyAvailable: Boolean,
+    val isCharterAvailable: Boolean
 )

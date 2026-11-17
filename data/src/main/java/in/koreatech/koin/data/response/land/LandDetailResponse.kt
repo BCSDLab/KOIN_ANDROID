@@ -60,7 +60,7 @@ data class LandDetailResponse(
     @SerializedName("opt_bed")
     val optBed: Boolean,
     @SerializedName("size")
-    val size: Int?,
+    val size: String?,
     @SerializedName("phone")
     val phone: String?,
     @SerializedName("opt_air_conditioner")
@@ -72,5 +72,7 @@ data class LandDetailResponse(
     @SerializedName("opt_microwave")
     val optMicrowave: Boolean,
     @SerializedName("room_type")
-    val roomType: String?
+    val roomType: String?,
+    @SerializedName("permalink")
+    val permalink: String?
 )
