@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="land_title">복덕방</string>
+    <string name="land_count">전체(%1$d)</string>
+    <string name="land_filter_all">전체</string>
+    <string name="land_filter_monthly">월세</string>
+    <string name="land_filter_charter">전세</string>
+    <string name="land_loading">방 목록을 불러오고 있어요.</string>
+    <string name="land_load_failed">방 목록을 불러오지 못했어요.</string>
+    <string name="land_empty">조건에 맞는 방이 없어요.</string>
+    <string name="land_close">닫기</string>
+    <string name="land_view_detail">매물 상세보기</string>
+    <string name="land_search">복덕방 검색</string>
+    <string name="land_search_hint">검색어를 입력해주세요.</string>
+    <string name="land_search_empty">검색 결과가 없어요.</string>
+    <string name="land_detail_loading">매물 정보를 불러오고 있어요.</string>
+    <string name="land_detail_load_failed">매물 정보를 불러오지 못했어요.</string>
+    <string name="land_detail_room_info">원룸 정보</string>
+    <string name="land_detail_location_info">위치 정보</string>
+    <string name="land_detail_rent_label">월세/전세</string>
+    <string name="land_detail_deposit_label">보증금/관리비</string>
+    <string name="land_detail_size_label">방크기</string>
+    <string name="land_detail_room_type_label">방종류</string>
+    <string name="land_detail_inquire">별도 문의</string>
+    <string name="land_detail_info_unavailable">정보 없음</string>
+    <string name="land_detail_size_pyeong">%1$s평</string>
+    <string name="land_detail_paired_values">%1$s / %2$s</string>
+    <string name="land_detail_photo_description">%1$s 매물 사진 %2$d</string>
+    <string name="land_detail_photo_position">사진 %1$d / %2$d</string>
+    <string name="land_detail_photo_preparing">이미지 준비 중입니다.</string>
+    <string name="land_detail_contact">연락처</string>
+    <string name="land_detail_phone_unavailable">연락처 정보 없음</string>
+    <string name="land_detail_phone_inquiry">전화 문의하기</string>
+    <string name="land_detail_call_unavailable">전화를 걸 수 없어요.</string>
+    <string name="land_detail_call_permission_denied">통화 권한을 허용해 주세요.</string>
+    <string name="land_detail_location_unavailable">위치 정보를 확인할 수 없어요.</string>
+</resources>
