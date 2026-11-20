@@ -37,8 +37,10 @@ jobs:
           test -n "$FIREBASE"
           test -n "$FIREBASE_STAGE"
           mkdir -p koin/src/qa
-          printf '%s' "$FIREBASE" | base64 -d > koin/google-services.json
-          printf '%s' "$FIREBASE_STAGE" | base64 -d > koin/src/qa/google-services.json
+          printf '%s' "$FIREBASE" | base64 --decode --ignore-garbage > koin/google-services.json
+          printf '%s' "$FIREBASE_STAGE" | base64 --decode --ignore-garbage > koin/src/qa/google-services.json
+          jq -e 'type == "object" and (.client | type == "array")' koin/google-services.json >/dev/null
+          jq -e 'type == "object" and (.client | type == "array")' koin/src/qa/google-services.json >/dev/null
       - name: Build stage QA APK
         run: |
           ./gradlew :koin:assembleQa
