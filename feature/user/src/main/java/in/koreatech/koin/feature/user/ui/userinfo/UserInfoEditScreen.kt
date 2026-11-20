@@ -72,10 +72,10 @@ import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
 import `in`.koreatech.koin.feature.user.component.KoinUserWithButtonItem
 import `in`.koreatech.koin.feature.user.component.UserInfoHeader
-import `in`.koreatech.koin.feature.user.genderList
 import `in`.koreatech.koin.feature.user.model.NicknameState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import `in`.koreatech.koin.feature.user.rememberGenderList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
@@ -406,7 +406,7 @@ fun GeneralUserInfo(
         Spacer(modifier = Modifier.height(8.dp))
 
         KoinUserSingleChoiceRadioGroup(
-            items = genderList,
+            items = rememberGenderList(),
             selected = gender,
             onSelectedItemChange = onGenderChange
         )
