@@ -19,41 +19,52 @@ interface ChatRepository {
 
     fun observeConnectionState(): Flow<ChatConnectionState>
 
-    @Deprecated("")
+    @Deprecated("Use getLostItemChatRoomList")
     suspend fun getChatRoomList(): Flow<List<ChatListItem>>
 
-    @Deprecated("")
+    @Deprecated("Use getLostItemChatRoom")
     suspend fun getChatRoomFromArticleId(articleId: Int): Result<ChatRoom>
 
-    @Deprecated("")
-    suspend fun getChatRoom(
+    @Deprecated("Use getLostItemChatRoom")
+    suspend fun getChatRoom(articleId: Int, chatRoomId: Int): Result<ChatRoom>
+
+    @Deprecated("Use getLostItemChatMessages")
+    suspend fun getChatMessages(articleId: Int, chatRoomId: Int): Result<List<ChatMessage>>
+
+    @Deprecated("Use subscribeLostItemChatRoom")
+    fun subscribeChatRoom(articleId: Int, chatRoomId: Int): Flow<ChatMessage>
+
+    @Deprecated("Use subscribeLostItemChatList")
+    fun subscribeChatList(userId: Int): Flow<List<ChatListItem>>
+
+    @Deprecated("Use sendLostItemChatMessage")
+    suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessage): Result<Unit>
+
+    suspend fun getLostItemChatRoomList(): Flow<List<ChatRoomInfo>>
+
+    suspend fun getLostItemChatRoom(
+        articleId: Int,
+        chatRoomId: Int?
+    ): Result<ChatRoomInfo>
+
+    suspend fun getLostItemChatMessages(
         articleId: Int,
         chatRoomId: Int
-    ): Result<ChatRoom>
+    ): Result<List<ChatRoomMessage>>
 
-    @Deprecated("")
-    suspend fun getChatMessages(
+    fun subscribeLostItemChatRoom(
         articleId: Int,
         chatRoomId: Int
-    ): Result<List<ChatMessage>>
+    ): Flow<ChatRoomMessage>
 
-    @Deprecated("")
-    fun subscribeChatRoom(
-        articleId: Int,
-        chatRoomId: Int
-    ): Flow<ChatMessage>
+    fun subscribeLostItemChatList(): Flow<List<ChatRoomInfo>>
 
-    @Deprecated("")
-    fun subscribeChatList(
-        userId: Int
-    ): Flow<List<ChatListItem>>
-
-    @Deprecated("")
-    suspend fun sendMessage(
+    suspend fun sendLostItemChatMessage(
         articleId: Int,
         chatRoomId: Int,
-        message: ChatMessage
-    ): Result<Unit>
+        content: String,
+        isImage: Boolean
+    ): Result<ChatRoomMessage>
 
     @Deprecated("")
     suspend fun blockUser(
@@ -78,6 +89,10 @@ interface ChatRepository {
     suspend fun sendChatMessage(roomId: String, content: String, isImage: Boolean): Result<ChatRoomMessage>
 
     suspend fun markChatRead(roomId: String, messageId: String): Result<Unit>
+
+    suspend fun updateChatPresence(roomId: String): Result<Unit>
+
+    suspend fun leaveChatPresence(roomId: String): Result<Unit>
 
     suspend fun createLostItemChatRoom(articleId: Int): Result<ChatRoomInfo>
 }
