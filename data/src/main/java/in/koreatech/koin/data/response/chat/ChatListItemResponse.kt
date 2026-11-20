@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.response.chat
 
 import com.google.gson.annotations.SerializedName
-import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -29,14 +28,3 @@ data class ChatListItemResponse(
     @SerializedName("chat_room_id")
     val chatRoomId: Int
 )
-
-fun ChatListItemResponse.toChatListItem() =
-    ChatListItem(
-        title = title.replace("\n", " "),
-        recentMessage = recentMessage,
-        imageUrl = imageUrl,
-        unReadMessageCount = unReadMessageCount,
-        lastMessageAt = lastMessageAt,
-        articleId = articleId,
-        chatRoomId = chatRoomId
-    )

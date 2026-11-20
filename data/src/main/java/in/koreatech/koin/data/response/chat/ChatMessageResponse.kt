@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.data.response.chat
 
 import com.google.gson.annotations.SerializedName
-import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -22,13 +21,4 @@ data class ChatMessageResponse(
     @SerializedName("is_image")
     @SerialName("is_image")
     val isImage: Boolean
-) {
-    fun toChatMessage() =
-        ChatMessage(
-            userId = userId,
-            userNickname = userNickname ?: "",
-            content = content,
-            timestamp = timestamp,
-            isImage = isImage
-        )
-}
+)
