@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           persist-credentials: false
       - uses: ./.github/actions/gradle-setup
@@ -48,15 +48,17 @@ jobs:
           test -n "$apk"
           cp "$apk" ./koin-qa.apk
       - name: Install Maestro
-        env:
-          MAESTRO_VERSION: '2.2.0'
         run: |
-          curl -fsSL https://get.maestro.mobile.dev | bash
-          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+          archive="$RUNNER_TEMP/maestro.zip"
+          curl -fsSL --proto '=https' --proto-redir '=https' \
+            https://github.com/mobile-dev-inc/Maestro/releases/download/cli-2.2.0/maestro.zip -o "$archive"
+          printf '%s  %s\n' '6de501d2e8adf2d60f4b6b3174dc4b5e393f2f2617245d350a659627dccb0922' "$archive" | sha256sum --check
+          unzip -q "$archive" -d "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/maestro/bin" >> "$GITHUB_PATH"
       - name: Enable KVM
         run: sudo chmod 666 /dev/kvm
       - name: Check guest dining in Stage app
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
         with:
           api-level: 35
           target: google_apis
@@ -70,9 +72,12 @@ jobs:
           script: bash .github/scripts/run_maestro_suite.sh dining emulator-5554 ./koin-qa.apk
       - name: Upload dining evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: android-dining-ui
-          path: build/maestro/dining/**
+          path: |
+            build/maestro/dining/**/result.xml
+            build/maestro/dining/**/screen.mp4
+            build/maestro/dining/**/screenrecord.log
           if-no-files-found: warn
           retention-days: 7
