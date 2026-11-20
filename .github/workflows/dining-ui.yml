@@ -1,0 +1,76 @@
+name: Android Dining UI
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - '.github/workflows/dining-ui.yml'
+      - '.maestro/dining.yaml'
+      - '.maestro/common/launch_home.yaml'
+      - 'feature/dining/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-dining-ui-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dining:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+      - name: Configure Firebase for QA
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          test -n "$FIREBASE"
+          test -n "$FIREBASE_STAGE"
+          mkdir -p koin/src/qa
+          printf '%s' "$FIREBASE" | base64 -d > koin/google-services.json
+          printf '%s' "$FIREBASE_STAGE" | base64 -d > koin/src/qa/google-services.json
+      - name: Build stage QA APK
+        run: |
+          ./gradlew :koin:assembleQa
+          apk=$(find koin/build/outputs/apk/qa -type f -name '*.apk' -print -quit)
+          test -n "$apk"
+          cp "$apk" ./koin-qa.apk
+      - name: Install Maestro
+        env:
+          MAESTRO_VERSION: '2.2.0'
+        run: |
+          curl -fsSL https://get.maestro.mobile.dev | bash
+          echo "$HOME/.maestro/bin" >> "$GITHUB_PATH"
+      - name: Enable KVM
+        run: sudo chmod 666 /dev/kvm
+      - name: Check guest dining in Stage app
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          avd-name: maestro-dining
+          emulator-port: 5554
+          emulator-boot-timeout: 180
+          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect
+          disable-animations: true
+          script: bash .github/scripts/run_maestro_suite.sh dining emulator-5554 ./koin-qa.apk
+      - name: Upload dining evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-dining-ui
+          path: build/maestro/dining/**
+          if-no-files-found: warn
+          retention-days: 7
