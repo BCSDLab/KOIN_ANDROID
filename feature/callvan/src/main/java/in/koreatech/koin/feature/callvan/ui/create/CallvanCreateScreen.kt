@@ -184,7 +184,12 @@ fun CallvanCreateScreenImpl(
                     onSwap = onSwapLocations
                 )
                 CallvanDateField(
-                    formattedDate = state.formattedDate,
+                    formattedDate = stringResource(
+                        R.string.callvan_create_date_format,
+                        state.selectedDate.year,
+                        state.selectedDate.monthValue,
+                        state.selectedDate.dayOfMonth
+                    ),
                     isPickerVisible = state.isDatePickerVisible,
                     selectedDate = state.selectedDate,
                     onFieldClick = onDateFieldClick,

@@ -35,9 +35,6 @@ data class CallvanCreateState(
             return departureValid && arrivalValid
         }
 
-    val formattedDate: String
-        get() = "${selectedDate.year}년 ${selectedDate.monthValue}월 ${selectedDate.dayOfMonth}일"
-
     val apiDepartureDate: String
         get() = selectedDate.toString()
 

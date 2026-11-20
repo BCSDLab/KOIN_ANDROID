@@ -48,6 +48,7 @@ import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.core.util.KoinCoilImageLoader
+import `in`.koreatech.koin.core.util.fullNameRes
 import `in`.koreatech.koin.domain.util.DiningUtil
 import `in`.koreatech.koin.feature.home.component.DiningPager
 import `in`.koreatech.koin.feature.home.component.DiningPagerData
@@ -59,8 +60,6 @@ import `in`.koreatech.koin.feature.home.component.MediumHomeCard
 import `in`.koreatech.koin.feature.home.component.ShuttleTicketCard
 import `in`.koreatech.koin.feature.home.model.LocalWeather
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import kotlinx.collections.immutable.ImmutableList
 import org.orbitmvi.orbit.compose.collectAsState
 
@@ -142,8 +141,13 @@ private fun InfoSection(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    val formatter = remember { DateTimeFormatter.ofPattern("M월 dd일 EEEE", Locale.KOREAN) }
-    val currentDate = remember(LocalDate.now()) { LocalDate.now().format(formatter) }
+    val today = LocalDate.now()
+    val currentDate = stringResource(
+        R.string.home_date_format,
+        today.monthValue,
+        today.dayOfMonth,
+        stringResource(today.dayOfWeek.fullNameRes())
+    )
 
     Column(
         modifier = modifier.padding(top = 16.dp, start = 24.dp, end = 24.dp),
@@ -172,7 +176,7 @@ private fun InfoSection(
                 Spacer(modifier = Modifier.width(4.dp))
 
                 Text(
-                    text = "${it.weather} ${it.temperature}°",
+                    text = stringResource(R.string.home_weather_format, it.weather, it.temperature),
                     style = RebrandKoinTheme.typography.regular13,
                     color = Color(0xFF6F6F6F)
                 )
@@ -385,6 +389,7 @@ private fun ShopSection(
     val navigator = rememberNavigator()
     val context = LocalContext.current
     val shopOpen = stringResource(R.string.shop_open)
+    val shopOpenCount = stringResource(R.string.shop_open_count, openShopCount)
     val shopTotal = stringResource(R.string.shop_total, shopCount)
 
     HomeSection(
@@ -438,7 +443,8 @@ private fun ShopSection(
                     text = buildAnnotatedString {
                         append(shopOpen)
                         withStyle(style = RebrandKoinTheme.typography.bold13.toSpanStyle().copy(color = Color(0xFFB611F5))) {
-                            append(" ${openShopCount}곳")
+                            append(" ")
+                            append(shopOpenCount)
                         }
                         append(" | ")
                         append(shopTotal)
