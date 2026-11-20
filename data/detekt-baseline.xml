@@ -52,6 +52,7 @@
     <ID>TooManyFunctions:CallvanAuthApi.kt$CallvanAuthApi</ID>
     <ID>TooManyFunctions:CallvanRemoteDataSource.kt$CallvanRemoteDataSource</ID>
     <ID>TooManyFunctions:CallvanRepositoryImpl.kt$CallvanRepositoryImpl : CallvanRepository</ID>
+    <ID>TooManyFunctions:ChatAuthApi.kt$ChatAuthApi</ID>
     <ID>TooManyFunctions:ChatRepositoryImpl.kt$ChatRepositoryImpl : ChatRepository</ID>
     <ID>TooManyFunctions:ClubAuthApi.kt$ClubAuthApi</ID>
     <ID>TooManyFunctions:ClubMapper.kt$in.koreatech.koin.data.mapper.ClubMapper.kt</ID>
