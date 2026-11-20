@@ -8,4 +8,8 @@
     <string name="notification_delete_all">알림 전체 삭제</string>
     <string name="notification_empty">아직 알림이 없어요</string>
     <string name="notification_delete_content_description">삭제</string>
+    <string name="notification_elapsed_days">%1$d일 전</string>
+    <string name="notification_elapsed_hours">%1$d시간 전</string>
+    <string name="notification_elapsed_minutes">%1$d분 전</string>
+    <string name="notification_elapsed_just_now">방금 전</string>
 </resources>
