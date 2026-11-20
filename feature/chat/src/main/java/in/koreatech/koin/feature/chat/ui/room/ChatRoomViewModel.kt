@@ -1,29 +1,28 @@
 package `in`.koreatech.koin.feature.chat.ui.room
 
 import android.net.Uri
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.error.chat.KoinChatException
 import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
-import `in`.koreatech.koin.domain.model.chat.ChatMessage
 import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.chat.ChatBlockUserUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.GetChatConnectionStateUseCase
-import `in`.koreatech.koin.domain.usecase.chat.GetChatMessageUseCase
-import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomUseCase
-import `in`.koreatech.koin.domain.usecase.chat.SendMessageUseCase
-import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetLostItemChatMessagesUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetLostItemChatRoomUseCase
+import `in`.koreatech.koin.domain.usecase.chat.SendLostItemChatMessageUseCase
+import `in`.koreatech.koin.domain.usecase.chat.SubscribeLostItemChatRoomUseCase
 import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.chat.ui.mapper.appendMessage
+import `in`.koreatech.koin.feature.chat.ui.mapper.mapToConvertedChatMessages
+import `in`.koreatech.koin.feature.chat.ui.mapper.mergeWithChatMessages
+import `in`.koreatech.koin.feature.chat.ui.mapper.toChatRoomState
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import `in`.koreatech.koin.feature.chat.ui.model.appendMessage
-import `in`.koreatech.koin.feature.chat.ui.model.mapToConvertedChatMessages
-import `in`.koreatech.koin.feature.chat.ui.model.mergeWithChatMessages
 import java.net.UnknownHostException
 import java.time.LocalDateTime
 import java.util.UUID
@@ -35,6 +34,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
@@ -53,12 +53,12 @@ class ChatRoomViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val chatWSConnectUseCase: ChatWSConnectUseCase,
     private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
-    private val getChatRoomUseCase: GetChatRoomUseCase,
+    private val getChatRoomUseCase: GetLostItemChatRoomUseCase,
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val subscribeChatRoomUseCase: SubscribeChatRoomUseCase,
+    private val subscribeChatRoomUseCase: SubscribeLostItemChatRoomUseCase,
     private val getChatConnectionStateUseCase: GetChatConnectionStateUseCase,
-    private val getChatMessageUseCase: GetChatMessageUseCase,
-    private val sendMessageUseCase: SendMessageUseCase,
+    private val getChatMessageUseCase: GetLostItemChatMessagesUseCase,
+    private val sendMessageUseCase: SendLostItemChatMessageUseCase,
     private val uploadImageUseCase: UploadImageUseCase,
     private val chatBlockUserUseCase: ChatBlockUserUseCase
 ) : ViewModel(), ContainerHost<ChatRoomState, ChatRoomSideEffect> {
@@ -128,18 +128,20 @@ class ChatRoomViewModel @Inject constructor(
         chatRoomId: Int?
     ) = intent {
         reduce { state.copy(isLoading = true) }
-        getChatRoomUseCase(articleId, chatRoomId).onSuccess { data ->
+        getChatRoomUseCase(articleId, chatRoomId).mapCatching {
+            it.toChatRoomState(getUserStatusUseCase().first())
+        }.onSuccess { room ->
             reduce {
                 state.copy(
-                    articleId = data.articleId,
-                    chatRoomId = data.chatRoomId,
-                    userId = data.userId,
-                    articleTitle = data.articleTitle,
-                    chatPartnerProfileImage = (data.chatPartnerProfileImage ?: "").toUri(),
+                    articleId = room.articleId,
+                    chatRoomId = room.chatRoomId,
+                    userId = room.userId,
+                    articleTitle = room.articleTitle,
+                    chatPartnerProfileImage = room.chatPartnerProfileImage,
                     isLoading = false
                 )
             }
-            getChatMessages(data.articleId, data.chatRoomId)
+            getChatMessages(room.articleId, room.chatRoomId)
             _connectChannel.send(true)
         }.onFailure { e ->
             when (e) {
@@ -264,13 +266,8 @@ class ChatRoomViewModel @Inject constructor(
             sendMessageUseCase(
                 state.articleId,
                 state.chatRoomId,
-                ChatMessage(
-                    userId = state.userId,
-                    userNickname = state.userNickName,
-                    content = fileUrl,
-                    timestamp = LocalDateTime.now().toString(),
-                    isImage = true
-                )
+                fileUrl,
+                true
             ).onSuccess {
                 reduce {
                     state.copy(
@@ -301,13 +298,8 @@ class ChatRoomViewModel @Inject constructor(
         sendMessageUseCase(
             state.articleId,
             state.chatRoomId,
-            ChatMessage(
-                userId = state.userId,
-                userNickname = state.userNickName,
-                content = state.chatInputValue,
-                timestamp = LocalDateTime.now().toString(),
-                isImage = false
-            )
+            state.chatInputValue,
+            false
         ).onSuccess {
             reduce {
                 state.copy(chatInputValue = "")

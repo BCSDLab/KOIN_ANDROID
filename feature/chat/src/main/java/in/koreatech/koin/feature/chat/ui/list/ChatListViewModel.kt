@@ -6,9 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
 import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
-import `in`.koreatech.koin.domain.usecase.chat.GetChatListUseCase
-import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatListUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetLostItemChatListUseCase
+import `in`.koreatech.koin.domain.usecase.chat.SubscribeLostItemChatListUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
+import `in`.koreatech.koin.feature.chat.ui.mapper.toChatListItems
 import java.net.UnknownHostException
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +19,7 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
@@ -33,10 +35,10 @@ import timber.log.Timber
 @HiltViewModel
 class ChatListViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getChatListUseCase: GetChatListUseCase,
+    private val getChatListUseCase: GetLostItemChatListUseCase,
     private val chatWSConnectUseCase: ChatWSConnectUseCase,
     private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
-    private val subscribeChatListUseCase: SubscribeChatListUseCase
+    private val subscribeChatListUseCase: SubscribeLostItemChatListUseCase
 ) : ViewModel(), ContainerHost<ChatListState, ChatListSideEffect> {
     override val container = container<ChatListState, ChatListSideEffect>(ChatListState())
 
@@ -81,7 +83,7 @@ class ChatListViewModel @Inject constructor(
 
     fun fetchChatList() = viewModelScope.launch {
         if (container.stateFlow.value.userId == -1) return@launch
-        getChatListUseCase().catch {
+        getChatListUseCase().map { it.toChatListItems() }.catch {
             Timber.e(it)
         }.collect { data ->
             intent {
@@ -95,7 +97,7 @@ class ChatListViewModel @Inject constructor(
     fun connectToWS() = intent {
         if (state.userId == -1) return@intent // If userId is not set, don't connect websocket
         chatWSConnectUseCase().onSuccess {
-            subscribeChatList(state.userId)
+            subscribeChatList()
         }.onFailure {
             Timber.e(it)
         }
@@ -118,10 +120,8 @@ class ChatListViewModel @Inject constructor(
         }
     }
 
-    private fun subscribeChatList(
-        userId: Int
-    ) = intent {
-        subscribeChatListUseCase(userId).catch {
+    private fun subscribeChatList() = intent {
+        subscribeChatListUseCase().map { it.toChatListItems() }.catch {
             if (it is UnknownHostException) {
                 // Android OS disconnect network when the device enter idle.
                 // So, we set shouldReconnect to true
