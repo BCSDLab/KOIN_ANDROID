@@ -79,5 +79,9 @@ interface ChatRepository {
 
     suspend fun markChatRead(roomId: String, messageId: String): Result<Unit>
 
+    suspend fun updateChatPresence(roomId: String): Result<Unit>
+
+    suspend fun leaveChatPresence(roomId: String): Result<Unit>
+
     suspend fun createLostItemChatRoom(articleId: Int): Result<ChatRoomInfo>
 }

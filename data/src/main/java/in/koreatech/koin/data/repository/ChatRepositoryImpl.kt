@@ -135,6 +135,14 @@ class ChatRepositoryImpl @Inject constructor(
         chatRemoteDataSource.markChatRead(roomId, ChatReadRequest(messageId))
     }.mapChatFailure()
 
+    override suspend fun updateChatPresence(roomId: String): Result<Unit> = suspendRunCatching {
+        chatRemoteDataSource.updateChatPresence(roomId)
+    }.mapChatFailure()
+
+    override suspend fun leaveChatPresence(roomId: String): Result<Unit> = suspendRunCatching {
+        chatRemoteDataSource.leaveChatPresence(roomId)
+    }.mapChatFailure()
+
     override suspend fun createLostItemChatRoom(articleId: Int): Result<ChatRoomInfo> = suspendRunCatching {
         val legacyRoom = chatRemoteDataSource.getChatRoomFromArticleId(articleId)
         val room = chatRemoteDataSource.getChatRooms(ChatDomainType.LOST_ITEM.name)

@@ -9,6 +9,7 @@ import `in`.koreatech.koin.data.response.chat.ChatRoomMessageResponse
 import `in`.koreatech.koin.data.response.chat.ChatRoomResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -68,4 +69,10 @@ interface ChatAuthApi {
 
     @POST("chatrooms/{roomId}/read")
     suspend fun markChatRead(@Path("roomId") roomId: String, @Body request: ChatReadRequest): Unit
+
+    @POST("chatrooms/{roomId}/presence")
+    suspend fun updateChatPresence(@Path("roomId") roomId: String): Unit
+
+    @DELETE("chatrooms/{roomId}/presence")
+    suspend fun leaveChatPresence(@Path("roomId") roomId: String): Unit
 }

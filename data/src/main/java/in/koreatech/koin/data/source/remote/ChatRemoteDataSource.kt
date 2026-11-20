@@ -131,4 +131,8 @@ class ChatRemoteDataSource @Inject constructor(
 
     suspend fun markChatRead(roomId: String, request: ChatReadRequest): Unit =
         chatAuthApi.markChatRead(roomId, request)
+
+    suspend fun updateChatPresence(roomId: String): Unit = chatAuthApi.updateChatPresence(roomId)
+
+    suspend fun leaveChatPresence(roomId: String): Unit = chatAuthApi.leaveChatPresence(roomId)
 }
