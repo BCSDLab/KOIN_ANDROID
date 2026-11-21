@@ -1,0 +1,70 @@
+name: Android Dining QA Bundle
+
+on:
+  pull_request:
+    branches: [develop]
+    paths:
+      - '.github/workflows/dining-ui.yml'
+      - '.github/koin-qa-artifact-recipient.asc'
+      - '.maestro/dining.yaml'
+      - '.maestro/common/launch_home.yaml'
+      - 'feature/dining/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-dining-ui-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  dining:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: ./.github/actions/gradle-setup
+        with:
+          properties: ${{ secrets.PROPERTIES }}
+          gradle-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+      - name: Configure Firebase for QA
+        env:
+          FIREBASE: ${{ secrets.FIREBASE }}
+          FIREBASE_STAGE: ${{ secrets.FIREBASE_STAGE }}
+        run: |
+          test -n "$FIREBASE"
+          test -n "$FIREBASE_STAGE"
+          mkdir -p koin/src/qa
+          printf '%s' "$FIREBASE" | base64 --decode --ignore-garbage > koin/google-services.json
+          printf '%s' "$FIREBASE_STAGE" | base64 --decode --ignore-garbage > koin/src/qa/google-services.json
+          jq -e 'type == "object" and (.client | type == "array")' koin/google-services.json >/dev/null
+          jq -e 'type == "object" and (.client | type == "array")' koin/src/qa/google-services.json >/dev/null
+      - name: Build stage QA APK
+        run: |
+          ./gradlew :koin:assembleQa
+          apk=$(find koin/build/outputs/apk/qa -type f -name '*.apk' -print -quit)
+          test -n "$apk"
+          mkdir -p "$RUNNER_TEMP/koin-dining"
+          cp "$apk" "$RUNNER_TEMP/koin-dining/app.apk"
+          # Keep the flow at the exact source revision used for the APK.
+          (cd .maestro && zip "$RUNNER_TEMP/koin-dining/flows.zip" dining.yaml common/launch_home.yaml)
+          printf '%s\n' "$(git rev-parse HEAD)" > "$RUNNER_TEMP/koin-dining/build-sha.txt"
+      - name: Seal APK for the owned Maestro runner
+        run: |
+          keyring=$(mktemp -d)
+          trap 'rm -rf "$keyring"' EXIT
+          gpg --batch --homedir "$keyring" --import .github/koin-qa-artifact-recipient.asc
+          tar -C "$RUNNER_TEMP/koin-dining" -cf - app.apk flows.zip build-sha.txt |
+            gpg --batch --homedir "$keyring" --trust-model always \
+              --recipient 'F3F60A7DED1151D2308A6D2EE8458EB68C01CDBA!' \
+              --output "$RUNNER_TEMP/koin-dining.tar.gpg" --encrypt
+      - name: Upload encrypted QA bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: koin-dining-qa-encrypted
+          path: ${{ runner.temp }}/koin-dining.tar.gpg
+          if-no-files-found: error
+          retention-days: 1
