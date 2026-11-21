@@ -1,10 +1,11 @@
-name: Android Dining UI
+name: Android Dining QA Bundle
 
 on:
   pull_request:
     branches: [develop]
     paths:
       - '.github/workflows/dining-ui.yml'
+      - '.github/koin-qa-artifact-recipient.asc'
       - '.maestro/dining.yaml'
       - '.maestro/common/launch_home.yaml'
       - 'feature/dining/**'
@@ -46,38 +47,24 @@ jobs:
           ./gradlew :koin:assembleQa
           apk=$(find koin/build/outputs/apk/qa -type f -name '*.apk' -print -quit)
           test -n "$apk"
-          cp "$apk" ./koin-qa.apk
-      - name: Install Maestro
+          mkdir -p "$RUNNER_TEMP/koin-dining"
+          cp "$apk" "$RUNNER_TEMP/koin-dining/app.apk"
+          # Keep the flow at the exact source revision used for the APK.
+          (cd .maestro && zip "$RUNNER_TEMP/koin-dining/flows.zip" dining.yaml common/launch_home.yaml)
+          printf '%s\n' "$(git rev-parse HEAD)" > "$RUNNER_TEMP/koin-dining/build-sha.txt"
+      - name: Seal APK for the owned Maestro runner
         run: |
-          archive="$RUNNER_TEMP/maestro.zip"
-          curl -fsSL --proto '=https' --proto-redir '=https' \
-            https://github.com/mobile-dev-inc/Maestro/releases/download/cli-2.2.0/maestro.zip -o "$archive"
-          printf '%s  %s\n' '6de501d2e8adf2d60f4b6b3174dc4b5e393f2f2617245d350a659627dccb0922' "$archive" | sha256sum --check
-          unzip -q "$archive" -d "$RUNNER_TEMP"
-          echo "$RUNNER_TEMP/maestro/bin" >> "$GITHUB_PATH"
-      - name: Enable KVM
-        run: sudo chmod 666 /dev/kvm
-      - name: Check guest dining in Stage app
-        uses: reactivecircus/android-emulator-runner@a421e43855164a8197daf9d8d40fe71c6996bb0d # v2
-        with:
-          api-level: 35
-          target: google_apis
-          arch: x86_64
-          profile: pixel_2
-          avd-name: maestro-dining
-          emulator-port: 5554
-          emulator-boot-timeout: 180
-          emulator-options: -no-window -no-audio -no-boot-anim -no-snapshot -gpu swiftshader_indirect
-          disable-animations: true
-          script: bash .github/scripts/run_maestro_suite.sh dining emulator-5554 ./koin-qa.apk
-      - name: Upload dining evidence
-        if: always()
+          keyring=$(mktemp -d)
+          trap 'rm -rf "$keyring"' EXIT
+          gpg --batch --homedir "$keyring" --import .github/koin-qa-artifact-recipient.asc
+          tar -C "$RUNNER_TEMP/koin-dining" -cf - app.apk flows.zip build-sha.txt |
+            gpg --batch --homedir "$keyring" --trust-model always \
+              --recipient 'F3F60A7DED1151D2308A6D2EE8458EB68C01CDBA!' \
+              --output "$RUNNER_TEMP/koin-dining.tar.gpg" --encrypt
+      - name: Upload encrypted QA bundle
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: android-dining-ui
-          path: |
-            build/maestro/dining/**/result.xml
-            build/maestro/dining/**/screen.mp4
-            build/maestro/dining/**/screenrecord.log
-          if-no-files-found: warn
-          retention-days: 7
+          name: koin-dining-qa-encrypted
+          path: ${{ runner.temp }}/koin-dining.tar.gpg
+          if-no-files-found: error
+          retention-days: 1
