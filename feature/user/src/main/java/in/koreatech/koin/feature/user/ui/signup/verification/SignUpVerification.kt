@@ -65,7 +65,6 @@ import `in`.koreatech.koin.feature.user.model.VerificationMethodState
 import `in`.koreatech.koin.feature.user.rememberGenderList
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
 import org.orbitmvi.orbit.compose.collectAsState
-import org.orbitmvi.orbit.compose.collectSideEffect
 
 @Composable
 fun SignUpVerification(
@@ -75,18 +74,6 @@ fun SignUpVerification(
     navigateToNextScreen: (name: String, phoneNumber: String, gender: String) -> Unit = { _, _, _ -> }
 ) {
     val uiState by viewModel.collectAsState()
-
-    viewModel.collectSideEffect {
-        handleSideEffect(
-            sideEffect = it,
-            onStartTimer = {
-                viewModel.startTimer()
-            },
-            onStopTimer = {
-                viewModel.stopTimer()
-            }
-        )
-    }
 
     SignUpVerificationImpl(
         step = uiState.currentStep,
@@ -532,17 +519,6 @@ private fun PhoneNumberRequestCountExceeded() {
         text = stringResource(R.string.sign_up_phone_number_code_request_exceeded),
         state = KoinUserTextFieldAlertState.Error
     )
-}
-
-private fun handleSideEffect(
-    sideEffect: SignUpVerificationSideEffect,
-    onStartTimer: () -> Unit,
-    onStopTimer: () -> Unit
-) {
-    when (sideEffect) {
-        SignUpVerificationSideEffect.StartTimer -> onStartTimer()
-        SignUpVerificationSideEffect.StopTimer -> onStopTimer()
-    }
 }
 
 @Preview(showBackground = true)

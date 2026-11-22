@@ -12,7 +12,8 @@ data class SignUpVerificationState(
     val phoneNumberState: VerificationMethodState = VerificationMethodState.None,
     val verificationCode: String = "",
     val verificationCodeState: VerificationCodeState = VerificationCodeState.None,
-    val verificationTimeLeft: Int = 180
+    val verificationTimeLeft: Int = 180,
+    val verificationSendId: Int = 0
 )
 
 val SignUpVerificationState.isNameValid: Boolean

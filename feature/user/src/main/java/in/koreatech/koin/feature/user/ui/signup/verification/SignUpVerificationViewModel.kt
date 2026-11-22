@@ -14,11 +14,16 @@ import `in`.koreatech.koin.domain.usecase.signup.RequestSmsVerificationUseCase
 import `in`.koreatech.koin.domain.usecase.signup.VerifySmsCodeUseCase
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.withContext
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.syntax.simple.SimpleSyntax
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
-import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
 import org.orbitmvi.orbit.viewmodel.container
 
@@ -30,6 +35,15 @@ class SignUpVerificationViewModel @Inject constructor(
 ) : ViewModel(), ContainerHost<SignUpVerificationState, SignUpVerificationSideEffect> {
     override val container =
         container<SignUpVerificationState, SignUpVerificationSideEffect>(SignUpVerificationState())
+
+    @Volatile
+    private var phoneNumberRequestJob: Job? = null
+
+    @Volatile
+    private var verifyCodeJob: Job? = null
+
+    private val timerGeneration = AtomicInteger(0)
+    private val timerToken = AtomicLong(AccountTimer.NO_TOKEN)
 
     fun setName(name: String) {
         blockingIntent {
@@ -64,56 +78,84 @@ class SignUpVerificationViewModel @Inject constructor(
     fun setPhoneNumber(phoneNumber: String) {
         blockingIntent {
             if (phoneNumber == state.phoneNumber) return@blockingIntent
+            phoneNumberRequestJob?.cancel()
+            verifyCodeJob?.cancel()
             reduce {
                 state.copy(
                     phoneNumber = phoneNumber,
                     phoneNumberState = VerificationMethodState.None,
                     verificationCode = "",
                     verificationCodeState = VerificationCodeState.None,
-                    verificationTimeLeft = 180
+                    verificationTimeLeft = 180,
+                    verificationSendId = state.verificationSendId + 1
                 )
             }
+            stopTimer()
         }
     }
 
-    fun checkPhoneNumber() = intent {
-        checkPhoneNumberDuplicateUseCase(state.phoneNumber).onSuccess {
-            if (state.phoneNumberState !is VerificationMethodState.Sent) {
+    fun checkPhoneNumber() {
+        phoneNumberRequestJob?.cancel()
+        phoneNumberRequestJob = intent {
+            val requestedPhoneNumber = state.phoneNumber
+            checkPhoneNumberDuplicateUseCase(requestedPhoneNumber).onSuccess {
+                var applied = false
                 reduce {
+                    applied = state.phoneNumber == requestedPhoneNumber
+                    if (!applied) return@reduce state
+                    if (state.phoneNumberState is VerificationMethodState.Sent) {
+                        state
+                    } else {
+                        state.copy(phoneNumberState = VerificationMethodState.Available)
+                    }
+                }
+                if (applied) sendVerificationCode(requestedPhoneNumber)
+            }.onFailure {
+                reduce {
+                    if (state.phoneNumber != requestedPhoneNumber) return@reduce state
                     state.copy(
-                        phoneNumberState = VerificationMethodState.Available
+                        phoneNumberState = when (it) {
+                            is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
+                            is KoinUserException.PhoneNumberConflictException -> VerificationMethodState.AlreadySignedUp
+                            else -> VerificationMethodState.Failed(it.message ?: "")
+                        }
                     )
                 }
             }
-            sendVerificationCode()
-        }.onFailure {
-            reduce {
-                state.copy(
-                    phoneNumberState = when (it) {
-                        is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
-                        is KoinUserException.PhoneNumberConflictException -> VerificationMethodState.AlreadySignedUp
-                        else -> VerificationMethodState.Failed(it.message ?: "")
-                    }
-                )
-            }
         }
     }
 
-    private fun sendVerificationCode() = intent {
-        requestSmsVerificationUseCase(state.phoneNumber).onSuccess {
+    private suspend fun SimpleSyntax<SignUpVerificationState, SignUpVerificationSideEffect>.sendVerificationCode(
+        requestedPhoneNumber: String
+    ) {
+        requestSmsVerificationUseCase(requestedPhoneNumber).onSuccess {
+            val previousVerifyJob = verifyCodeJob
+            var applied = false
+            var startedSendId = 0
             reduce {
+                applied = state.phoneNumber == requestedPhoneNumber
+                if (!applied) return@reduce state
+                val newSendId = state.verificationSendId + 1
+                startedSendId = newSendId
                 state.copy(
                     phoneNumberState = VerificationMethodState.Sent(
                         remainingCount = it.remainingCount,
                         totalCount = it.totalCount,
                         currentCount = it.currentCount
                     ),
-                    verificationCodeState = VerificationCodeState.None
+                    verificationCode = "",
+                    verificationCodeState = VerificationCodeState.None,
+                    verificationTimeLeft = 180,
+                    verificationSendId = newSendId
                 )
             }
-            postSideEffect(SignUpVerificationSideEffect.StartTimer)
+            if (applied) {
+                previousVerifyJob?.cancel()
+                withContext(Dispatchers.Main) { startTimer(startedSendId) }
+            }
         }.onFailure {
             reduce {
+                if (state.phoneNumber != requestedPhoneNumber) return@reduce state
                 state.copy(
                     phoneNumberState = when (it) {
                         is KoinUserException.PhoneNumberInvalidException -> VerificationMethodState.WrongFormat
@@ -137,23 +179,38 @@ class SignUpVerificationViewModel @Inject constructor(
     }
 
     fun checkVerificationCode(sessionId: String) {
-        intent {
-            verifySmsCodeUseCase(state.phoneNumber, state.verificationCode).onSuccess {
+        verifyCodeJob?.cancel()
+        verifyCodeJob = intent {
+            val requestedPhoneNumber = state.phoneNumber
+            val requestedCode = state.verificationCode
+            val requestedSendId = state.verificationSendId
+            verifySmsCodeUseCase(requestedPhoneNumber, requestedCode).onSuccess {
+                var applied = false
                 reduce {
+                    applied = state.phoneNumber == requestedPhoneNumber &&
+                        state.verificationCode == requestedCode &&
+                        state.verificationSendId == requestedSendId
+                    if (!applied) return@reduce state
                     state.copy(
                         verificationCodeState = VerificationCodeState.Valid
                     )
                 }
-                EventLogger.logSessionEvent(
-                    action = EventAction.DA2,
-                    category = EventCategory.CLICK,
-                    label = AccountAnalyticsConstant.Label.SignUp.CODE_VERIFY_SUCCESS,
-                    value = AccountAnalyticsConstant.Value.CODE_VERIFIED,
-                    customSessionId = sessionId
-                )
-                postSideEffect(SignUpVerificationSideEffect.StopTimer)
+                if (applied) {
+                    stopTimer()
+                    EventLogger.logSessionEvent(
+                        action = EventAction.DA2,
+                        category = EventCategory.CLICK,
+                        label = AccountAnalyticsConstant.Label.SignUp.CODE_VERIFY_SUCCESS,
+                        value = AccountAnalyticsConstant.Value.CODE_VERIFIED,
+                        customSessionId = sessionId
+                    )
+                }
             }.onFailure {
                 reduce {
+                    val isStale = state.phoneNumber != requestedPhoneNumber ||
+                        state.verificationCode != requestedCode ||
+                        state.verificationSendId != requestedSendId
+                    if (isStale || state.verificationCodeState is VerificationCodeState.Valid) return@reduce state
                     state.copy(
                         verificationCodeState = when (it) {
                             is KoinUserException.VerificationCodeInvalidException -> VerificationCodeState.NotValid
@@ -166,29 +223,44 @@ class SignUpVerificationViewModel @Inject constructor(
         }
     }
 
-    fun startTimer() {
-        AccountTimer.start { secondsRemaining ->
+    @Synchronized
+    private fun startTimer(sendId: Int) {
+        if (container.stateFlow.value.verificationSendId != sendId) return
+        val generation = timerGeneration.incrementAndGet()
+        val token = AccountTimer.start { secondsRemaining ->
+            if (timerGeneration.get() != generation) return@start
+            if (secondsRemaining <= 0) {
+                AccountTimer.cancel(timerToken.getAndSet(AccountTimer.NO_TOKEN))
+            }
             intent {
                 reduce {
+                    if (timerGeneration.get() != generation || state.verificationSendId != sendId) {
+                        return@reduce state
+                    }
+                    val isExpired = secondsRemaining <= 0 &&
+                        state.verificationCodeState !is VerificationCodeState.Valid
                     state.copy(
-                        verificationTimeLeft = secondsRemaining
+                        verificationTimeLeft = secondsRemaining,
+                        verificationCodeState = if (isExpired) {
+                            VerificationCodeState.Expired
+                        } else {
+                            state.verificationCodeState
+                        }
                     )
                 }
             }
-            if (secondsRemaining <= 0) {
-                stopTimer()
-                intent {
-                    reduce {
-                        state.copy(
-                            verificationCodeState = VerificationCodeState.Expired
-                        )
-                    }
-                }
-            }
         }
+        timerToken.set(token)
     }
 
-    fun stopTimer() {
-        AccountTimer.cancel()
+    @Synchronized
+    private fun stopTimer() {
+        timerGeneration.incrementAndGet()
+        AccountTimer.cancel(timerToken.getAndSet(AccountTimer.NO_TOKEN))
+    }
+
+    override fun onCleared() {
+        stopTimer()
+        super.onCleared()
     }
 }
