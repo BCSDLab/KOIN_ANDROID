@@ -16,6 +16,9 @@ import com.naver.maps.map.clustering.Clusterer
 import com.naver.maps.map.clustering.ClusteringKey
 import com.naver.maps.map.clustering.DefaultClusterOnClickListener
 import com.naver.maps.map.overlay.Marker
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.land.R
 import `in`.koreatech.koin.feature.land.model.LandUiModel
@@ -95,6 +98,7 @@ private class LandMapBinding(
 
     fun onMapReady(map: NaverMap) {
         if (isDisposed || map.isDestroyed || clusterer != null) return
+        map.uiSettings.isZoomControlEnabled = false
         map.setContentPadding(0, 0, 0, 0)
         map.setContentPadding(0, 0, 0, bottomPaddingPx, true)
         map.onMapClickListener = mapClickListener
@@ -106,7 +110,19 @@ private class LandMapBinding(
                 if (!isDisposed) {
                     leafMarkers.remove(marker)
                     icons.updateClusterMarker(info.size, marker)
-                    marker.onClickListener = DefaultClusterOnClickListener(info)
+                    val defaultListener = DefaultClusterOnClickListener(info)
+                    marker.setOnClickListener { overlay ->
+                        if (isDisposed) {
+                            true
+                        } else {
+                            EventLogger.logClickEvent(
+                                EventAction.DA1,
+                                RealEstateAnalyticsConstant.ROOM_LIST_MAP_CLUSTER_CLICK,
+                                RealEstateAnalyticsConstant.VALUE_MAP_CLUSTER
+                            )
+                            defaultListener.onClick(overlay)
+                        }
+                    }
                 }
             }
             .leafMarkerUpdater { info, marker ->

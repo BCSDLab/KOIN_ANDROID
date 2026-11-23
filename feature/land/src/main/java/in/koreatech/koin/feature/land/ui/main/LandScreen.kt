@@ -1,10 +1,13 @@
 package `in`.koreatech.koin.feature.land.ui.main
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,6 +15,7 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,11 +35,19 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.naver.maps.map.CameraAnimation
+import com.naver.maps.map.CameraUpdate
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.land.R
@@ -110,7 +122,7 @@ internal fun LandScreen(
                     isLoading = state.isLoading,
                     hasLoadError = state.hasLoadError,
                     onFilterClick = viewModel::selectFilter,
-                    onLandClick = viewModel::onDetailClick,
+                    onLandClick = viewModel::onPreviewClick,
                     modifier = Modifier
                         .heightIn(max = sheetMaxHeight)
                         .fillMaxHeight()
@@ -120,7 +132,7 @@ internal fun LandScreen(
             } else {
                 LandSelectedBottomSheet(
                     land = selectedLand,
-                    onDismiss = { viewModel.selectLand(null) },
+                    onDismiss = viewModel::onPreviewCloseClick,
                     onDetailClick = { viewModel.onDetailClick(selectedLand.id) },
                     modifier = Modifier
                         .heightIn(max = sheetMaxHeight)
@@ -135,7 +147,15 @@ internal fun LandScreen(
         topBar = {
             KoinTopAppBar2(
                 title = { Text(text = stringResource(R.string.land_title)) },
-                onNavigationIconClick = viewModel::onBackClick,
+                onNavigationIconClick = {
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        RealEstateAnalyticsConstant.ROOM_COMMON_BACK_CLICK,
+                        RealEstateAnalyticsConstant.VALUE_BACK,
+                        EventExtra(RealEstateAnalyticsConstant.SOURCE_SCREEN, RealEstateAnalyticsConstant.SCREEN_ROOM_LIST)
+                    )
+                    viewModel.onBackClick()
+                },
                 actions = {
                     IconButton(
                         onClick = onSearchClick,
@@ -178,10 +198,52 @@ private fun LandScreenImpl(
             selectedLandId = selectedLandId,
             onLandSelect = onLandSelect
         )
-        AndroidView(
-            factory = { mapView },
-            modifier = modifier.fillMaxSize()
-        )
+        Box(modifier = modifier.fillMaxSize()) {
+            AndroidView(
+                factory = { mapView },
+                modifier = Modifier.fillMaxSize()
+            )
+            val bottomPadding = with(LocalDensity.current) { bottomPaddingPx.toDp() }
+            Surface(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = bottomPadding + 16.dp),
+                shape = RoundedCornerShape(8.dp),
+                shadowElevation = 2.dp,
+                color = RebrandKoinTheme.colors.neutral0
+            ) {
+                Column {
+                    repeat(2) { index ->
+                        val zoomIn = index == 0
+                        val description = stringResource(if (zoomIn) R.string.land_map_zoom_in else R.string.land_map_zoom_out)
+                        IconButton(
+                            onClick = {
+                                EventLogger.logClickEvent(
+                                    EventAction.DA1,
+                                    RealEstateAnalyticsConstant.ROOM_LIST_MAP_ZOOM_CLICK,
+                                    if (zoomIn) RealEstateAnalyticsConstant.VALUE_ZOOM_IN else RealEstateAnalyticsConstant.VALUE_ZOOM_OUT
+                                )
+                                mapView.getMapAsync { map ->
+                                    if (!map.isDestroyed) {
+                                        val update = if (zoomIn) CameraUpdate.zoomIn() else CameraUpdate.zoomOut()
+                                        map.moveCamera(update.animate(CameraAnimation.Easing))
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .size(48.dp)
+                                .semantics { contentDescription = description }
+                        ) {
+                            Text(
+                                text = if (zoomIn) "+" else "−",
+                                color = RebrandKoinTheme.colors.neutral800,
+                                style = RebrandKoinTheme.typography.bold18
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

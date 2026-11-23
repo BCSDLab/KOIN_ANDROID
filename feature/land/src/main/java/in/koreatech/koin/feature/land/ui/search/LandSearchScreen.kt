@@ -3,6 +3,8 @@ package `in`.koreatech.koin.feature.land.ui.search
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,6 +44,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventExtra
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.land.R
@@ -79,6 +85,7 @@ internal fun LandSearchScreen(
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
     val onSubmit = {
+        viewModel.onSearchSubmit()
         keyboardController?.hide()
         focusManager.clearFocus()
     }
@@ -98,7 +105,15 @@ internal fun LandSearchScreen(
         topBar = {
             KoinTopAppBar2(
                 title = { Text(text = stringResource(R.string.land_title)) },
-                onNavigationIconClick = viewModel::onBackClick
+                onNavigationIconClick = {
+                    EventLogger.logClickEvent(
+                        EventAction.DA1,
+                        RealEstateAnalyticsConstant.ROOM_COMMON_BACK_CLICK,
+                        RealEstateAnalyticsConstant.VALUE_BACK,
+                        EventExtra(RealEstateAnalyticsConstant.SOURCE_SCREEN, RealEstateAnalyticsConstant.SCREEN_ROOM_LIST)
+                    )
+                    viewModel.onBackClick()
+                }
             )
         }
     ) { contentPadding ->
@@ -167,10 +182,23 @@ private fun LandSearchInput(
     modifier: Modifier = Modifier
 ) {
     val hint = stringResource(R.string.land_search_hint)
+    val interactionSource = remember { MutableInteractionSource() }
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect { interaction ->
+            if (interaction is PressInteraction.Release) {
+                EventLogger.logClickEvent(
+                    EventAction.DA1,
+                    RealEstateAnalyticsConstant.ROOM_LIST_SEARCH_INPUT_CLICK,
+                    RealEstateAnalyticsConstant.VALUE_SEARCH_INPUT
+                )
+            }
+        }
+    }
     BasicTextField(
         value = query,
         onValueChange = onQueryChange,
         singleLine = true,
+        interactionSource = interactionSource,
         textStyle = RebrandKoinTheme.typography.regular14.copy(color = RebrandKoinTheme.colors.neutral800),
         cursorBrush = SolidColor(RebrandKoinTheme.colors.primary500),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),

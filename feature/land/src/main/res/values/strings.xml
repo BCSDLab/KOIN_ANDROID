@@ -13,6 +13,8 @@
     <string name="land_search">복덕방 검색</string>
     <string name="land_search_hint">검색어를 입력해주세요.</string>
     <string name="land_search_empty">검색 결과가 없어요.</string>
+    <string name="land_map_zoom_in">지도 확대</string>
+    <string name="land_map_zoom_out">지도 축소</string>
     <string name="land_detail_loading">매물 정보를 불러오고 있어요.</string>
     <string name="land_detail_load_failed">매물 정보를 불러오지 못했어요.</string>
     <string name="land_detail_room_info">원룸 정보</string>
