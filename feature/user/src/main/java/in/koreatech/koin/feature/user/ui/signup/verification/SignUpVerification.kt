@@ -62,12 +62,10 @@ import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlert
 import `in`.koreatech.koin.feature.user.component.KoinUserTextFieldAlertState
 import `in`.koreatech.koin.feature.user.model.VerificationCodeState
 import `in`.koreatech.koin.feature.user.model.VerificationMethodState
+import `in`.koreatech.koin.feature.user.rememberGenderList
 import `in`.koreatech.koin.feature.user.ui.signin.SignInActivity
-import kotlinx.collections.immutable.persistentListOf
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
-
-val genderList = persistentListOf("남성", "여성")
 
 @Composable
 fun SignUpVerification(
@@ -246,7 +244,7 @@ private fun SignUpVerificationInitialStep(
         Spacer(modifier = Modifier.height(16.dp))
 
         KoinUserSingleChoiceRadioGroup(
-            items = genderList,
+            items = rememberGenderList(),
             selected = when (gender) {
                 Gender.Man -> 0
                 Gender.Woman -> 1

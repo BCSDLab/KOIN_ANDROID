@@ -81,7 +81,7 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
             }
 
             else -> {
-                ToastUtil.getInstance().makeShort("약관 타입을 명시해야 합니다.")
+                ToastUtil.getInstance().makeShort(R.string.term_type_required)
             }
         }
     }
@@ -119,7 +119,7 @@ class TermActivity : ActivityBase(R.layout.activity_term) {
                         }
 
                         is TermState.Failure -> {
-                            ToastUtil.getInstance().makeShort("약관을 불러오는 데 실패했습니다. 다시 시도해주세요")
+                            ToastUtil.getInstance().makeShort(R.string.term_load_failed)
                         }
                     }
                 }

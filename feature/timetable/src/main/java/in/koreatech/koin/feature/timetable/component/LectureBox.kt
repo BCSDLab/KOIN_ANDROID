@@ -96,7 +96,7 @@ fun LectureBox(
                 color = RebrandKoinTheme.colors.neutral800
             )
             Text(
-                text = lecture.professor.ifEmpty { "미배정" },
+                text = lecture.professor.ifEmpty { stringResource(R.string.timetable_lecture_professor_unassigned) },
                 style = RebrandKoinTheme.typography.regular12,
                 color = RebrandKoinTheme.colors.neutral800
             )

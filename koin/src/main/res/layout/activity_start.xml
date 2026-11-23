@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="Copyright "
+            android:text="@string/splash_copyright"
             android:textAppearance="@style/TextAppearance.Koin.Regular.13"
             android:textColor="#5a5a5a" />
 
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text=" @ BCSD Lab "
+            android:text="@string/splash_company"
             android:textAppearance="@style/TextAppearance.Koin.Medium.13"
             android:textColor="#5a5a5a" />
 
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="All rights reserved."
+            android:text="@string/splash_rights_reserved"
             android:textAppearance="@style/TextAppearance.Koin.Regular.13"
             android:textColor="#5a5a5a" />
 

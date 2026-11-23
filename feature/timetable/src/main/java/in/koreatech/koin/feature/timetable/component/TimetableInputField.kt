@@ -33,6 +33,7 @@ import `in`.koreatech.koin.feature.timetable.R
 fun TimetableInputField(
     text: String,
     title: String,
+    maxLength: Int,
     isError: Boolean = false,
     modifier: Modifier = Modifier,
     optional: Boolean = true,
@@ -51,11 +52,7 @@ fun TimetableInputField(
         BasicTextField(
             value = text,
             onValueChange = {
-                when (title) {
-                    "일정명" -> if (it.length <= 100) onValueChange(it)
-                    "교수명" -> if (it.length <= 30) onValueChange(it)
-                    "장소" -> if (it.length <= 30) onValueChange(it)
-                }
+                if (it.length <= maxLength) onValueChange(it)
             },
             modifier =
             Modifier
@@ -136,6 +133,7 @@ private fun TimetableInputFieldPreview() {
     TimetableInputField(
         text = "일정명",
         title = "일정명",
+        maxLength = 100,
         isError = true,
         optional = false,
         modifier = Modifier.padding(2.dp)
@@ -148,6 +146,7 @@ private fun TimetableInputFieldPreview_optional() {
     TimetableInputField(
         text = "일정명",
         title = "일정명",
+        maxLength = 100,
         isError = false,
         optional = true,
         modifier = Modifier.padding(2.dp)

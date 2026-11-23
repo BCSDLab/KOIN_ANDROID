@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,7 +71,7 @@ fun TimetableSearchBox(
                 contentPadding = PaddingValues(vertical = 8.dp, horizontal = 20.dp),
                 placeholder = {
                     Text(
-                        text = "검색어를 입력해주세요.",
+                        text = stringResource(R.string.timetable_search_placeholder),
                         style = RebrandKoinTheme.typography.regular12,
                         color = Color(0xFFE1E1E1)
                     )

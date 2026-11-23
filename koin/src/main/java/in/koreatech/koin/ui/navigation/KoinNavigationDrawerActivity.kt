@@ -441,7 +441,7 @@ abstract class KoinNavigationDrawerActivity :
                                     } else if (user.name?.isNotEmpty() == true) {
                                         user.name!!
                                     } else {
-                                        "회원"
+                                        getString(R.string.navigation_default_user_name)
                                     }
                                 nameTextView.visibility = View.VISIBLE
                                 helloMessageTextView.text = getString(R.string.navigation_hello_message)
@@ -471,7 +471,7 @@ abstract class KoinNavigationDrawerActivity :
                                     } else if (user.name.isNotEmpty()) {
                                         user.name
                                     } else {
-                                        "회원"
+                                        getString(R.string.navigation_default_user_name)
                                     }
                                 nameTextView.visibility = View.VISIBLE
                                 helloMessageTextView.text = getString(R.string.navigation_hello_message)

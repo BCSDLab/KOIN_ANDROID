@@ -11,11 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.feature.timetable.R
 
 @Composable
 fun TimetableScheduleBox(
@@ -38,10 +40,11 @@ fun TimetableScheduleBox(
     ) {
         Text(
             text = if (currentSemester.isEmpty()) {
-                "학기 추가하기"
+                stringResource(R.string.timetable_schedule_add_semester)
             } else {
-                currentSemester.toSemesterTitle(
-                    timetableName
+                semesterTitle(
+                    currentSemester = currentSemester,
+                    timetableName = timetableName
                 )
             },
             style = RebrandKoinTheme.typography.regular14,
@@ -52,48 +55,40 @@ fun TimetableScheduleBox(
     }
 }
 
-private fun String.toSemesterTitle(timetableName: String): String {
+@Composable
+private fun semesterTitle(
+    currentSemester: String,
+    timetableName: String
+): String {
+    val (year, semester) = currentSemester.toYearAndSemester() ?: return ""
+    val prefixContent = when {
+        year.isEmpty() -> ""
+        semester.isEmpty() -> stringResource(R.string.timetable_schedule_year, year)
+        else -> stringResource(R.string.timetable_schedule_year_semester, year, semester)
+    }
+    return if (timetableName.isEmpty()) {
+        prefixContent
+    } else {
+        "$prefixContent / $timetableName"
+    }
+}
+
+private fun String.toYearAndSemester(): Pair<String, String>? {
     return try {
         val content = this.split("-")
-        val prefixContent =
-            when (content.size) {
-                1 -> {
-                    val year = content.getOrNull(0)?.substring(0, 4).orEmpty()
-                    val semester = content.getOrNull(0)?.substring(4).orEmpty()
-                    if (year.isEmpty()) {
-                        ""
-                    } else {
-                        if (semester.isEmpty()) {
-                            "${year}년"
-                        } else {
-                            "${year}년 ${semester}학기"
-                        }
-                    }
-                }
-
-                2 -> {
-                    val year = content.getOrNull(0).orEmpty()
-                    val semester = content.getOrNull(1).orEmpty()
-                    if (year.isEmpty()) {
-                        ""
-                    } else {
-                        if (semester.isEmpty()) {
-                            "${year}년"
-                        } else {
-                            "${year}년 ${semester}학기"
-                        }
-                    }
-                }
-
-                else -> ""
+        when (content.size) {
+            1 -> {
+                val year = content.getOrNull(0)?.substring(0, 4).orEmpty()
+                val semester = content.getOrNull(0)?.substring(4).orEmpty()
+                year to semester
             }
-        if (timetableName.isEmpty()) {
-            prefixContent
-        } else {
-            "$prefixContent / $timetableName"
+
+            2 -> content.getOrNull(0).orEmpty() to content.getOrNull(1).orEmpty()
+
+            else -> "" to ""
         }
     } catch (e: Exception) {
-        ""
+        null
     }
 }
 

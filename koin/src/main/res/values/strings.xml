@@ -42,6 +42,7 @@
     <string name="navigation_item_open_source">오픈소스</string>
     <string name="navigation_item_login">로그인</string>
     <string name="navigation_item_logout">로그아웃</string>
+    <string name="navigation_default_user_name">회원</string>
     <string name="navigation_cancel">취소</string>
     <string name="login_request">로그인이 필요한 서비스입니다.\n로그인 하시겠습니까?</string>
     <string name="navigation_ok">확인</string>
@@ -547,4 +548,11 @@
     <string name="bottom_navigation_category">카테고리</string>
     <string name="bottom_navigation_article">게시판</string>
     <string name="bottom_navigation_profile">프로필</string>
+
+    <string name="term_type_required">약관 타입을 명시해야 합니다.</string>
+    <string name="term_load_failed">약관을 불러오는 데 실패했습니다. 다시 시도해주세요</string>
+
+    <string name="splash_copyright">"Copyright "</string>
+    <string name="splash_company">" @ BCSD Lab "</string>
+    <string name="splash_rights_reserved">All rights reserved.</string>
 </resources>

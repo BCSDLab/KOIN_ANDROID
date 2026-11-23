@@ -20,6 +20,7 @@ import `in`.koreatech.koin.feature.timetable.state.CustomContentState
 import `in`.koreatech.koin.feature.timetable.state.CustomExtraContentState
 import `in`.koreatech.koin.feature.timetable.state.SearchEngineState
 import `in`.koreatech.koin.feature.timetable.state.TimetableDialogState
+import `in`.koreatech.koin.feature.timetable.state.TimetableMessage
 import `in`.koreatech.koin.feature.timetable.state.TimetableSideEffect
 import `in`.koreatech.koin.feature.timetable.state.TimetableState
 import `in`.koreatech.koin.feature.timetable.utils.calculateEndTime
@@ -588,13 +589,13 @@ class TimetableViewModel @Inject constructor(
 
         customContentState.value.permuteDuplicationLecture()?.let {
             _customContentState.value = _customContentState.value.copy(data = it.toImmutableList())
-            _sideEffect.value = TimetableSideEffect.SnackBar("시간이 중복됩니다.")
+            _sideEffect.value = TimetableSideEffect.Message(TimetableMessage.TIME_DUPLICATED)
             return
         }
 
         customContentState.value.isValidationPlace().let {
             if (it.not()) {
-                _sideEffect.value = TimetableSideEffect.SnackBar("쉼표 문자 (,)를 제외하고 입력해 주세요.")
+                _sideEffect.value = TimetableSideEffect.Message(TimetableMessage.PLACE_COMMA_NOT_ALLOWED)
                 return
             }
         }
@@ -688,7 +689,7 @@ class TimetableViewModel @Inject constructor(
 
     fun addCustomExtraContent() {
         if (customContentState.value.data.size >= 5) {
-            _sideEffect.value = TimetableSideEffect.SnackBar(""""시간 및 장소 추가" 는 최대 5개까지 가능합니다.""")
+            _sideEffect.value = TimetableSideEffect.Message(TimetableMessage.EXTRA_CONTENT_LIMIT)
             return
         }
         val editContent = customContentState.value.data.toMutableList()
