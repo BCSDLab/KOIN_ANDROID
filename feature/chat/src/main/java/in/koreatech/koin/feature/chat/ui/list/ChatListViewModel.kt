@@ -4,27 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import `in`.koreatech.koin.domain.model.user.User
-import `in`.koreatech.koin.domain.usecase.chat.ChatWSConnectUseCase
-import `in`.koreatech.koin.domain.usecase.chat.ChatWSDisconnectUseCase
-import `in`.koreatech.koin.domain.usecase.chat.GetLostItemChatListUseCase
 import `in`.koreatech.koin.domain.usecase.chat.SubscribeLostItemChatListUseCase
 import `in`.koreatech.koin.domain.usecase.user.GetUserStatusUseCase
 import `in`.koreatech.koin.feature.chat.ui.mapper.toChatListItems
-import java.net.UnknownHostException
 import javax.inject.Inject
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
-import org.hildan.krossbow.stomp.LostReceiptException
-import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.orbitmvi.orbit.ContainerHost
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
@@ -35,17 +23,12 @@ import timber.log.Timber
 @HiltViewModel
 class ChatListViewModel @Inject constructor(
     private val getUserStatusUseCase: GetUserStatusUseCase,
-    private val getChatListUseCase: GetLostItemChatListUseCase,
-    private val chatWSConnectUseCase: ChatWSConnectUseCase,
-    private val chatWSDisconnectUseCase: ChatWSDisconnectUseCase,
     private val subscribeChatListUseCase: SubscribeLostItemChatListUseCase
 ) : ViewModel(), ContainerHost<ChatListState, ChatListSideEffect> {
     override val container = container<ChatListState, ChatListSideEffect>(ChatListState())
 
-    private val job = SupervisorJob()
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + job)
-    private val _connectChannel = Channel<Boolean>()
-    val connectChannel = _connectChannel.receiveAsFlow()
+    private var isChatListVisible = false
+    private var chatListUpdateJob: Job? = null
 
     init {
         getUserInfo()
@@ -58,106 +41,59 @@ class ChatListViewModel @Inject constructor(
             when (it) {
                 is User.Student -> {
                     reduce {
-                        state.copy(
-                            userId = it.id
-                        )
+                        state.copy(userId = it.id)
                     }
+                    startChatListUpdatesIfVisible()
                 }
 
                 is User.General -> {
                     reduce {
-                        state.copy(
-                            userId = it.id
-                        )
+                        state.copy(userId = it.id)
                     }
+                    startChatListUpdatesIfVisible()
                 }
 
                 is User.Anonymous -> {
+                    reduce {
+                        state.copy(userId = -1)
+                    }
+                    chatListUpdateJob?.cancel()
+                    chatListUpdateJob = null
                     postSideEffect(ChatListSideEffect.NavigateToLogin)
-                    return@collectLatest
-                }
-            }
-            _connectChannel.send(true)
-        }
-    }
-
-    fun fetchChatList() = viewModelScope.launch {
-        if (container.stateFlow.value.userId == -1) return@launch
-        getChatListUseCase().map { it.toChatListItems() }.catch {
-            Timber.e(it)
-        }.collect { data ->
-            intent {
-                reduce {
-                    state.copy(chatList = data, isLoading = false)
                 }
             }
         }
     }
 
-    fun connectToWS() = intent {
-        if (state.userId == -1) return@intent // If userId is not set, don't connect websocket
-        chatWSConnectUseCase().onSuccess {
-            subscribeChatList()
-        }.onFailure {
-            Timber.e(it)
-        }
+    fun startChatListUpdates() {
+        isChatListVisible = true
+        startChatListUpdatesIfVisible()
     }
 
-    private suspend fun disconnectWS() {
-        try {
-            withTimeout(DISCONNECT_TIMEOUT_MS) {
-                chatWSDisconnectUseCase().onFailure {
-                    // Sometimes the server closes the connection too quickly to send a RECEIPT, which is not really an error
-                    // So, we can ignore LostReceiptException
-                    // http://stomp.github.io/stomp-specification-1.2.html#Connection_Lingering
-                    if (it !is LostReceiptException) {
-                        Timber.e(it)
+    fun stopChatListUpdates() {
+        isChatListVisible = false
+        chatListUpdateJob?.cancel()
+        chatListUpdateJob = null
+    }
+
+    private fun startChatListUpdatesIfVisible() {
+        if (!isChatListVisible || container.stateFlow.value.userId == -1 || chatListUpdateJob?.isActive == true) return
+
+        chatListUpdateJob = viewModelScope.launch {
+            subscribeChatListUseCase().map { it.toChatListItems() }.catch {
+                Timber.e(it)
+            }.collect { data ->
+                intent {
+                    reduce {
+                        state.copy(chatList = data, isLoading = false)
                     }
                 }
-            }
-        } catch (_: TimeoutCancellationException) {
-            Timber.w("WebSocket disconnect timed out after ${DISCONNECT_TIMEOUT_MS}ms, continuing cleanup")
-        }
-    }
-
-    private fun subscribeChatList() = intent {
-        subscribeChatListUseCase().map { it.toChatListItems() }.catch {
-            if (it is UnknownHostException) {
-                // Android OS disconnect network when the device enter idle.
-                // So, we set shouldReconnect to true
-                // And reconnect websocket when activity is resumed
-                _connectChannel.send(true)
-            } else if (it is WebSocketConnectionException) {
-                if (it.cause is UnknownHostException) {
-                    // Android OS disconnect network when the device enter idle.
-                    // So, we set shouldReconnect to true
-                    // And reconnect websocket when activity is resumed
-                    _connectChannel.send(true)
-                } else {
-                    Timber.e(it)
-                }
-            } else {
-                Timber.e(it)
-            }
-        }.collect { data ->
-            reduce {
-                state.copy(chatList = data)
             }
         }
     }
 
     override fun onCleared() {
+        stopChatListUpdates()
         super.onCleared()
-        coroutineScope.launch {
-            try {
-                disconnectWS()
-            } finally {
-                job.cancel()
-            }
-        }
-    }
-
-    companion object {
-        private const val DISCONNECT_TIMEOUT_MS = 5000L
     }
 }

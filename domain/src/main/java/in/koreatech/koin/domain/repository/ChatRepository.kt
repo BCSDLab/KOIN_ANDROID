@@ -40,7 +40,7 @@ interface ChatRepository {
     @Deprecated("Use sendLostItemChatMessage")
     suspend fun sendMessage(articleId: Int, chatRoomId: Int, message: ChatMessage): Result<Unit>
 
-    suspend fun getLostItemChatRoomList(): Flow<List<ChatRoomInfo>>
+    fun getLostItemChatRoomList(): Flow<List<ChatRoomInfo>>
 
     suspend fun getLostItemChatRoom(
         articleId: Int,

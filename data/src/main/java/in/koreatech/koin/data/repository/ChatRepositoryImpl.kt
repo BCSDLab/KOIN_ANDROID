@@ -33,6 +33,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
+import timber.log.Timber
 
 class ChatRepositoryImpl @Inject constructor(
     private val chatRemoteDataSource: ChatRemoteDataSource
@@ -107,7 +108,7 @@ class ChatRepositoryImpl @Inject constructor(
         return chatRemoteDataSource.sendMessage(articleId, chatRoomId, message.toChatMessageRequest())
     }
 
-    override suspend fun getLostItemChatRoomList(): Flow<List<ChatRoomInfo>> = flow {
+    override fun getLostItemChatRoomList(): Flow<List<ChatRoomInfo>> = flow {
         emit(loadChatList())
     }
 
@@ -152,7 +153,9 @@ class ChatRepositoryImpl @Inject constructor(
     override fun subscribeLostItemChatList(): Flow<List<ChatRoomInfo>> {
         return flow {
             while (currentCoroutineContext().isActive) {
-                emit(loadChatList())
+                val result = suspendRunCatching { loadChatList() }
+                result.onFailure { Timber.e(it, "Failed to load lost item chat list") }
+                result.getOrNull()?.let { emit(it) }
                 delay(CHAT_LIST_REFRESH_INTERVAL_MS)
             }
         }.distinctUntilChanged()

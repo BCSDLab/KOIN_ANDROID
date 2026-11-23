@@ -8,6 +8,6 @@ import kotlinx.coroutines.flow.Flow
 class GetLostItemChatListUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
-    suspend operator fun invoke(): Flow<List<ChatRoomInfo>> =
+    operator fun invoke(): Flow<List<ChatRoomInfo>> =
         chatRepository.getLostItemChatRoomList()
 }
