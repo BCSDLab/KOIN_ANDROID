@@ -4,7 +4,6 @@ import androidx.core.net.toUri
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.domain.model.chat.ChatRoomInfo
 import `in`.koreatech.koin.domain.model.chat.ChatRoomMessage
-import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessages
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomState
@@ -58,6 +57,15 @@ private fun List<ConvertedChatMessage>.toDateGroups(): List<ConvertedChatMessage
         .toSortedMap()
         .map { (date, messages) -> ConvertedChatMessages(date, messages) }
 
+fun List<ConvertedChatMessages>.withCurrentUserId(currentUserId: Int): List<ConvertedChatMessages> =
+    map { group ->
+        group.copy(
+            messages = group.messages.map { message ->
+                message.copy(isSentByMe = message.userId == currentUserId)
+            }
+        )
+    }
+
 fun List<ChatRoomInfo>.toChatListItems(): List<ChatListItem> = mapNotNull { it.toChatListItem() }
 
 private fun ChatRoomInfo.toChatListItem(): ChatListItem? {
@@ -74,16 +82,10 @@ private fun ChatRoomInfo.toChatListItem(): ChatListItem? {
     )
 }
 
-fun ChatRoomInfo.toChatRoomState(user: User): ChatRoomState {
-    val currentUserId = when (user) {
-        is User.Student -> user.id
-        is User.General -> user.id
-        User.Anonymous -> throw IllegalAccessException("Anonymous users cannot access chat rooms")
-    }
+fun ChatRoomInfo.toChatRoomState(): ChatRoomState {
     return ChatRoomState(
         articleId = contextId,
         chatRoomId = requireNotNull(chatRoomId) { "chatRoomId is required for legacy ChatRoomState" },
-        userId = currentUserId,
         articleTitle = roomName.replace("\n", " "),
         chatPartnerProfileImage = (counterpartProfileImage ?: "").toUri()
     )

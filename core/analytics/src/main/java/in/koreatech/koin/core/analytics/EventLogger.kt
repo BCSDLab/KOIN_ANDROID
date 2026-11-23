@@ -8,6 +8,7 @@ import `in`.koreatech.koin.domain.model.user.LoggerUserData
 import `in`.koreatech.koin.domain.usecase.user.GetLoggerUserDataUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,6 +33,9 @@ object EventLogger {
     fun init(getLoggerUserDataUseCase: GetLoggerUserDataUseCase) {
         CoroutineScope(Dispatchers.IO).launch {
             getLoggerUserDataUseCase()
+                .catch {
+                    Log.w("EventLogger", "Failed to load analytics user data", it)
+                }
                 .collectLatest {
                     loggerUserData = it
                 }

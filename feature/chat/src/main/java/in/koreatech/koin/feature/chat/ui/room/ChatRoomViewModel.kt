@@ -22,6 +22,7 @@ import `in`.koreatech.koin.feature.chat.ui.mapper.appendMessage
 import `in`.koreatech.koin.feature.chat.ui.mapper.mapToConvertedChatMessages
 import `in`.koreatech.koin.feature.chat.ui.mapper.mergeWithChatMessages
 import `in`.koreatech.koin.feature.chat.ui.mapper.toChatRoomState
+import `in`.koreatech.koin.feature.chat.ui.mapper.withCurrentUserId
 import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
 import java.net.UnknownHostException
 import java.time.LocalDateTime
@@ -34,7 +35,6 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeout
@@ -105,7 +105,9 @@ class ChatRoomViewModel @Inject constructor(
                 is User.Student -> {
                     reduce {
                         state.copy(
-                            userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                            userId = it.id,
+                            userNickName = it.nickname ?: it.anonymousNickname ?: "",
+                            chatMessage = if (state.userId == it.id) state.chatMessage else state.chatMessage.withCurrentUserId(it.id)
                         )
                     }
                 }
@@ -113,12 +115,14 @@ class ChatRoomViewModel @Inject constructor(
                 is User.General -> {
                     reduce {
                         state.copy(
-                            userNickName = it.nickname ?: it.anonymousNickname ?: ""
+                            userId = it.id,
+                            userNickName = it.nickname ?: it.anonymousNickname ?: "",
+                            chatMessage = if (state.userId == it.id) state.chatMessage else state.chatMessage.withCurrentUserId(it.id)
                         )
                     }
                 }
 
-                is User.Anonymous -> throw IllegalAccessException()
+                is User.Anonymous -> Unit
             }
         }
     }
@@ -129,13 +133,12 @@ class ChatRoomViewModel @Inject constructor(
     ) = intent {
         reduce { state.copy(isLoading = true) }
         getChatRoomUseCase(articleId, chatRoomId).mapCatching {
-            it.toChatRoomState(getUserStatusUseCase().first())
+            it.toChatRoomState()
         }.onSuccess { room ->
             reduce {
                 state.copy(
                     articleId = room.articleId,
                     chatRoomId = room.chatRoomId,
-                    userId = room.userId,
                     articleTitle = room.articleTitle,
                     chatPartnerProfileImage = room.chatPartnerProfileImage,
                     isLoading = false
@@ -144,13 +147,17 @@ class ChatRoomViewModel @Inject constructor(
             getChatMessages(room.articleId, room.chatRoomId)
             _connectChannel.send(true)
         }.onFailure { e ->
+            reduce { state.copy(isLoading = false) }
             when (e) {
                 is KoinChatException.BlockedException -> {
                     reduce { state.copy(isBlocked = true) }
                     postSideEffect(ChatRoomSideEffect.BlockedByUser)
                 }
 
-                else -> Timber.e(e)
+                else -> {
+                    Timber.e(e)
+                    postSideEffect(ChatRoomSideEffect.FailedToLoadMessages)
+                }
             }
         }
     }
@@ -208,7 +215,9 @@ class ChatRoomViewModel @Inject constructor(
                 )
             }
         }.onFailure {
+            reduce { state.copy(isLoading = false) }
             Timber.e(it)
+            postSideEffect(ChatRoomSideEffect.FailedToLoadMessages)
         }
     }
 
