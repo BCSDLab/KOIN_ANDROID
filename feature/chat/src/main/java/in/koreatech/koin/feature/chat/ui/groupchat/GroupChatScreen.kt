@@ -4,21 +4,42 @@ import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.exclude
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.net.toUri
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -26,16 +47,22 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import `in`.koreatech.koin.core.analytics.CallvanAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInput
+import `in`.koreatech.koin.core.designsystem.component.input.KoinChatInputDefaults
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
+import `in`.koreatech.koin.domain.model.chat.ChatDomainType
 import `in`.koreatech.koin.feature.chat.R
-import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatContent
-import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatTopBar
-import `in`.koreatech.koin.feature.chat.ui.groupchat.component.GroupChatTopBarDefaults
-import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
-import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableMap
+import `in`.koreatech.koin.feature.chat.ui.component.ChatDateChip
+import `in`.koreatech.koin.feature.chat.ui.component.ChatImage
+import `in`.koreatech.koin.feature.chat.ui.component.ChatMessageBubble
+import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
+import `in`.koreatech.koin.feature.chat.ui.component.ChatReadObserver
+import `in`.koreatech.koin.feature.chat.ui.component.ChatReadViewModel
+import `in`.koreatech.koin.feature.chat.ui.component.ChatTopBar
+import `in`.koreatech.koin.feature.chat.util.handleSelectedImages
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
 
@@ -43,83 +70,108 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 fun GroupChatScreen(
     viewModel: GroupChatViewModel = hiltViewModel()
 ) {
+    val chatReadViewModel: ChatReadViewModel = hiltViewModel()
     val context = LocalContext.current
-    val uiState by viewModel.collectAsState()
+    val state by viewModel.collectAsState()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
-    DisposableEffect(lifecycleOwner) {
+    DisposableEffect(lifecycleOwner, viewModel) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_RESUME -> viewModel.startPolling()
-                Lifecycle.Event.ON_PAUSE -> viewModel.stopPolling()
-                else -> {}
+                Lifecycle.Event.ON_RESUME -> viewModel.startReceivingMessages()
+                Lifecycle.Event.ON_PAUSE -> viewModel.stopReceivingMessages()
+                else -> Unit
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
+            viewModel.stopReceivingMessages()
         }
     }
 
-    viewModel.collectSideEffect {
-        handleSideEffect(
-            sideEffect = it,
-            context = context
-        )
-    }
-
+    viewModel.collectSideEffect { handleSideEffect(it, context) }
     GroupChatScreenImpl(
-        departure = uiState.departure,
-        arrival = uiState.arrival,
-        departureTime = uiState.departureTime,
-        currentMemberCount = uiState.currentMemberCount,
-        maxMemberCount = uiState.maxMemberCount,
-        isLoading = uiState.isLoading,
-        messages = uiState.messages,
-        memberColors = uiState.memberColors,
-        chatInputValue = uiState.chatInputValue,
-        uploadingImage = uiState.uploadingImage,
-        showImage = Pair(uiState.showImage.first, uiState.showImage.second.toUri()),
+        state = state,
         onNavigationIconClick = { onBackPressedDispatcher?.onBackPressed() },
         onChatInputValueChange = viewModel::onChatInputValueChange,
         uploadImage = viewModel::uploadImage,
-        onSendClick = viewModel::sendMessage,
-        onShowImageChange = viewModel::changeShowImageState
+        onSendClick = {
+            if (state.domainType == ChatDomainType.CALLVAN) {
+                EventLogger.logCustomEvent(
+                    CallvanAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    CallvanAnalyticsConstant.Label.CHAT_MESSAGE_SEND,
+                    ""
+                )
+            }
+            viewModel.sendMessage()
+        },
+        onReadMessage = chatReadViewModel::markRead
     )
 }
 
 @Composable
 private fun GroupChatScreenImpl(
-    departure: String,
-    arrival: String,
-    departureTime: String,
-    currentMemberCount: Int,
-    maxMemberCount: Int,
-    isLoading: Boolean,
-    messages: ImmutableList<GroupChatMessageGroup>,
-    memberColors: ImmutableMap<Int, Int>,
-    chatInputValue: String,
-    uploadingImage: ImmutableList<ConvertedChatMessage>,
-    showImage: Pair<Boolean, Uri>,
-    modifier: Modifier = Modifier,
-    onNavigationIconClick: () -> Unit = {},
-    onChatInputValueChange: (String) -> Unit = {},
-    uploadImage: (Long, String, String, Uri) -> Unit = { _, _, _, _ -> },
-    onSendClick: () -> Unit = {},
-    onShowImageChange: (Boolean, Uri) -> Unit = { _, _ -> }
+    state: GroupChatState,
+    onNavigationIconClick: () -> Unit,
+    onChatInputValueChange: (String) -> Unit,
+    uploadImage: (Long, String, String, Uri) -> Unit,
+    onSendClick: () -> Unit,
+    onReadMessage: suspend (String, String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val latestMessageId = state.messages.lastOrNull()?.messages?.lastOrNull()?.id
+    val isUploadingImage = state.uploadingImages.isNotEmpty()
+    var expandedImageUrl by rememberSaveable { mutableStateOf<String?>(null) }
+    val onImageClick: (Uri) -> Unit = remember { { uri -> expandedImageUrl = uri.toString() } }
+    val screenTitle = when (state.domainType) {
+        ChatDomainType.CALLVAN -> stringResource(
+            R.string.chat_callvan_title,
+            state.departure,
+            state.arrival,
+            state.departureTime
+        )
+        else -> state.title
+    }
+
+    LaunchedEffect(latestMessageId, isUploadingImage) {
+        if ((latestMessageId != null || isUploadingImage) && scrollState.firstVisibleItemIndex < 3) {
+            scrollState.animateScrollToItem(0)
+        }
+    }
+    if (!state.isLoading && expandedImageUrl == null) {
+        ChatReadObserver(scrollState, latestMessageId, state.readReceiptRoomId, onReadMessage)
+    }
+
     Scaffold(
         modifier = modifier.imePadding(),
         topBar = {
-            GroupChatTopBar(
-                departure = departure,
-                arrival = arrival,
-                departureTime = departureTime,
-                currentMemberCount = currentMemberCount,
-                maxMemberCount = maxMemberCount,
+            ChatTopBar(
+                title = screenTitle,
                 onNavigationIconClick = onNavigationIconClick,
-                colors = GroupChatTopBarDefaults.purpleColors()
+                memberCount = state.currentMemberCount,
+                maxMemberCount = state.maxMemberCount
+            )
+        },
+        bottomBar = {
+            KoinChatInput(
+                value = state.chatInputValue,
+                onValueChange = onChatInputValueChange,
+                onImageSelected = { uris ->
+                    if (uris.isNotEmpty()) {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            handleSelectedImages(uris, context, uploadImage)
+                        }
+                    }
+                },
+                onSendClick = onSendClick,
+                enabled = !state.isLoading && !isUploadingImage && state.canSend,
+                colors = KoinChatInputDefaults.purpleColors()
             )
         },
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
@@ -127,95 +179,122 @@ private fun GroupChatScreenImpl(
             .exclude(WindowInsets.ime),
         containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
-        GroupChatContent(
-            modifier = Modifier.padding(contentPadding),
-            isLoading = isLoading,
-            messages = messages,
-            memberColors = memberColors,
-            chatInputValue = chatInputValue,
-            uploadingImage = uploadingImage,
-            showImage = showImage,
-            onChatInputValueChange = onChatInputValueChange,
-            uploadImage = uploadImage,
-            onSendClick = {
-                EventLogger.logCustomEvent(
-                    CallvanAnalyticsConstant.EVENT_NAME,
-                    EventCategory.CLICK.value,
-                    CallvanAnalyticsConstant.Label.CHAT_MESSAGE_SEND,
-                    ""
-                )
-                onSendClick()
-            },
-            onShowImageChange = onShowImageChange
-        )
+        Box(Modifier.padding(contentPadding).fillMaxSize()) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                state = scrollState,
+                reverseLayout = true
+            ) {
+                items(state.uploadingImages.asReversed(), key = { it.id }) { message ->
+                    ChatMessageBubble(
+                        content = message.content,
+                        timestamp = message.timestamp,
+                        isSentByMe = true,
+                        isImage = true,
+                        isUploading = true,
+                        onImageClick = onImageClick
+                    )
+                }
+                state.messages.asReversed().forEach { group ->
+                    items(group.messages.asReversed(), key = { it.id }) { message ->
+                        ChatMessageBubble(
+                            content = message.content,
+                            timestamp = message.timestamp,
+                            isSentByMe = message.isSentByMe,
+                            isImage = message.isImage,
+                            authorNickname = message.authorNickname.takeIf { message.isFirstInGroup },
+                            isLeftUser = message.isLeftUser,
+                            onImageClick = onImageClick
+                        )
+                    }
+                    item(key = "date_${group.date}") {
+                        ChatDateChip(group.date)
+                    }
+                }
+            }
+            if (state.isLoading) {
+                ChatProgressIndicator(Modifier.background(RebrandKoinTheme.colors.neutral0))
+            }
+        }
+    }
+
+    expandedImageUrl?.let { imageUrl ->
+        Dialog(
+            onDismissRequest = { expandedImageUrl = null },
+            properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize().background(RebrandKoinTheme.colors.neutral0),
+                contentAlignment = Alignment.Center
+            ) {
+                ChatImage(imageUrl = imageUrl, modifier = Modifier.fillMaxSize())
+                IconButton(
+                    onClick = { expandedImageUrl = null },
+                    modifier = Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(24.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(R.string.chat_close_image),
+                        tint = RebrandKoinTheme.colors.neutral800
+                    )
+                }
+            }
+        }
     }
 }
 
-private fun handleSideEffect(
-    sideEffect: GroupChatSideEffect,
-    context: Context
-) {
-    when (sideEffect) {
-        is GroupChatSideEffect.FailedToLoadMessages -> {
-            Toast.makeText(
-                context,
-                context.getString(R.string.failed_to_load_messages),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        is GroupChatSideEffect.FailedToSendMessage -> {
-            Toast.makeText(
-                context,
-                context.getString(R.string.failed_to_send_message),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-        is GroupChatSideEffect.FailedToUploadImage -> {
-            Toast.makeText(
-                context,
-                context.getString(R.string.failed_to_upload_image),
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+private fun handleSideEffect(sideEffect: GroupChatSideEffect, context: Context) {
+    val messageRes = when (sideEffect) {
+        GroupChatSideEffect.FailedToLoadChatRoom -> R.string.failed_to_load_chat_room
+        GroupChatSideEffect.FailedToLoadMessages -> R.string.failed_to_load_messages
+        GroupChatSideEffect.FailedToSendMessage -> R.string.failed_to_send_message
+        GroupChatSideEffect.FailedToUploadImage -> R.string.failed_to_upload_image
     }
+    Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun GroupChatScreenPreview() {
-    GroupChatScreenImpl(
-        departure = GroupChatPreviewData.DEPARTURE,
-        arrival = GroupChatPreviewData.ARRIVAL,
-        departureTime = GroupChatPreviewData.DEPARTURE_TIME,
-        currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
-        maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
-        isLoading = false,
-        messages = GroupChatPreviewData.messages(),
-        memberColors = GroupChatPreviewData.memberColors,
-        chatInputValue = "",
-        uploadingImage = persistentListOf(),
-        showImage = GroupChatPreviewData.emptyImageState,
-        onNavigationIconClick = {}
-    )
+    RebrandKoinTheme {
+        GroupChatScreenImpl(
+            state = GroupChatState(
+                domainType = ChatDomainType.CALLVAN,
+                departure = GroupChatPreviewData.DEPARTURE,
+                arrival = GroupChatPreviewData.ARRIVAL,
+                departureTime = GroupChatPreviewData.DEPARTURE_TIME,
+                currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+                maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
+                isLoading = false,
+                messages = GroupChatPreviewData.messages()
+            ),
+            onNavigationIconClick = {},
+            onChatInputValueChange = {},
+            uploadImage = { _, _, _, _ -> },
+            onSendClick = {},
+            onReadMessage = { _, _ -> }
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun GroupChatScreenEmptyPreview() {
-    GroupChatScreenImpl(
-        departure = GroupChatPreviewData.DEPARTURE,
-        arrival = GroupChatPreviewData.ARRIVAL,
-        departureTime = GroupChatPreviewData.DEPARTURE_TIME,
-        currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
-        maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
-        isLoading = false,
-        messages = persistentListOf(),
-        memberColors = GroupChatPreviewData.emptyMemberColors,
-        chatInputValue = "",
-        uploadingImage = persistentListOf(),
-        showImage = GroupChatPreviewData.emptyImageState,
-        onNavigationIconClick = {}
-    )
+    RebrandKoinTheme {
+        GroupChatScreenImpl(
+            state = GroupChatState(
+                domainType = ChatDomainType.TEAM_RECRUITMENT,
+                title = "모집 채팅방",
+                currentMemberCount = GroupChatPreviewData.CURRENT_MEMBER_COUNT,
+                maxMemberCount = GroupChatPreviewData.MAX_MEMBER_COUNT,
+                isLoading = false,
+                messages = persistentListOf()
+            ),
+            onNavigationIconClick = {},
+            onChatInputValueChange = {},
+            uploadImage = { _, _, _, _ -> },
+            onSendClick = {},
+            onReadMessage = { _, _ -> }
+        )
+    }
 }

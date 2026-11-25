@@ -8,11 +8,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import `in`.koreatech.koin.core.navigation.ChatDomain
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.recruitment.ui.applicantdetail.ApplicantDetailScreen
 import `in`.koreatech.koin.feature.recruitment.ui.applicantmanagement.ApplicantManagementScreen
-import `in`.koreatech.koin.feature.recruitment.ui.chat.directchat.RecruitmentDirectChatScreen
-import `in`.koreatech.koin.feature.recruitment.ui.chat.groupchat.RecruitmentGroupChatScreen
 import `in`.koreatech.koin.feature.recruitment.ui.detail.RecruitmentDetailScreen
 import `in`.koreatech.koin.feature.recruitment.ui.main.RecruitmentMainScreen
 import `in`.koreatech.koin.feature.recruitment.ui.myappliedrecruitment.MyAppliedRecruitmentScreen
@@ -145,27 +144,33 @@ fun NavGraphBuilder.koinRecruitmentGraph(
             }
         )
     }
-    composable<RecruitmentNavType.RecruitmentGroupChat> {
-        RecruitmentGroupChatScreen()
-    }
-    composable<RecruitmentNavType.RecruitmentDirectChat> {
-        RecruitmentDirectChatScreen()
-    }
     composable<RecruitmentNavType.Notification> {
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
         RecruitmentNotificationScreen(
             onBack = { navController.popBackStack() },
             onNavigateToApplicantManagement = { recruitmentId ->
                 navController.navigate(RecruitmentNavType.ApplicantManagement(recruitmentId))
             },
             onNavigateToGroupChat = { recruitmentId, chatRoomId ->
-                navController.navigate(
-                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
-                )
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.TEAM_RECRUITMENT,
+                    contextId = recruitmentId,
+                    chatRoomId = chatRoomId
+                ).apply {
+                    context.startActivity(this)
+                }
             },
             onNavigateToDirectChat = { recruitmentId, applicationId ->
-                navController.navigate(
-                    RecruitmentNavType.RecruitmentDirectChat(recruitmentId = recruitmentId, applicationId = applicationId)
-                )
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.TEAM_RECRUITMENT,
+                    contextId = recruitmentId,
+                    applicationId = applicationId
+                ).apply {
+                    context.startActivity(this)
+                }
             },
             onNavigateToMyAppliedRecruitment = {
                 navController.navigate(RecruitmentNavType.MyAppliedRecruitment)
@@ -177,24 +182,33 @@ fun NavGraphBuilder.koinRecruitmentGraph(
     }
     composable<RecruitmentNavType.ApplicantManagement> { backStackEntry ->
         val route = backStackEntry.toRoute<RecruitmentNavType.ApplicantManagement>()
+        val navigator = rememberNavigator()
+        val context = LocalContext.current
         ApplicantManagementScreen(
             navController = navController,
             onNavigateUp = { navController.navigateUp() },
             onChat = { chatRoomId ->
-                navController.navigate(
-                    RecruitmentNavType.RecruitmentGroupChat(
-                        recruitmentId = route.postId,
-                        chatRoomId = chatRoomId
-                    )
-                )
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.TEAM_RECRUITMENT,
+                    contextId = route.postId,
+                    chatRoomId = chatRoomId
+                ).apply {
+                    context.startActivity(this)
+                }
             },
             onApplicantDetail = { applicantId ->
                 navController.navigate(RecruitmentNavType.ApplicantDetail(route.postId, applicantId))
             },
             onApplicantChat = { applicantId ->
-                navController.navigate(
-                    RecruitmentNavType.RecruitmentDirectChat(recruitmentId = route.postId, applicationId = applicantId)
-                )
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.TEAM_RECRUITMENT,
+                    contextId = route.postId,
+                    applicationId = applicantId
+                ).apply {
+                    context.startActivity(this)
+                }
             }
         )
     }
@@ -212,9 +226,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                 navController.popBackStack(RecruitmentNavType.RecruitmentMain, inclusive = false)
             },
             onNavigateToGroupChat = { recruitmentId, chatRoomId ->
-                navController.navigate(
-                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
-                )
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.TEAM_RECRUITMENT,
+                    contextId = recruitmentId,
+                    chatRoomId = chatRoomId
+                ).apply {
+                    context.startActivity(this)
+                }
             }
         )
     }
@@ -232,9 +251,14 @@ fun NavGraphBuilder.koinRecruitmentGraph(
                 navController.navigate(RecruitmentNavType.ApplicantManagement(postId))
             },
             onChat = { recruitmentId, chatRoomId ->
-                navController.navigate(
-                    RecruitmentNavType.RecruitmentGroupChat(recruitmentId = recruitmentId, chatRoomId = chatRoomId)
-                )
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.TEAM_RECRUITMENT,
+                    contextId = recruitmentId,
+                    chatRoomId = chatRoomId
+                ).apply {
+                    context.startActivity(this)
+                }
             }
         )
     }

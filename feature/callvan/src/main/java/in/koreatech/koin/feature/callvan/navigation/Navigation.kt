@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import `in`.koreatech.koin.core.navigation.ChatDomain
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.callvan.DEEPLINK_CALLVAN
 import `in`.koreatech.koin.feature.callvan.ui.create.CallvanCreateScreen
@@ -88,9 +89,10 @@ fun NavGraphBuilder.koinCallvanGraph(
             navController.popBackStack()
         }
         LaunchedEffect(Unit) {
-            navigator.navigateToGroupChat(
-                context,
-                it.toRoute<CallvanNavType.CallvanChat>().postId
+            navigator.navigateToChatRoom(
+                context = context,
+                domainType = ChatDomain.CALLVAN,
+                contextId = it.toRoute<CallvanNavType.CallvanChat>().postId
             ).let(launcher::launch)
         }
     }

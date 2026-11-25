@@ -1,7 +1,6 @@
 package `in`.koreatech.koin.feature.chat.ui.list
 
 import android.app.Activity
-import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,10 +13,12 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,16 +28,13 @@ import androidx.lifecycle.repeatOnLifecycle
 import `in`.koreatech.koin.core.analytics.ChatAnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventCategory
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.domain.model.chat.ChatListItem
 import `in`.koreatech.koin.feature.chat.R
 import `in`.koreatech.koin.feature.chat.ui.component.ChatProgressIndicator
+import `in`.koreatech.koin.feature.chat.ui.component.ChatTopBar
 import `in`.koreatech.koin.feature.chat.ui.list.component.ChatListItem
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 import java.time.LocalDateTime
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
@@ -46,6 +44,7 @@ import org.orbitmvi.orbit.compose.collectSideEffect
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatList(
+    navigateToChatRoom: (Int, Int) -> Unit,
     viewModel: ChatListViewModel = hiltViewModel(),
     showBlockedMessage: Boolean = false
 ) {
@@ -54,6 +53,8 @@ fun ChatList(
 
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+    val blockedMessage = stringResource(R.string.block_snackbar_message)
+    var hasShownBlockedMessage by rememberSaveable { mutableStateOf(false) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val navigator = rememberNavigator()
@@ -63,16 +64,6 @@ fun ChatList(
             is ChatListSideEffect.NavigateToLogin -> {
                 context.startActivity(navigator.navigateToSignIn(context))
                 (context as? Activity)?.finish()
-            }
-        }
-    }
-
-    LaunchedEffect(showBlockedMessage) {
-        if (showBlockedMessage) {
-            scope.launch {
-                snackbarHostState.showSnackbar(
-                    message = context.getString(R.string.block_snackbar_message)
-                )
             }
         }
     }
@@ -88,6 +79,17 @@ fun ChatList(
         }
     }
 
+    LaunchedEffect(showBlockedMessage, blockedMessage) {
+        if (showBlockedMessage && !hasShownBlockedMessage) {
+            hasShownBlockedMessage = true
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    message = blockedMessage
+                )
+            }
+        }
+    }
+
     Scaffold(
         snackbarHost = {
             SnackbarHost(
@@ -95,22 +97,20 @@ fun ChatList(
                 snackbar = {
                     Snackbar(
                         snackbarData = it,
-                        containerColor = Color(0xCC041A44),
-                        contentColor = KoinTheme.colors.neutral0,
-                        shape = KoinTheme.shapes.small
+                        containerColor = RebrandKoinTheme.colors.neutral800,
+                        contentColor = RebrandKoinTheme.colors.neutral0,
+                        shape = RebrandKoinTheme.shapes.small
                     )
                 }
             )
         },
         topBar = {
-            KoinTopAppBar(
+            ChatTopBar(
                 title = stringResource(id = R.string.chat_list_title),
-                onNavigationIconClick = {
-                    (context as Activity).finish()
-                }
+                onNavigationIconClick = { (context as Activity).finish() }
             )
         },
-        containerColor = KoinTheme.colors.neutral0
+        containerColor = RebrandKoinTheme.colors.neutral0
     ) { contentPadding ->
         ChatListContent(
             isLoading = uiState.isLoading,
@@ -122,10 +122,7 @@ fun ChatList(
                     ChatAnalyticsConstant.Label.CHAT_LIST_CONVERSATION_ENTRY,
                     ChatAnalyticsConstant.Value.MESSAGE
                 )
-                Intent(context, ChatRoomActivity::class.java).apply {
-                    putExtra(ARTICLE_ID, articleId)
-                    putExtra(CHAT_ROOM_ID, chatRoomId)
-                }.let(context::startActivity)
+                navigateToChatRoom(articleId, chatRoomId)
             },
             modifier = Modifier.padding(contentPadding)
         )

@@ -86,12 +86,11 @@ interface Navigator {
     ): Intent
 
     fun navigateToChatRoom(
-        context: Context
-    ): Intent
-
-    fun navigateToGroupChat(
         context: Context,
-        extraPostId: Int
+        domainType: ChatDomain,
+        contextId: Int,
+        chatRoomId: Int? = null,
+        applicationId: Int? = null
     ): Intent
 
     fun navigateToDepartmentInfo(

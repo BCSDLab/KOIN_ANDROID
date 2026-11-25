@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import `in`.koreatech.koin.core.navigation.ChatDomain
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
 import `in`.koreatech.koin.feature.lostandfound.DEEP_LINK_LOST_AND_FOUND_BASE
 import `in`.koreatech.koin.feature.lostandfound.ui.detail.LostAndFoundDetail
@@ -102,9 +103,11 @@ fun NavGraphBuilder.koinLostAndFoundGraph(
             onTopbarBackClick = popBackStackWithCancel,
             refreshList = { cancelRefreshList(false) },
             navigateToChatRoom = { articleId ->
-                val intent = navigator.navigateToChatRoom(context)
-                intent.putExtra(CHAT_ARTICLE_ID, articleId)
-                context.startActivity(intent)
+                navigator.navigateToChatRoom(
+                    context = context,
+                    domainType = ChatDomain.LOST_ITEM,
+                    contextId = articleId
+                ).let(context::startActivity)
             },
             navigateToRecentArticle = { articleId ->
                 navController.navigate(LostAndFoundNavType.LostAndFoundDetailRoute(articleId))

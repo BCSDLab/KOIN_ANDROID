@@ -1,5 +1,4 @@
 <resources>
-    <string name="chat_user_profile_image">User Profile Image</string>
     <string name="chat_loading">로딩중…</string>
     <string name="chat_block_user">차단하기</string>
     <string name="chat_toolbar_more">더보기</string>
@@ -7,6 +6,8 @@
     <string name="failed_to_connect_to_server">서버에 연결하지 못했습니다</string>
     <string name="failed_to_send_message">메시지를 전송하지 못했습니다</string>
     <string name="failed_to_load_messages">메시지를 불러오지 못했습니다</string>
+    <string name="failed_to_load_chat_room">채팅방을 불러오지 못했습니다.</string>
+    <string name="chat_unavailable">채팅방을 이용할 수 없습니다.</string>
     <string name="failed_to_block_user">사용자 차단에 실패했습니다</string>
     <string name="block_dialog_title">이 사용자를 차단하시겠습니까?</string>
     <string name="block_dialog_description">쪽지 수신 및 발신이 모두 차단됩니다.</string>
@@ -17,12 +18,14 @@
     <string name="failed_to_leave_party">콜밴팟에서 나가기에 실패했습니다</string>
     <string name="leave_party_success">콜밴팟에서 나갔습니다</string>
     <string name="removed_from_party">콜밴팟에서 퇴장되었습니다</string>
-    <string name="group_chat_left_user_label">나감</string>
-    <string name="chat_back">뒤로</string>
-    <string name="group_chat_member_count_icon">참여 인원</string>
-    <string name="group_chat_message_image">채팅 이미지</string>
-    <string name="group_chat_uploading_image">업로드 중인 채팅 이미지</string>
-    <string name="group_chat_fullscreen_image">확대된 채팅 이미지</string>
-    <string name="group_chat_toolbar_participants">%1$d/%2$d</string>
-    <string name="chat_date_format">yyyy년 MM월 dd일</string>
+    <string name="chat_left_user_label">나감</string>
+    <string name="chat_date_format">yyyy년 M월 d일</string>
+    <string name="chat_member_count_icon">참여 인원</string>
+    <string name="chat_toolbar_participants">%1$d/%2$d</string>
+    <string name="chat_partner_profile_image">상대방 프로필 이미지</string>
+    <string name="chat_message_image">채팅 이미지</string>
+    <string name="chat_uploading_image">업로드 중인 채팅 이미지</string>
+    <string name="chat_image_load_failed">이미지를 불러올 수 없습니다.</string>
+    <string name="chat_close_image">이미지 닫기</string>
+    <string name="chat_callvan_title">%1$s - %2$s %3$s</string>
 </resources>
