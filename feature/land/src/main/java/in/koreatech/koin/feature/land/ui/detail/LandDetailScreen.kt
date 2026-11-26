@@ -9,6 +9,8 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,8 +39,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -305,7 +309,7 @@ private fun LandDetailPhotos(imageUrls: ImmutableList<String>, name: String) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(R.drawable.ic_bbiko_sleep),
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_land_bbiko_sleep),
                     contentDescription = null
                 )
                 Spacer(Modifier.height(8.dp))
@@ -335,11 +339,26 @@ private fun LandDetailPhotos(imageUrls: ImmutableList<String>, name: String) {
                     }
                 }
             }
+            var selectedPhotoUrl by remember(imageUrls) { mutableStateOf<String?>(null) }
+            selectedPhotoUrl?.let { imageUrl ->
+                LandPhotoViewerDialog(
+                    imageUrl = imageUrl,
+                    contentDescription = stringResource(R.string.land_detail_photo_description, name, pagerState.currentPage + 1),
+                    onDismiss = { selectedPhotoUrl = null }
+                )
+            }
             HorizontalPager(state = pagerState, modifier = photoModifier) { page ->
                 AsyncImage(
                     model = imageUrls[page],
                     contentDescription = stringResource(R.string.land_detail_photo_description, name, page + 1),
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
+                            selectedPhotoUrl = imageUrls[page]
+                        },
                     contentScale = ContentScale.Crop
                 )
             }

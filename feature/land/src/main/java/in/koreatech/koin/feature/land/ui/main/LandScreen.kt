@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.boundsInWindow
@@ -35,10 +37,12 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -49,6 +53,7 @@ import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.RealEstateAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
+import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.land.R
 import `in`.koreatech.koin.feature.land.components.map.BindLandMap
@@ -77,6 +82,14 @@ internal fun LandScreen(
             state.lands.filterTo(persistentListOf<LandUiModel>().builder(), state.filter::matches).build()
         }
     }
+    var clusterIds by remember { mutableStateOf<List<Int>>(emptyList()) }
+    val sheetLands: ImmutableList<LandUiModel> = remember(visibleLands, clusterIds) {
+        if (clusterIds.isEmpty()) {
+            visibleLands
+        } else {
+            visibleLands.filterTo(persistentListOf<LandUiModel>().builder()) { it.id in clusterIds }.build()
+        }
+    }
     val selectedLand = remember(state.lands, state.selectedLandId) {
         state.selectedLandId?.let { id -> state.lands.firstOrNull { it.id == id } }
     }
@@ -97,9 +110,14 @@ internal fun LandScreen(
     } else {
         with(density) { selectedSheetHeightPx.toDp() }
     }
-    BackHandler(enabled = selectedLand != null) {
-        viewModel.onBackClick()
+    val onBackClick: () -> Unit = {
+        if (selectedLand == null && clusterIds.isNotEmpty()) {
+            clusterIds = emptyList()
+        } else {
+            viewModel.onBackClick()
+        }
     }
+    BackHandler(enabled = selectedLand != null || clusterIds.isNotEmpty(), onBack = onBackClick)
     viewModel.collectSideEffect { sideEffect ->
         when (sideEffect) {
             LandSideEffect.NavigateBack -> onNavigateBack()
@@ -117,11 +135,14 @@ internal fun LandScreen(
         sheetContent = {
             if (selectedLand == null) {
                 LandBottomSheet(
-                    lands = visibleLands,
+                    lands = sheetLands,
                     filter = state.filter,
                     isLoading = state.isLoading,
                     hasLoadError = state.hasLoadError,
-                    onFilterClick = viewModel::selectFilter,
+                    onFilterClick = { filter ->
+                        clusterIds = emptyList()
+                        viewModel.selectFilter(filter)
+                    },
                     onLandClick = viewModel::onPreviewClick,
                     modifier = Modifier
                         .heightIn(max = sheetMaxHeight)
@@ -154,19 +175,16 @@ internal fun LandScreen(
                         RealEstateAnalyticsConstant.VALUE_BACK,
                         EventExtra(RealEstateAnalyticsConstant.SOURCE_SCREEN, RealEstateAnalyticsConstant.SCREEN_ROOM_LIST)
                     )
-                    viewModel.onBackClick()
+                    onBackClick()
                 },
                 actions = {
-                    IconButton(
-                        onClick = onSearchClick,
-                        modifier = Modifier.size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_land_search),
-                            contentDescription = stringResource(R.string.land_search),
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_land_search),
+                        contentDescription = stringResource(R.string.land_search),
+                        modifier = Modifier
+                            .size(24.dp)
+                            .noRippleClickable(role = Role.Button, onClick = onSearchClick)
+                    )
                 }
             )
         }
@@ -174,7 +192,14 @@ internal fun LandScreen(
         LandScreenImpl(
             lands = visibleLands,
             selectedLandId = state.selectedLandId,
-            onLandSelect = viewModel::selectLand,
+            onLandSelect = { landId ->
+                clusterIds = emptyList()
+                viewModel.selectLand(landId)
+            },
+            onClusterSelect = { landIds ->
+                clusterIds = landIds
+                viewModel.selectLand(null)
+            },
             bottomPaddingPx = bottomPaddingPx,
             modifier = Modifier.onGloballyPositioned { mapBounds = it.boundsInWindow() }
         )
@@ -186,6 +211,7 @@ private fun LandScreenImpl(
     lands: ImmutableList<LandUiModel>,
     selectedLandId: Int?,
     onLandSelect: (Int?) -> Unit,
+    onClusterSelect: (List<Int>) -> Unit,
     modifier: Modifier = Modifier,
     bottomPaddingPx: Int = 0
 ) {
@@ -196,18 +222,19 @@ private fun LandScreenImpl(
             lands = lands,
             bottomPaddingPx = bottomPaddingPx,
             selectedLandId = selectedLandId,
-            onLandSelect = onLandSelect
+            onLandSelect = onLandSelect,
+            onClusterSelect = onClusterSelect
         )
-        Box(modifier = modifier.fillMaxSize()) {
+        Box(modifier = modifier.fillMaxSize().clipToBounds()) {
             AndroidView(
                 factory = { mapView },
                 modifier = Modifier.fillMaxSize()
             )
-            val bottomPadding = with(LocalDensity.current) { bottomPaddingPx.toDp() }
             Surface(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(end = 16.dp, bottom = bottomPadding + 16.dp),
+                    .offset { IntOffset(0, -bottomPaddingPx) }
+                    .padding(end = 16.dp, bottom = 16.dp),
                 shape = RoundedCornerShape(8.dp),
                 shadowElevation = 2.dp,
                 color = RebrandKoinTheme.colors.neutral0
@@ -254,7 +281,8 @@ private fun LandScreenPreview() {
         LandScreenImpl(
             lands = persistentListOf(),
             selectedLandId = null,
-            onLandSelect = {}
+            onLandSelect = {},
+            onClusterSelect = {}
         )
     }
 }

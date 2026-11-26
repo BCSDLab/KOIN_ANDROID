@@ -15,6 +15,7 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.clustering.Clusterer
 import com.naver.maps.map.clustering.ClusteringKey
 import com.naver.maps.map.clustering.DefaultClusterOnClickListener
+import com.naver.maps.map.clustering.DefaultThresholdStrategy
 import com.naver.maps.map.overlay.Marker
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
@@ -34,23 +35,27 @@ internal fun BindLandMap(
     lands: ImmutableList<LandUiModel>,
     bottomPaddingPx: Int,
     selectedLandId: Int?,
-    onLandSelect: (Int?) -> Unit
+    onLandSelect: (Int?) -> Unit,
+    onClusterSelect: (List<Int>) -> Unit
 ) {
     val density = LocalDensity.current
     val fillColor = RebrandKoinTheme.colors.primary500.toArgb()
     val ringColor = RebrandKoinTheme.colors.primary300.toArgb()
     val selectedColor = RebrandKoinTheme.colors.primary700.toArgb()
     val currentOnLandSelect = rememberUpdatedState(onLandSelect)
+    val currentOnClusterSelect = rememberUpdatedState(onClusterSelect)
     val binding = remember(mapView, density, fillColor, ringColor, selectedColor) {
         LandMapBinding(
             LandMarkerIcons(mapView.context, density, fillColor, ringColor, selectedColor),
-            onLandSelect = { currentOnLandSelect.value(it) }
+            onLandSelect = { currentOnLandSelect.value(it) },
+            onClusterSelect = { currentOnClusterSelect.value(it) }
         )
     }
     val items = remember(lands) {
         buildMap(lands.size) {
             for (land in lands) {
-                put(LandMarkerKey(land.id, LatLng(land.latitude, land.longitude)), null)
+                val coordinate = LatLng(land.latitude, land.longitude)
+                put(LandMarkerKey(land.id, coordinate), LandClusterTag(listOf(land.id), coordinate))
             }
         }
     }
@@ -81,13 +86,19 @@ private data class LandMarkerKey(
     override fun getPosition(): LatLng = coordinate
 }
 
+private data class LandClusterTag(
+    val landIds: List<Int>,
+    val coordinate: LatLng?
+)
+
 private class LandMapBinding(
     private val icons: LandMarkerIcons,
-    private val onLandSelect: (Int?) -> Unit
+    private val onLandSelect: (Int?) -> Unit,
+    private val onClusterSelect: (List<Int>) -> Unit
 ) {
     private var isDisposed = false
     private var clusterer: Clusterer<LandMarkerKey>? = null
-    private var items: Map<LandMarkerKey, Nothing?> = emptyMap()
+    private var items: Map<LandMarkerKey, LandClusterTag> = emptyMap()
     private var bottomPaddingPx = 0
     private var selectedLandId: Int? = null
 
@@ -102,10 +113,22 @@ private class LandMapBinding(
         map.setContentPadding(0, 0, 0, 0)
         map.setContentPadding(0, 0, 0, bottomPaddingPx, true)
         map.onMapClickListener = mapClickListener
-        val builder = Clusterer.Builder<LandMarkerKey>()
-        map.maxZoom = builder.maxZoom.toDouble()
+        val builder = Clusterer.ComplexBuilder<LandMarkerKey>()
+        map.maxZoom = builder.maxClusteringZoom.toDouble()
         clusterer = builder
-            .screenDistance(MARKER_OVERLAP_DISTANCE_DP)
+            .maxScreenDistance(MARKER_OVERLAP_DISTANCE_DP)
+            .thresholdStrategy(DefaultThresholdStrategy(MARKER_OVERLAP_DISTANCE_DP))
+            .tagMergeStrategy { cluster ->
+                var coordinate = (cluster.children.first().tag as LandClusterTag).coordinate
+                val landIds = buildList(cluster.size) {
+                    for (child in cluster.children) {
+                        val tag = child.tag as LandClusterTag
+                        addAll(tag.landIds)
+                        if (coordinate != tag.coordinate) coordinate = null
+                    }
+                }
+                LandClusterTag(landIds, coordinate)
+            }
             .clusterMarkerUpdater { info, marker ->
                 if (!isDisposed) {
                     leafMarkers.remove(marker)
@@ -120,7 +143,13 @@ private class LandMapBinding(
                                 RealEstateAnalyticsConstant.ROOM_LIST_MAP_CLUSTER_CLICK,
                                 RealEstateAnalyticsConstant.VALUE_MAP_CLUSTER
                             )
-                            defaultListener.onClick(overlay)
+                            val tag = info.tag as LandClusterTag
+                            if (tag.coordinate != null || map.cameraPosition.zoom >= map.maxZoom) {
+                                onClusterSelect(tag.landIds)
+                                true
+                            } else {
+                                defaultListener.onClick(overlay)
+                            }
                         }
                     }
                 }
@@ -151,7 +180,7 @@ private class LandMapBinding(
     }
 
     fun update(
-        newItems: Map<LandMarkerKey, Nothing?>,
+        newItems: Map<LandMarkerKey, LandClusterTag>,
         bottomPaddingPx: Int,
         selectedLandId: Int?
     ) {

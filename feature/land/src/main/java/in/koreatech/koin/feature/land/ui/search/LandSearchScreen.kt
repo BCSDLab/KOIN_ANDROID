@@ -230,10 +230,10 @@ private fun LandSearchInput(
                     modifier = Modifier.size(40.dp)
                 ) {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_land_search),
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_land_search_input),
                         contentDescription = stringResource(R.string.land_search),
                         tint = RebrandKoinTheme.colors.primary500,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(21.dp)
                     )
                 }
             }
