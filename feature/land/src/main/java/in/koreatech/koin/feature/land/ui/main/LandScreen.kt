@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -82,13 +83,9 @@ internal fun LandScreen(
             state.lands.filterTo(persistentListOf<LandUiModel>().builder(), state.filter::matches).build()
         }
     }
-    var clusterIds by remember { mutableStateOf<List<Int>>(emptyList()) }
+    var clusterIds by rememberSaveable { mutableStateOf<List<Int>>(emptyList()) }
     val sheetLands: ImmutableList<LandUiModel> = remember(visibleLands, clusterIds) {
-        if (clusterIds.isEmpty()) {
-            visibleLands
-        } else {
-            visibleLands.filterTo(persistentListOf<LandUiModel>().builder()) { it.id in clusterIds }.build()
-        }
+        filterClusterLands(visibleLands, clusterIds)
     }
     val selectedLand = remember(state.lands, state.selectedLandId) {
         state.selectedLandId?.let { id -> state.lands.firstOrNull { it.id == id } }
@@ -97,11 +94,7 @@ internal fun LandScreen(
     val density = LocalDensity.current
     var mapBounds by remember { mutableStateOf(Rect.Zero) }
     var sheetBounds by remember { mutableStateOf(Rect.Zero) }
-    val bottomPaddingPx = if (mapBounds.overlaps(sheetBounds)) {
-        mapBounds.intersect(sheetBounds).height.roundToInt()
-    } else {
-        0
-    }
+    val bottomPaddingPx = calculateLandMapBottomPadding(mapBounds, sheetBounds)
     val sheetMaxHeight = with(density) {
         if (mapBounds.height > 0) mapBounds.height.toDp() else Dp.Unspecified
     }
@@ -204,6 +197,19 @@ internal fun LandScreen(
             modifier = Modifier.onGloballyPositioned { mapBounds = it.boundsInWindow() }
         )
     }
+}
+
+internal fun calculateLandMapBottomPadding(mapBounds: Rect, sheetBounds: Rect): Int {
+    return if (mapBounds.overlaps(sheetBounds)) {
+        mapBounds.intersect(sheetBounds).height.roundToInt()
+    } else {
+        0
+    }
+}
+
+private fun filterClusterLands(lands: ImmutableList<LandUiModel>, clusterIds: List<Int>): ImmutableList<LandUiModel> {
+    if (clusterIds.isEmpty()) return lands
+    return lands.filterTo(persistentListOf<LandUiModel>().builder()) { it.id in clusterIds }.build()
 }
 
 @Composable

@@ -135,22 +135,7 @@ private class LandMapBinding(
                     icons.updateClusterMarker(info.size, marker)
                     val defaultListener = DefaultClusterOnClickListener(info)
                     marker.setOnClickListener { overlay ->
-                        if (isDisposed) {
-                            true
-                        } else {
-                            EventLogger.logClickEvent(
-                                EventAction.DA1,
-                                RealEstateAnalyticsConstant.ROOM_LIST_MAP_CLUSTER_CLICK,
-                                RealEstateAnalyticsConstant.VALUE_MAP_CLUSTER
-                            )
-                            val tag = info.tag as LandClusterTag
-                            if (tag.coordinate != null || map.cameraPosition.zoom >= map.maxZoom) {
-                                onClusterSelect(tag.landIds)
-                                true
-                            } else {
-                                defaultListener.onClick(overlay)
-                            }
-                        }
+                        isDisposed || onClusterClick(map, info.tag as LandClusterTag) || defaultListener.onClick(overlay)
                     }
                 }
             }
@@ -177,6 +162,17 @@ private class LandMapBinding(
                 it.addAll(items)
                 it.map = map
             }
+    }
+
+    private fun onClusterClick(map: NaverMap, tag: LandClusterTag): Boolean {
+        EventLogger.logClickEvent(
+            EventAction.DA1,
+            RealEstateAnalyticsConstant.ROOM_LIST_MAP_CLUSTER_CLICK,
+            RealEstateAnalyticsConstant.VALUE_MAP_CLUSTER
+        )
+        if (tag.coordinate == null && map.cameraPosition.zoom < map.maxZoom) return false
+        onClusterSelect(tag.landIds)
+        return true
     }
 
     fun update(
