@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,9 +16,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -57,24 +58,50 @@ fun BannerImage(
     dismiss: () -> Unit = {},
     onBannerIndexChange: (Int) -> Unit = {}
 ) {
-    val pagerState = rememberPagerState(
-        initialPage = (Int.MAX_VALUE / 2) - (Int.MAX_VALUE / 2) % bannerList.size
-    ) { Int.MAX_VALUE }
-    val coroutineScope = rememberCoroutineScope()
+    BoxWithConstraints(modifier = modifier) {
+        // A zero-sized page with zero spacing cannot advance Pager's measurement loop.
+        if (constraints.maxWidth > 0 && bannerList.isNotEmpty()) {
+            key(bannerList.size) {
+                BannerPager(bannerList, currentKoinVersion, dismiss, onBannerIndexChange)
+            }
+        }
+    }
+}
 
-    LaunchedEffect(key1 = pagerState.currentPage, key2 = pagerState.isScrollInProgress) {
-        launch {
+@Composable
+private fun BannerPager(
+    bannerList: ImmutableList<LocalBanner>,
+    currentKoinVersion: Int,
+    dismiss: () -> Unit,
+    onBannerIndexChange: (Int) -> Unit
+) {
+    val looping = bannerList.size > 1
+    // Only two sentinel pages are needed for seamless wrapping in either direction.
+    val pagerState = rememberPagerState(initialPage = if (looping) 1 else 0) {
+        if (looping) bannerList.size + 2 else 1
+    }
+    fun bannerIndex(page: Int) = (page - 1).mod(bannerList.size)
+
+    LaunchedEffect(pagerState.currentPage, pagerState.isScrollInProgress) {
+        if (looping && !pagerState.isScrollInProgress) {
+            when (pagerState.currentPage) {
+                0 -> pagerState.scrollToPage(bannerList.size)
+                bannerList.size + 1 -> pagerState.scrollToPage(1)
+            }
+        }
+    }
+
+    LaunchedEffect(pagerState) {
+        while (looping) {
             delay(BANNER_AUTO_SCROLL_MILLISECONDS)
-            coroutineScope.launch {
-                if (!pagerState.isScrollInProgress) {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                }
+            if (!pagerState.isScrollInProgress) {
+                pagerState.animateScrollToPage(pagerState.currentPage + 1)
             }
         }
     }
 
     LaunchedEffect(pagerState.currentPage, bannerList.size) {
-        onBannerIndexChange(pagerState.currentPage % bannerList.size)
+        onBannerIndexChange(bannerIndex(pagerState.currentPage))
     }
 
     LaunchedEffect(pagerState, bannerList) {
@@ -91,27 +118,17 @@ fun BannerImage(
             if (!scrolling && dragStartPage != -1) {
                 val previousPage = dragStartPage
                 dragStartPage = -1
-                if (pagerState.settledPage != previousPage) {
-                    val banner = bannerList[pagerState.settledPage % bannerList.size]
-                    EventLogger.logCustomEvent(
-                        BannerAnalyticsConstant.EVENT_NAME,
-                        EventCategory.SWIPE.value,
-                        BannerAnalyticsConstant.Label.MODAL_NEXT_SWIPE,
-                        banner.id.toString()
-                    )
-                }
+                logBannerSwipe(bannerList, previousPage, pagerState.settledPage)
             }
         }
     }
 
-    Box(
-        modifier = modifier
-    ) {
+    Box {
         HorizontalPager(
             modifier = Modifier,
             state = pagerState
         ) { page ->
-            val realPage = page % bannerList.size
+            val realPage = bannerIndex(page)
             BannerContent(
                 banner = bannerList[realPage],
                 dismiss = dismiss,
@@ -131,7 +148,7 @@ fun BannerImage(
                     .padding(horizontal = 12.dp),
                 text = buildAnnotatedString {
                     withStyle(SpanStyle(color = KoinTheme.colors.neutral0)) {
-                        append("${(pagerState.currentPage % bannerList.size) + 1}")
+                        append("${(bannerIndex(pagerState.currentPage)) + 1}")
                     }
                     withStyle(SpanStyle(color = KoinTheme.colors.neutral400)) {
                         append("/${bannerList.size}")
@@ -193,5 +210,20 @@ private fun BannerContent(
             }
         },
         contentDescription = "Banner ${banner.id}"
+    )
+}
+
+private fun logBannerSwipe(
+    bannerList: ImmutableList<LocalBanner>,
+    previousPage: Int,
+    settledPage: Int
+) {
+    if (settledPage == previousPage) return
+    val banner = bannerList[(settledPage - 1).mod(bannerList.size)]
+    EventLogger.logCustomEvent(
+        BannerAnalyticsConstant.EVENT_NAME,
+        EventCategory.SWIPE.value,
+        BannerAnalyticsConstant.Label.MODAL_NEXT_SWIPE,
+        banner.id.toString()
     )
 }
