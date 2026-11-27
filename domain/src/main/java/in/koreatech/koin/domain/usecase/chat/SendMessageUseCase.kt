@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SendMessageUseCase @Inject constructor(
     private val chatRepository: ChatRepository
 ) {
-    @Deprecated("")
+    @Deprecated("Use SendLostItemChatMessageUseCase")
     suspend operator fun invoke(
         articleId: Int,
         chatRoomId: Int,

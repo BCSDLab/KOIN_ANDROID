@@ -20,7 +20,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 
-// Keep deprecated APIs alongside common APIs until their callers migrate.
 @Suppress("TooManyFunctions")
 class ChatRemoteDataSource @Inject constructor(
     private val chatApi: ChatApi,
@@ -131,4 +130,8 @@ class ChatRemoteDataSource @Inject constructor(
 
     suspend fun markChatRead(roomId: String, request: ChatReadRequest): Unit =
         chatAuthApi.markChatRead(roomId, request)
+
+    suspend fun updateChatPresence(roomId: String): Unit = chatAuthApi.updateChatPresence(roomId)
+
+    suspend fun leaveChatPresence(roomId: String): Unit = chatAuthApi.leaveChatPresence(roomId)
 }

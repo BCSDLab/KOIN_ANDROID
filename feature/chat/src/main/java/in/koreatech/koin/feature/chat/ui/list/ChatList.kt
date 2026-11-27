@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import `in`.koreatech.koin.core.analytics.ChatAnalyticsConstant
@@ -39,6 +38,7 @@ import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.ARTICLE_ID
 import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomViewModel.Companion.CHAT_ROOM_ID
 import java.time.LocalDateTime
+import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 import org.orbitmvi.orbit.compose.collectSideEffect
@@ -56,7 +56,6 @@ fun ChatList(
     val snackbarHostState = remember { SnackbarHostState() }
 
     val lifecycleOwner = LocalLifecycleOwner.current
-
     val navigator = rememberNavigator()
 
     viewModel.collectSideEffect { sideEffect ->
@@ -64,16 +63,6 @@ fun ChatList(
             is ChatListSideEffect.NavigateToLogin -> {
                 context.startActivity(navigator.navigateToSignIn(context))
                 (context as? Activity)?.finish()
-            }
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            viewModel.connectChannel.collect { shouldConnect ->
-                if (shouldConnect) {
-                    viewModel.connectToWS()
-                }
             }
         }
     }
@@ -88,12 +77,15 @@ fun ChatList(
         }
     }
 
-    LifecycleEventEffect(Lifecycle.Event.ON_START) {
-        viewModel.connectToWS()
-    }
-
-    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
-        viewModel.fetchChatList()
+    LaunchedEffect(lifecycleOwner, viewModel) {
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewModel.startChatListUpdates()
+            try {
+                awaitCancellation()
+            } finally {
+                viewModel.stopChatListUpdates()
+            }
+        }
     }
 
     Scaffold(
