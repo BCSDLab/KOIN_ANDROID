@@ -96,15 +96,6 @@ KOIN_ANDROID/
 | <img width="225" src="https://github.com/user-attachments/assets/32a91ebd-d5cf-4fc4-8541-27c0ba99b614" /> | <img width="225" src="https://github.com/user-attachments/assets/f0c59b22-6881-43fe-a5a9-f66ccec15e9d" />| <img width="225" src="https://github.com/user-attachments/assets/ec0d1dc2-de44-4001-830f-425bbd9336fa" />|
 </details>
 
-## 복덕방 이벤트 로깅
-
-- [복덕방 로깅 명세](https://github.com/BCSDLab/KOIN-DATA-LOGGING/blob/main/event-log/02-%EB%B3%B5%EB%8D%95%EB%B0%A9/README.md)를 따르며, 라벨과 값은 `RealEstateAnalyticsConstant`에서 관리합니다.
-- 목록 카드는 미리보기를 열고, 미리보기의 매물 상세보기 버튼은 별도 상세 진입 이벤트를 기록합니다. 검색 화면은 입력 전 방 카드와 입력 후 건물명 선택을 구분합니다.
-- 거래 유형은 실제 선택 변경만, 검색 제출은 공백이 아닌 검색어로 검색 버튼·IME 검색을 실행한 경우만 기록합니다. 입력 중 필터링은 검색 제출이 아닙니다.
-- 사진은 페이지 이동이 완료된 스와이프만 기록하며 초기 표시·취소된 스와이프는 제외합니다.
-- 상단 뒤로가기 버튼은 `room_common`과 `source_screen`(`room_list` / `room_detail`)을 사용합니다. 전화 문의는 권한 요청 전에 기록하며 전화번호를 전송하지 않습니다.
-- 목록 지도의 확대·축소는 Compose 버튼에서 클릭 기록과 지도 이동을 함께 처리합니다. SDK 기본 확대·축소 버튼은 비활성화합니다.
-
 ## Git Branch Strategy
 
 
