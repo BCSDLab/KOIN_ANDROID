@@ -56,9 +56,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -151,7 +149,6 @@ fun StoreNearbyScreen(
             .fillMaxSize()
     ) {
         StoreNearbyTopAppBar(
-            previousCategoryName = uiState.storeCategories.firstOrNull { it.id == uiState.categoryId }?.name.orEmpty(),
             cartItemCount = uiState.cartItemCount,
             onBackClick = onBackPressed,
             onCartClick = viewModel::navigateToCart
@@ -186,7 +183,6 @@ fun StoreNearbyScreen(
 
 @Composable
 private fun StoreNearbyTopAppBar(
-    previousCategoryName: String,
     cartItemCount: Int,
     onBackClick: () -> Unit,
     onCartClick: () -> Unit
@@ -196,12 +192,9 @@ private fun StoreNearbyTopAppBar(
         onNavigationIconClick = {
             onBackClick()
             EventLogger.logClickEvent(
-                EventAction.BUSINESS,
-                AnalyticsConstant.Label.SHOP_CATEGORIES_BACK,
-                "",
-                EventExtra(AnalyticsConstant.PREVIOUS_PAGE, previousCategoryName),
-                EventExtra(AnalyticsConstant.CURRENT_PAGE, "메인"),
-                EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                EventAction.DA1,
+                ShopAnalyticsConstant.SHOP_LIST_NAVIGATION_BACK_CLICK,
+                "메인"
             )
         },
         actions = {

@@ -104,7 +104,7 @@ fun ProfileScreen(
             },
             onTimetableClick = {
                 EventLogger.logClickEvent(
-                    EventAction.DA2,
+                    EventAction.DA1,
                     AccountAnalyticsConstant.Label.MainProfile.TIMETABLE_ENTRY,
                     AccountAnalyticsConstant.Value.TIMETABLE
                 )

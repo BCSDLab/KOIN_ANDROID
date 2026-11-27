@@ -4,15 +4,12 @@ object TimetableAnalyticsConstant {
     object Category {
         const val CLICK = "click"
         const val SELECT = "select"
-        const val SWIPE = "swipe"
     }
 
     object Label {
         const val BACK_CLICK = "timetable__timetable__navigation__back__click"
 
-        const val BACK_SWIPE = "timetable__timetable__navigation__back__swipe"
-
-        const val CATEGORY_ENTRY = "timetable__main_category__timetable_entry__category_entry__click"
+        const val CATEGORY_ENTRY = "timetable__main_category__category_navigation__timetable_entry__click"
 
         const val TIMETABLE_LIST_ENTRY = "timetable__timetable__timetable_list__entry__click"
 
@@ -27,7 +24,6 @@ object TimetableAnalyticsConstant {
 
     object Value {
         const val BACK = "뒤로가기"
-        const val OS_SWIPE = "OS 스와이프"
         const val CATEGORY_ENTRY = "시간표"
         const val TIMETABLE_LIST_ENTRY = "학기 시간표 선택"
         const val IMAGE_SAVE = "이미지 저장"

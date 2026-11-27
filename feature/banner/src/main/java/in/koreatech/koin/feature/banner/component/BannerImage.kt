@@ -2,7 +2,6 @@ package `in`.koreatech.koin.feature.banner.component
 
 import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +18,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -75,33 +73,6 @@ fun BannerImage(
 
     LaunchedEffect(pagerState.currentPage, bannerList.size) {
         onBannerIndexChange(pagerState.currentPage % bannerList.size)
-    }
-
-    LaunchedEffect(pagerState, bannerList) {
-        var dragStartPage = -1
-        launch {
-            pagerState.interactionSource.interactions.collect { interaction ->
-                when (interaction) {
-                    is DragInteraction.Start -> dragStartPage = pagerState.settledPage
-                    is DragInteraction.Cancel -> dragStartPage = -1
-                }
-            }
-        }
-        snapshotFlow { pagerState.isScrollInProgress }.collect { scrolling ->
-            if (!scrolling && dragStartPage != -1) {
-                val previousPage = dragStartPage
-                dragStartPage = -1
-                if (pagerState.settledPage != previousPage) {
-                    val banner = bannerList[pagerState.settledPage % bannerList.size]
-                    EventLogger.logCustomEvent(
-                        BannerAnalyticsConstant.EVENT_NAME,
-                        EventCategory.SWIPE.value,
-                        BannerAnalyticsConstant.Label.MODAL_NEXT_SWIPE,
-                        banner.id.toString()
-                    )
-                }
-            }
-        }
     }
 
     Box(

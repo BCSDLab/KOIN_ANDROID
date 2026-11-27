@@ -214,9 +214,9 @@ private fun DiningSection(
             Row(
                 modifier = Modifier.noRippleClickable {
                     EventLogger.logClickEvent(
-                        EventAction.DA1,
-                        HomeEventLabels.DINING_MORE,
-                        "${DiningUtil.getKoreanName(diningData.firstOrNull()?.type ?: DiningUtil.getCurrentType().typeEnglish)}_더보기"
+                        EventAction.DA2,
+                        HomeEventLabels.DINING_ENTRY,
+                        "${DiningUtil.getKoreanName(diningData.firstOrNull()?.type ?: DiningUtil.getCurrentType().typeEnglish)}_전체보기"
                     )
                     navigator.navigateToDining(context).let(context::startActivity)
                 },
@@ -236,9 +236,9 @@ private fun DiningSection(
     ) {
         DiningPager(data = diningData) {
             EventLogger.logClickEvent(
-                EventAction.DA1,
-                HomeEventLabels.DINING_CARD,
-                DiningUtil.getKoreanName(it.type)
+                EventAction.DA2,
+                HomeEventLabels.DINING_ENTRY,
+                "${DiningUtil.getKoreanName(it.type)}_카드"
             )
             navigator.navigateToDining(context).let(context::startActivity)
         }
@@ -331,7 +331,7 @@ private fun BusSection(
             FeatureCard(
                 modifier = Modifier.weight(1f),
                 onClick = {
-                    EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.BUS_TIMETABLE, "버스 시간표")
+                    EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.BUS_TIMETABLE, "버스 시간표")
                     navigator.navigateToBusTimeTable(context).let(context::startActivity)
                 },
                 title = stringResource(R.string.bus_timetable),
@@ -403,7 +403,7 @@ private fun ShopSection(
         more = {
             Row(
                 modifier = Modifier.noRippleClickable {
-                    EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.SHOP_ENTRY, "주변상점")
+                    EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.SHOP_ENTRY, "주변상점")
                     navigator.navigateToStore(context).let(context::startActivity)
                 },
                 verticalAlignment = Alignment.CenterVertically
@@ -422,7 +422,7 @@ private fun ShopSection(
     ) {
         FeatureRow(
             onClick = {
-                EventLogger.logClickEvent(EventAction.DA2, HomeEventLabels.POPULAR_SHOP_ENTRY, "많이 찾는 상점 둘러보기")
+                EventLogger.logClickEvent(EventAction.DA1, HomeEventLabels.POPULAR_SHOP_ENTRY, "많이 찾는 상점 둘러보기")
                 navigator.navigateToStore(context).let(context::startActivity)
             },
             title = stringResource(R.string.shop_title),

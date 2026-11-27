@@ -86,7 +86,7 @@ fun CallvanCreateScreen(
                     } else {
                         CallvanAnalyticsConstant.Label.WRITE_ARRIVAL_CONFIRM
                     },
-                    context.getString(location.displayNameRes()) + if (location == CallvanLocationOption.CUSTOM) ", $customText" else ""
+                    formatLocationAnalyticsValue(location, customText, context)
                 )
                 viewModel.selectLocation(location, customText)
             },
@@ -150,7 +150,7 @@ fun CallvanCreateScreenImpl(
                         CallvanAnalyticsConstant.EVENT_NAME,
                         EventCategory.CLICK.value,
                         CallvanAnalyticsConstant.Label.WRITE_NAVIGATION_BACK,
-                        ""
+                        CallvanAnalyticsConstant.Value.BACK
                     )
                     onTopbarBackClick()
                 }
@@ -228,13 +228,37 @@ fun CallvanCreateScreenImpl(
                         CallvanAnalyticsConstant.EVENT_NAME,
                         EventCategory.CLICK.value,
                         CallvanAnalyticsConstant.Label.WRITE_CONFIRM,
-                        ""
+                        CallvanAnalyticsConstant.Value.WRITE_COMPLETE
                     )
                     onSubmit()
                 }
             )
         }
     }
+}
+
+private fun formatLocationAnalyticsValue(
+    location: CallvanLocationOption,
+    customText: String?,
+    context: android.content.Context
+): String {
+    val campus = when (location) {
+        CallvanLocationOption.FRONT_GATE,
+        CallvanLocationOption.BACK_GATE,
+        CallvanLocationOption.TENNIS_COURT,
+        CallvanLocationOption.DORMITORY_MAIN,
+        CallvanLocationOption.DORMITORY_SUB,
+        CallvanLocationOption.CUSTOM -> "교내"
+        CallvanLocationOption.TERMINAL,
+        CallvanLocationOption.STATION,
+        CallvanLocationOption.ASAN_STATION -> "교외"
+    }
+    val name = if (location == CallvanLocationOption.CUSTOM) {
+        "기타, ${customText.orEmpty()}"
+    } else {
+        context.getString(location.displayNameRes())
+    }
+    return "$campus, $name"
 }
 
 @Preview(showBackground = true)

@@ -89,7 +89,7 @@ fun DiningPager(
                 ) {
                     if (isSelected) return@DiningPagerIndicator
                     EventLogger.logCustomEvent(
-                        action = EventAction.DA1.value,
+                        action = EventAction.DA2.value,
                         category = "select",
                         label = HomeEventLabels.DINING_CORNER,
                         value = data[page].place

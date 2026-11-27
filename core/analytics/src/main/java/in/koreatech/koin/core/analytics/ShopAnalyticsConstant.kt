@@ -3,7 +3,7 @@ package `in`.koreatech.koin.core.analytics
 object ShopAnalyticsConstant {
     const val CATEGORY_SELECT = "select"
 
-    const val CATEGORY_ENTRY: String = "shop__main_category__shop_entry__category_entry__click"
+    const val CATEGORY_ENTRY = "shop__main_category__category_navigation__shop_entry__click"
 
     const val SHOP_LIST_SEARCH_CLICK = "shop__shop_list__search__click"
 
@@ -28,6 +28,15 @@ object ShopAnalyticsConstant {
     const val SHOP_LIST_NAVIGATION_ORDER_HISTORY_ENTRY_CLICK = "shop__shop_list__navigation__order_history_entry__click"
 
     const val SHOP_DETAIL_NAVIGATION_BACK_CLICK = "shop__shop_detail__navigation__back__click"
+    const val SHOP_LIST_NAVIGATION_BACK_CLICK = "shop__shop_list__navigation__back__click"
+
+    const val SHOP_SEARCH_SHOP_DETAIL_ENTRY_CLICK = "shop__shop_search__shop_detail__entry__click"
+
+    const val SHOP_DETAIL_SHOP_INFO_ENTRY_CLICK = "shop__shop_detail__shop_info__entry__click"
+
+    const val SHOP_DETAIL_REVIEW_SORT_CLICK = "shop__shop_detail__filter__review_sort__click"
+
+    const val SHOP_DETAIL_NAVIGATION_REVIEW_EXIT_CLICK = "shop__shop_detail__navigation__review_exit__click"
 
     const val SHOP_DETAIL_CONTACT_PHONE_CLICK = "shop__shop_detail__contact__phone__click"
 
@@ -62,7 +71,6 @@ object ShopAnalyticsConstant {
     const val LOGIN_POPUP_CLOSE_CLICK = "account__shop_detail__login_popup__close__click"
 
     const val VALUE_BACK = "뒤로가기"
-    const val VALUE_BACK_SWIPE = "스와이프"
     const val VALUE_CART = "장바구니"
     const val VALUE_NEARBY = "주변상점"
     const val VALUE_MAIN = "홈"

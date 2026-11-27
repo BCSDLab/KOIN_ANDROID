@@ -10,7 +10,7 @@ object AccountAnalyticsConstant {
         }
 
         object SignUp {
-            const val MENU_ENTRY: String = "account__main_category__sign_up__menu_entry__click"
+            const val MENU_ENTRY = "account__main_category__sign_up__menu_entry__click"
             const val TERMS_AGREE = "account__sign_up_policy__sign_up__terms_agree__click"
             const val USER_TYPE = "account__user_type_selection__sign_up__user_type__click"
             const val SEND_CODE = "account__identity_verification__sign_up__send_code__click"
@@ -52,6 +52,7 @@ object AccountAnalyticsConstant {
         const val PROFILE_EDIT_FAILURE = "정보수정 실패"
         const val PROFILE_EDIT_ATTEMPT = "정보수정 시도"
         const val PASSWORD_CHANGE_SUCCESS = "비밀번호 수정 완료"
+        const val PASSWORD_CHANGE_FAILURE = "비밀번호 수정 실패"
         const val LOGIN = "로그인"
         const val LOGOUT = "로그아웃"
         const val SETTINGS = "설정"

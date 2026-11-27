@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import `in`.koreatech.koin.R
 import `in`.koreatech.koin.core.activity.BaseDialogFragment
+import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ForceUpdateAnalyticsConstant
 import `in`.koreatech.koin.databinding.DialogForceUpdateBinding
 import `in`.koreatech.koin.util.ext.navigateToPlayStore
 
@@ -13,8 +15,6 @@ class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
     DialogForceUpdateBinding::inflate
 ) {
     companion object {
-        private const val action = "force_update"
-        private const val clickCategory = "click"
         const val TAG = "ForceUpdateDialog"
 
         fun newInstance(): ForceUpdateDialog {
@@ -39,20 +39,18 @@ class ForceUpdateDialog : BaseDialogFragment<DialogForceUpdateBinding>(
 
     private fun initEvent() {
         binding.btnConfirm.setOnClickListener {
-            EventLogger.logCustomEvent(
-                action = action,
-                category = clickCategory,
-                label = "already_update_popup",
-                value = "닫기"
+            EventLogger.logClickEvent(
+                action = EventAction.DA1,
+                label = ForceUpdateAnalyticsConstant.Label.POPUP_CLOSE,
+                value = ForceUpdateAnalyticsConstant.Value.CLOSE
             )
             dismiss()
         }
         binding.btnStore.setOnClickListener {
-            EventLogger.logCustomEvent(
-                action = action,
-                category = clickCategory,
-                label = "already_update_popup",
-                value = "스토어로_가기"
+            EventLogger.logClickEvent(
+                action = EventAction.DA1,
+                label = ForceUpdateAnalyticsConstant.Label.POPUP_STORE_ENTRY,
+                value = ForceUpdateAnalyticsConstant.Value.STORE
             )
             requireContext().navigateToPlayStore()
         }

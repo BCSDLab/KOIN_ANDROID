@@ -112,11 +112,11 @@ class TimetableSemesterActivity : ComponentActivity() {
                         years = screenState.availableYears,
                         userSemesters = screenState.userSemesters,
                         onConfirm = { selectedSemesters ->
-                            logSemesterManageApply(screenState.userSemesters, selectedSemesters)
                             viewModel.updateSelectedSemesters(selectedSemesters)
                             if (screenState.userSemesters.any { it !in selectedSemesters }) {
                                 viewModel.updateDeleteSemesterDialogVisible(true)
                             } else {
+                                logSemesterManageApply(screenState.userSemesters, selectedSemesters)
                                 viewModel.updateEditSemesterDialogVisible(false)
                                 viewModel.updateUserSemesters()
                             }
@@ -153,6 +153,7 @@ class TimetableSemesterActivity : ComponentActivity() {
                             viewModel.updateEditSemesterDialogVisible(false)
                         },
                         onConfirm = {
+                            logSemesterManageApply(screenState.userSemesters, dialogUiState.selectedSemesters)
                             viewModel.updateUserSemesters()
                             viewModel.updateDeleteSemesterDialogVisible(false)
                             viewModel.updateEditSemesterDialogVisible(false)

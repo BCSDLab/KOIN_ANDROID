@@ -38,9 +38,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.noRippleClickable
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
@@ -145,8 +145,8 @@ private fun StoreSearchScreen(
                         .clickable {
                             navigateToDetail(it.shopId)
                             EventLogger.logClickEvent(
-                                EventAction.BUSINESS,
-                                AnalyticsConstant.Label.SHOP_CATEGORIES_SEARCH_CLICK,
+                                EventAction.DA1,
+                                ShopAnalyticsConstant.SHOP_SEARCH_SHOP_DETAIL_ENTRY_CLICK,
                                 it.shopName
                             )
                         }

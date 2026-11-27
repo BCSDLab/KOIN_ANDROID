@@ -4,6 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -46,6 +48,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.EventAction
+import `in`.koreatech.koin.core.analytics.EventLogger
+import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.store.LocalDeliveryDeveloperOption
 import `in`.koreatech.koin.feature.store.R
@@ -56,6 +61,8 @@ import `in`.koreatech.koin.feature.store.enums.StoreDetailInfoType
 import `in`.koreatech.koin.feature.store.model.DeliveryTipModel
 import `in`.koreatech.koin.feature.store.origin.component.KoinStoreGrid
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.orbitmvi.orbit.compose.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,11 +75,41 @@ fun ShopOriginInfoScreen(
     navigateToShoppingCart: () -> Unit = {}
 ) {
     val uiState by shopOriginViewModel.collectAsState()
+    val scrollState = rememberScrollState()
     val deliverySprintEnabled = LocalDeliveryDeveloperOption.current
 
     LaunchedEffect(Unit) {
         if (uiState.isLoggedIn && deliverySprintEnabled) {
             shopOriginViewModel.getCartItemsCount()
+        }
+    }
+    LaunchedEffect(scrollState, selectedInfo) {
+        if (selectedInfo != StoreDetailInfoType.EVENT.name) return@LaunchedEffect
+        var isDragging = false
+        var hasLoggedScroll = false
+        launch {
+            scrollState.interactionSource.interactions.collect { interaction ->
+                when (interaction) {
+                    is DragInteraction.Start -> {
+                        isDragging = true
+                        hasLoggedScroll = false
+                    }
+
+                    is DragInteraction.Stop, is DragInteraction.Cancel -> isDragging = false
+                }
+            }
+        }
+        var previousOffset = scrollState.value
+        snapshotFlow { scrollState.value }.collect { offset ->
+            if (isDragging && !hasLoggedScroll && offset != previousOffset) {
+                EventLogger.logScrollEvent(
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_EVENT_SCROLL,
+                    uiState.shopDescription.storeName
+                )
+                hasLoggedScroll = true
+            }
+            previousOffset = offset
         }
     }
 
@@ -147,7 +184,7 @@ fun ShopOriginInfoScreen(
                 .fillMaxSize()
                 .background(color = colorResource(R.color.store_detail_background))
                 .padding(padding)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(scrollState)
         ) {
             HighlightSection(
                 isHighlighted = selectedInfo == StoreDetailInfoType.ORIGIN.name,

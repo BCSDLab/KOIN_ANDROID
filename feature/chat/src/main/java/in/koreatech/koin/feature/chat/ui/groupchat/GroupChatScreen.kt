@@ -142,7 +142,7 @@ private fun GroupChatScreenImpl(
                     CallvanAnalyticsConstant.EVENT_NAME,
                     EventCategory.CLICK.value,
                     CallvanAnalyticsConstant.Label.CHAT_MESSAGE_SEND,
-                    ""
+                    CallvanAnalyticsConstant.Value.MESSAGE_SEND
                 )
                 onSendClick()
             },
