@@ -142,7 +142,7 @@ fun CallvanDetailScreenImpl(
                         CallvanAnalyticsConstant.EVENT_NAME,
                         EventCategory.CLICK.value,
                         CallvanAnalyticsConstant.Label.PARTICIPANT_LIST_CHAT_ENTRY,
-                        ""
+                        CallvanAnalyticsConstant.Value.CHAT
                     )
                     onEnterChatClick()
                 },

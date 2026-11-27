@@ -35,11 +35,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -318,23 +316,6 @@ private fun LandDetailPhotos(imageUrls: ImmutableList<String>, name: String) {
             Spacer(Modifier.height(32.dp))
         } else {
             val pagerState = rememberPagerState(pageCount = { imageUrls.size })
-            LaunchedEffect(pagerState, imageUrls) {
-                var previousPage = pagerState.settledPage
-                snapshotFlow { pagerState.settledPage }.collect { page ->
-                    if (page != previousPage) {
-                        EventLogger.logSwipeEvent(
-                            EventAction.DA1,
-                            RealEstateAnalyticsConstant.ROOM_DETAIL_PHOTO_SLIDE_SWIPE,
-                            if (page > previousPage) {
-                                RealEstateAnalyticsConstant.VALUE_NEXT
-                            } else {
-                                RealEstateAnalyticsConstant.VALUE_PREVIOUS
-                            }
-                        )
-                        previousPage = page
-                    }
-                }
-            }
             HorizontalPager(state = pagerState, modifier = photoModifier) { page ->
                 AsyncImage(
                     model = imageUrls[page],

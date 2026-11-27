@@ -47,11 +47,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
-import `in`.koreatech.koin.core.analytics.EventExtra
 import `in`.koreatech.koin.core.analytics.EventLogger
-import `in`.koreatech.koin.core.analytics.EventUtils
 import `in`.koreatech.koin.core.analytics.ShopAnalyticsConstant
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.core.navigation.utils.rememberNavigator
@@ -128,7 +125,8 @@ fun ReviewScreen(
                     uiState.storeName
                 )
             },
-            onDismissRequest = remember(viewModel, uiState.storeName) {
+            onDismissRequest = viewModel::hideDeleteDialog,
+            onNegativeClick = remember(viewModel, uiState.storeName) {
                 {
                     viewModel.hideDeleteDialog()
                     EventLogger.logClickEvent(
@@ -148,7 +146,7 @@ fun ReviewScreen(
             message = stringResource(R.string.review_sign_in_dialog_message),
             onPositive = {
                 EventLogger.logClickEvent(
-                    EventAction.DA1,
+                    EventAction.DA2,
                     ShopAnalyticsConstant.LOGIN_POPUP_LOGIN_ENTRY_CLICK,
                     uiState.storeName
                 )
@@ -163,7 +161,7 @@ fun ReviewScreen(
                 {
                     viewModel.hideSignInDialog()
                     EventLogger.logClickEvent(
-                        EventAction.DA1,
+                        EventAction.DA2,
                         ShopAnalyticsConstant.LOGIN_POPUP_CLOSE_CLICK,
                         uiState.storeName
                     )
@@ -276,10 +274,9 @@ private fun ReviewScreen(
             onNavigationIconClick = {
                 onBackPressedDispatcher?.onBackPressed()
                 EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_BACK,
-                    storeName,
-                    EventExtra(AnalyticsConstant.DURATION_TIME, "${EventUtils.getElapsedTime()}")
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_NAVIGATION_REVIEW_EXIT_CLICK,
+                    ShopAnalyticsConstant.VALUE_BACK
                 )
             }
         )
@@ -416,8 +413,8 @@ private fun ReviewScreen(
             onSelect = { index ->
                 setReviewOrderOption(ReviewOrderOption.entries[index])
                 EventLogger.logClickEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_DETAIL_VIEW_REVIEW_CAN,
+                    EventAction.DA1,
+                    ShopAnalyticsConstant.SHOP_DETAIL_REVIEW_SORT_CLICK,
                     context.getString(ReviewOrderOption.entries[index].stringResId)
                 )
             },

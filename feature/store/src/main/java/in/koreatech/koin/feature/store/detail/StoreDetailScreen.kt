@@ -11,6 +11,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -64,7 +65,6 @@ import androidx.compose.ui.util.fastForEach
 import androidx.compose.ui.zIndex
 import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
-import `in`.koreatech.koin.core.analytics.AnalyticsConstant
 import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.EventUtils
@@ -99,6 +99,7 @@ import `in`.koreatech.koin.feature.store.model.StoreNavigationData
 import kotlin.math.roundToInt
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -198,17 +199,7 @@ fun StoreDetailScreen(
         }
     }
 
-    LaunchedEffect(listState) {
-        snapshotFlow { listState.firstVisibleItemIndex }
-            .distinctUntilChanged()
-            .collect {
-                EventLogger.logScrollEvent(
-                    EventAction.DA1,
-                    ShopAnalyticsConstant.SHOP_DETAIL_MENU_SCROLL,
-                    uiState.store.name
-                )
-            }
-    }
+    LogMenuScrollEvent(listState, uiState.store.name)
 
     LaunchedEffect(listState) {
         combine(
@@ -228,24 +219,12 @@ fun StoreDetailScreen(
         }
     }
 
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }
-            .distinctUntilChanged()
-            .collect {
-                EventLogger.logSwipeEvent(
-                    EventAction.BUSINESS,
-                    AnalyticsConstant.Label.SHOP_PICTURE_SWIPE,
-                    uiState.store.name
-                )
-            }
-    }
-
     BackHandler {
         navigateToBack()
         EventLogger.logClickEvent(
             EventAction.DA1,
             ShopAnalyticsConstant.SHOP_DETAIL_NAVIGATION_BACK_CLICK,
-            ShopAnalyticsConstant.VALUE_BACK_SWIPE
+            ShopAnalyticsConstant.VALUE_BACK
         )
     }
 
@@ -285,6 +264,11 @@ fun StoreDetailScreen(
         },
         onSignInDialogDismiss = viewModel::hideSignInDialog,
         onCallClick = {
+            EventLogger.logClickEvent(
+                EventAction.DA1,
+                ShopAnalyticsConstant.SHOP_DETAIL_CONTACT_PHONE_CLICK,
+                uiState.store.name
+            )
             viewModel.intent {
                 postSideEffect(StoreDetailSideEffect.CheckCallPermission)
             }
@@ -293,6 +277,43 @@ fun StoreDetailScreen(
         onMenuCategoryHeightChanged = { menuCategoryHeight.value = it },
         onCartClick = viewModel::navigateToCart
     )
+}
+
+@Composable
+private fun LogMenuScrollEvent(listState: LazyListState, storeName: String) {
+    LaunchedEffect(listState, storeName) {
+        var isUserDragging = false
+        var hasLoggedScroll = false
+        launch {
+            listState.interactionSource.interactions.collect { interaction ->
+                when (interaction) {
+                    is DragInteraction.Start -> {
+                        isUserDragging = true
+                        hasLoggedScroll = false
+                    }
+
+                    is DragInteraction.Stop, is DragInteraction.Cancel -> isUserDragging = false
+                }
+            }
+        }
+        // Pack the index and pixel offset to compare positions without allocating a Pair per frame.
+        var previousPosition = (listState.firstVisibleItemIndex.toLong() shl 32) or listState.firstVisibleItemScrollOffset.toLong()
+        snapshotFlow {
+            (listState.firstVisibleItemIndex.toLong() shl 32) or listState.firstVisibleItemScrollOffset.toLong()
+        }
+            .collect { position ->
+                val movedDown = position > previousPosition
+                if (isUserDragging && !hasLoggedScroll && movedDown) {
+                    EventLogger.logScrollEvent(
+                        EventAction.DA1,
+                        ShopAnalyticsConstant.SHOP_DETAIL_MENU_SCROLL,
+                        storeName
+                    )
+                    hasLoggedScroll = true
+                }
+                previousPosition = position
+            }
+    }
 }
 
 @Composable
@@ -336,7 +357,6 @@ private fun StoreDetailScreen(
         showImageDialog = uiState.showImageDialog,
         showSignInDialog = uiState.showSignInDialog,
         phoneNumber = uiState.shopDescription.phone,
-        storeName = uiState.store.name,
         imageUrls = uiState.store.imageUrls ?: persistentListOf(),
         onCall = onCall,
         onCallDialogDismiss = onCallDialogDismiss,
@@ -419,7 +439,6 @@ private fun StoreDetailDialogs(
     showImageDialog: Boolean,
     showSignInDialog: Boolean,
     phoneNumber: String,
-    storeName: String,
     imageUrls: ImmutableList<String>,
     onCall: (String) -> Unit,
     onCallDialogDismiss: () -> Unit,
@@ -432,11 +451,6 @@ private fun StoreDetailDialogs(
             phoneNumber = phoneNumber,
             call = {
                 onCall(it)
-                EventLogger.logClickEvent(
-                    EventAction.DA1,
-                    ShopAnalyticsConstant.SHOP_DETAIL_CONTACT_PHONE_CLICK,
-                    storeName
-                )
             },
             onDismissRequest = onCallDialogDismiss
         )
@@ -608,8 +622,8 @@ private fun StoreDetailMenuList(
                     navigateToDetailInfo = { selectedInfo ->
                         navigateToDetailInfo(selectedInfo)
                         EventLogger.logClickEvent(
-                            EventAction.BUSINESS,
-                            AnalyticsConstant.Label.SHOP_DETAIL_VIEW_INFO,
+                            EventAction.DA1,
+                            ShopAnalyticsConstant.SHOP_DETAIL_SHOP_INFO_ENTRY_CLICK,
                             uiState.store.name
                         )
                     },

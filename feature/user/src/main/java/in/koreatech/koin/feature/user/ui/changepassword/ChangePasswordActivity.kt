@@ -106,6 +106,11 @@ class ChangePasswordActivity : ActivityBase() {
                         setResult(ChangePasswordContract.RESULT_PASSWORD_CHANGED)
                         finish()
                     } else {
+                        EventLogger.logClickEvent(
+                            EventAction.DA2,
+                            AccountAnalyticsConstant.Label.ProfileEdit.PASSWORD_CONFIRM,
+                            AccountAnalyticsConstant.Value.PASSWORD_CHANGE_FAILURE
+                        )
                         ToastUtil.getInstance().makeShort(R.string.server_failed)
                     }
                 }

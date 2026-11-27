@@ -126,7 +126,7 @@ fun CallvanListScreen(
                 CallvanAnalyticsConstant.EVENT_NAME,
                 EventCategory.CLICK.value,
                 CallvanAnalyticsConstant.Label.LIST_FILTER_APPLY,
-                ""
+                CallvanAnalyticsConstant.Value.FILTER_APPLY
             )
             viewModel.applyPendingFilter()
         },
@@ -307,12 +307,22 @@ fun CallvanListScreenImpl(
                             CallvanAnalyticsConstant.EVENT_NAME,
                             EventCategory.CLICK.value,
                             CallvanAnalyticsConstant.Label.LIST_NAVIGATION_BACK,
-                            ""
+                            CallvanAnalyticsConstant.Value.BACK
                         )
                         onTopbarBackClick()
                     },
                     actions = {
-                        IconButton(onClick = onNotificationClick) {
+                        IconButton(
+                            onClick = {
+                                EventLogger.logCustomEvent(
+                                    CallvanAnalyticsConstant.EVENT_NAME,
+                                    EventCategory.CLICK.value,
+                                    CallvanAnalyticsConstant.Label.LIST_NOTIFICATION_ENTRY,
+                                    CallvanAnalyticsConstant.Value.NOTIFICATION_ICON
+                                )
+                                onNotificationClick()
+                            }
+                        ) {
                             CallvanNotificationIcon(
                                 hasNewNotification = hasNewNotification,
                                 contentDescription = stringResource(R.string.callvan_notification_top_bar)
@@ -329,7 +339,7 @@ fun CallvanListScreenImpl(
                             CallvanAnalyticsConstant.EVENT_NAME,
                             EventCategory.CLICK.value,
                             CallvanAnalyticsConstant.Label.LIST_CALLVAN_WRITE_ENTRY,
-                            ""
+                            CallvanAnalyticsConstant.Value.WRITE
                         )
                         onWriteClick()
                     }
@@ -361,7 +371,7 @@ fun CallvanListScreenImpl(
                                     CallvanAnalyticsConstant.EVENT_NAME,
                                     EventCategory.CLICK.value,
                                     CallvanAnalyticsConstant.Label.LIST_SEARCH_INPUT,
-                                    ""
+                                    CallvanAnalyticsConstant.Value.SEARCH_FIELD
                                 )
                             }
                         )
@@ -371,7 +381,7 @@ fun CallvanListScreenImpl(
                                     CallvanAnalyticsConstant.EVENT_NAME,
                                     EventCategory.CLICK.value,
                                     CallvanAnalyticsConstant.Label.LIST_FILTER_OPEN,
-                                    ""
+                                    CallvanAnalyticsConstant.Value.FILTER
                                 )
                                 onFilterVisibleChange(true)
                             }
@@ -392,7 +402,7 @@ fun CallvanListScreenImpl(
                                     CallvanAnalyticsConstant.EVENT_NAME,
                                     EventCategory.CLICK.value,
                                     CallvanAnalyticsConstant.Label.LIST_CONTACT_PHONE,
-                                    ""
+                                    CallvanAnalyticsConstant.Value.PHONE
                                 )
                                 onCall(uiState.id)
                             },
@@ -401,7 +411,7 @@ fun CallvanListScreenImpl(
                                     CallvanAnalyticsConstant.EVENT_NAME,
                                     EventCategory.CLICK.value,
                                     CallvanAnalyticsConstant.Label.LIST_CALLVAN_CHAT_CARD_ENTRY,
-                                    ""
+                                    CallvanAnalyticsConstant.Value.CHAT_ROOM_ENTRY
                                 )
                                 onChat(uiState.id)
                             }

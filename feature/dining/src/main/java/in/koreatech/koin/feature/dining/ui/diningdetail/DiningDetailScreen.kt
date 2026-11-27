@@ -21,6 +21,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -423,25 +424,6 @@ private fun DiningDetailScreenImpl(
     var showImageDialog by remember { mutableStateOf(false) }
     var selectedImage by remember { mutableStateOf("") }
 
-    var isUserScrolling by remember { mutableStateOf(true) }
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.isScrollInProgress }
-            .collect { isProgress ->
-                if (isProgress) {
-                    if (isUserScrolling) {
-                        EventLogger.logCustomEvent(
-                            action = EventAction.DA1.value,
-                            category = DiningAnalyticsConstant.Category.SCROLL,
-                            label = DiningAnalyticsConstant.Label.MEAL_TIME_SCROLL,
-                            value = tabList[pagerState.currentPage]
-                        )
-                    } else {
-                        isUserScrolling = true
-                    }
-                }
-            }
-    }
-
     if (showImageDialog) {
         DiningImageDialog(
             imageModel = ImageRequest.Builder(context)
@@ -523,7 +505,6 @@ private fun DiningDetailScreenImpl(
                         label = DiningAnalyticsConstant.Label.MEAL_TIME_SELECT,
                         value = tabList[it]
                     )
-                    isUserScrolling = false
                     scope.launch {
                         pagerState.animateScrollToPage(it)
                     }
@@ -575,16 +556,43 @@ private fun DiningDetailScreenImpl(
                     val shareViewAllText = stringResource(R.string.kakao_share_view_all)
                     val soldOutReportIcon = ImageVector.vectorResource(R.drawable.ic_dining_soldout_report)
                     val soldOutReportDescription = stringResource(R.string.dining_sold_out_report_title)
+                    val scrollState = when (tabList[page]) {
+                        DiningType.Breakfast.typeKorean -> breakfastScrollState
+                        DiningType.Lunch.typeKorean -> lunchScrollState
+                        else -> dinnerScrollState
+                    }
+                    LaunchedEffect(scrollState, page) {
+                        var isDragging = false
+                        var hasLoggedScroll = false
+                        launch {
+                            scrollState.interactionSource.interactions.collect { interaction ->
+                                when (interaction) {
+                                    is DragInteraction.Start -> {
+                                        isDragging = true
+                                        hasLoggedScroll = false
+                                    }
+
+                                    is DragInteraction.Stop, is DragInteraction.Cancel -> isDragging = false
+                                }
+                            }
+                        }
+                        var previousOffset = scrollState.value
+                        snapshotFlow { scrollState.value }.collect { offset ->
+                            if (isDragging && !hasLoggedScroll && offset != previousOffset) {
+                                EventLogger.logCustomEvent(
+                                    action = EventAction.DA1.value,
+                                    category = DiningAnalyticsConstant.Category.SCROLL,
+                                    label = DiningAnalyticsConstant.Label.MEAL_TIME_SCROLL,
+                                    value = tabList[page]
+                                )
+                                hasLoggedScroll = true
+                            }
+                            previousOffset = offset
+                        }
+                    }
                     Column(
                         modifier = Modifier
-                            .verticalScroll(
-                                when (tabList[page]) { // Can't use currentScrollState.value; because all pages have to give each other scroll state, not same currentScrollState
-                                    DiningType.Breakfast.typeKorean -> breakfastScrollState
-                                    DiningType.Lunch.typeKorean -> lunchScrollState
-                                    DiningType.Dinner.typeKorean -> dinnerScrollState
-                                    else -> breakfastScrollState
-                                }
-                            )
+                            .verticalScroll(scrollState)
                             .padding(vertical = 16.dp)
                             .navigationBarsPadding(),
                         verticalArrangement = Arrangement.spacedBy(16.dp)

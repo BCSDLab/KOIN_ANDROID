@@ -31,6 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import `in`.koreatech.koin.core.analytics.CallvanAnalyticsConstant
+import `in`.koreatech.koin.core.analytics.EventCategory
+import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.designsystem.component.topbar.KoinTopAppBar2
 import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.callvan.R
@@ -79,12 +82,28 @@ fun CallvanNotificationsScreenImpl(
         listOf(
             CallvanDropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_mark_as_read_all) },
-                onClick = onMarkAllAsRead
+                onClick = {
+                    EventLogger.logCustomEvent(
+                        CallvanAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        CallvanAnalyticsConstant.Label.NOTIFICATION_MARK_ALL_AS_READ,
+                        CallvanAnalyticsConstant.Value.MARK_ALL_AS_READ
+                    )
+                    onMarkAllAsRead()
+                }
             ),
             CallvanDropdownMenuItem(
                 text = { stringResource(R.string.callvan_notification_delete_all) },
                 color = { RebrandKoinTheme.colors.danger700 },
-                onClick = { isDeleteAllBottomSheetVisible = true }
+                onClick = {
+                    EventLogger.logCustomEvent(
+                        CallvanAnalyticsConstant.EVENT_NAME,
+                        EventCategory.CLICK.value,
+                        CallvanAnalyticsConstant.Label.NOTIFICATION_DELETE_ALL_OPEN,
+                        CallvanAnalyticsConstant.Value.DELETE_ALL
+                    )
+                    isDeleteAllBottomSheetVisible = true
+                }
             )
         )
     }
@@ -96,10 +115,25 @@ fun CallvanNotificationsScreenImpl(
             confirmText = stringResource(R.string.callvan_notification_delete_all_confirm),
             cancelText = stringResource(R.string.callvan_notification_delete_all_cancel),
             onConfirm = {
+                EventLogger.logCustomEvent(
+                    CallvanAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    CallvanAnalyticsConstant.Label.NOTIFICATION_DELETE_ALL_CONFIRM,
+                    CallvanAnalyticsConstant.Value.YES
+                )
                 onDeleteAll()
                 isDeleteAllBottomSheetVisible = false
             },
-            onDismiss = { isDeleteAllBottomSheetVisible = false }
+            onDismiss = { isDeleteAllBottomSheetVisible = false },
+            onCancelClick = {
+                EventLogger.logCustomEvent(
+                    CallvanAnalyticsConstant.EVENT_NAME,
+                    EventCategory.CLICK.value,
+                    CallvanAnalyticsConstant.Label.NOTIFICATION_DELETE_ALL_CANCEL,
+                    CallvanAnalyticsConstant.Value.NO
+                )
+                isDeleteAllBottomSheetVisible = false
+            }
         )
     }
 

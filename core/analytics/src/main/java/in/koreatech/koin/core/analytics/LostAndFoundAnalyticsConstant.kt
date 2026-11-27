@@ -4,7 +4,7 @@ object LostAndFoundAnalyticsConstant {
     const val EVENT_NAME = "DA2"
 
     object Label {
-        const val CATEGORY_ENTRY: String = "board__main_category__lost_item_entry__category_entry__click"
+        const val CATEGORY_ENTRY = "board__main_category__category_navigation__lost_item_entry__click"
         const val LIST_WRITE_ENTRY = "board__lost_item_list__lost_item_write__entry__click"
         const val LIST_WRITE_POST_TYPE = "board__lost_item_list__lost_item_write__post_type__select"
         const val LIST_FILTER_OPEN = "board__lost_item_list__filter__open__click"

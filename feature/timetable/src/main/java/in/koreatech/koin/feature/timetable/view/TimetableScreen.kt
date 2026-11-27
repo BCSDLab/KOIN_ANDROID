@@ -1,6 +1,5 @@
 package `in`.koreatech.koin.feature.timetable.view
 
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +28,6 @@ import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -117,29 +115,6 @@ fun TimetableScreen(
     val onBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
     val scope = rememberCoroutineScope()
 
-    val systemBackCallback = remember(onBackPressedDispatcher) {
-        object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                EventLogger.logCustomEvent(
-                    action = EventAction.DA1.value,
-                    category = TimetableAnalyticsConstant.Category.SWIPE,
-                    label = TimetableAnalyticsConstant.Label.BACK_SWIPE,
-                    value = TimetableAnalyticsConstant.Value.OS_SWIPE
-                )
-                isEnabled = false
-                try {
-                    onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
-                } finally {
-                    isEnabled = true
-                }
-            }
-        }
-    }
-    DisposableEffect(onBackPressedDispatcher, systemBackCallback) {
-        onBackPressedDispatcher?.onBackPressedDispatcher?.addCallback(systemBackCallback)
-        onDispose { systemBackCallback.remove() }
-    }
-
     BottomSheetScaffold(
         modifier = modifier
             .systemBarsPadding()
@@ -159,12 +134,7 @@ fun TimetableScreen(
                             TimetableAnalyticsConstant.Value.BACK
                         )
                     }
-                    systemBackCallback.isEnabled = false
-                    try {
-                        onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
-                    } finally {
-                        systemBackCallback.isEnabled = true
-                    }
+                    onBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
                 },
                 actions = {
                     Icon(

@@ -12,9 +12,7 @@ object AnalyticsConstant {
         const val MAIN_SHOP_CATEGORIES = "main_shop_categories"
         const val MAIN_SHOP_BENEFIT = "main_shop_benefit"
         const val SHOP_CATEGORIES = "shop_categories"
-        const val SHOP_CATEGORIES_SEARCH_CLICK = "shop_categories_search_click"
         const val SHOP_CATEGORIES_BENEFIT = "shop_categories_benefit"
-        const val SHOP_CATEGORIES_BACK = "shop_categories_back"
         const val HAMBURGER = "hamburger"
         const val HAMBURGER_SHOP = HAMBURGER
         const val HAMBURGER_DINING = "$HAMBURGER"
@@ -32,17 +30,12 @@ object AnalyticsConstant {
         const val BUS_ARRIVAL = "bus_arrival"
         const val SHOP_PICTURE = "shop_picture"
 
-        const val SHOP_PICTURE_SWIPE = "shop_picture_swipe"
-        const val SHOP_DETAIL_VIEW_INFO = "shop_detail_view_info"
         const val SHOP_DETAIL_VIEW_EVENT = "shop_detail_view_event"
         const val SHOP_BENEFIT_BACK = "shop_benefit_back"
         const val SHOP_BENEFIT_DETAIL = "shop_benefit_detail"
 
         const val SHOP_DETAIL_VIEW_REVIEW_REPORT_DONE = "shop_detail_view_review_report_done"
 
-        const val SHOP_DETAIL_VIEW_REVIEW_CAN = "shop_detail_view_review_can"
-
-        const val SHOP_DETAIL_VIEW_REVIEW_BACK = "shop_detail_view_review_back"
         const val NOTIFICATION = "notification"
 
         const val BENEFIT_SHOP_CATEGORIES = "benefit_shop_categories"
@@ -100,11 +93,11 @@ object AnalyticsConstant {
         }
 
         object Category {
-            const val CATEGORY_TEAM_RECRUITMENT = "category_team_recruitment"
-            const val CATEGORY_DINING = "category_dining"
-            const val CATEGORY_BUS_TIMETABLE = "category_bus_timetable"
-            const val CATEGORY_TRANSPORTATION = "category_transportation"
-            const val CATEGORY_KOIN_FOR_BUSINESS = "category_koin_for_business"
+            const val CATEGORY_TEAM_RECRUITMENT = "team_recruit__main_category__category_navigation__team_recruit_entry__click"
+            const val CATEGORY_DINING = "cafeteria__main_category__category_navigation__cafeteria_entry__click"
+            const val CATEGORY_BUS_TIMETABLE = "bus__main_category__category_navigation__timetable_entry__click"
+            const val CATEGORY_TRANSPORTATION = "bus__main_category__category_navigation__search_entry__click"
+            const val CATEGORY_KOIN_FOR_BUSINESS = "owner__main_category__category_navigation__owner_entry__click"
         }
 
         object TeamRecruitment {
