@@ -3,18 +3,7 @@
 
     <application>
         <activity
-            android:name=".ui.room.ChatRoomActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
-
-        <activity
-            android:name=".ui.list.ChatListActivity"
-            android:exported="false"
-            android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustResize"/>
-
-        <activity
-            android:name=".ui.groupchat.GroupChatActivity"
+            android:name=".ui.ChatActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
 

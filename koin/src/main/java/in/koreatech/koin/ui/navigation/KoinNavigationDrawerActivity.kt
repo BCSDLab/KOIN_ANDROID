@@ -44,7 +44,7 @@ import `in`.koreatech.koin.core.util.whiteStatusBar
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.domain.model.user.User
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
-import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
+import `in`.koreatech.koin.feature.chat.ui.ChatActivity
 import `in`.koreatech.koin.feature.club.ui.ClubActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.land.LandActivity
@@ -695,7 +695,7 @@ abstract class KoinNavigationDrawerActivity :
             AnalyticsConstant.Label.CHAT.HAMBURGER,
             "쪽지"
         )
-        Intent(this, ChatListActivity::class.java).apply {
+        Intent(this, ChatActivity::class.java).apply {
             startActivity(this)
         }
     }

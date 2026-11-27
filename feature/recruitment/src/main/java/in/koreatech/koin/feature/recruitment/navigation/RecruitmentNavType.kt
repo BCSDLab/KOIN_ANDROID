@@ -30,18 +30,6 @@ sealed class RecruitmentNavType {
     data class RecruitmentDetail(val postId: Int) : RecruitmentNavType()
 
     @Serializable
-    data class RecruitmentGroupChat(
-        val recruitmentId: Int,
-        val chatRoomId: Int
-    ) : RecruitmentNavType()
-
-    @Serializable
-    data class RecruitmentDirectChat(
-        val recruitmentId: Int,
-        val applicationId: Int
-    ) : RecruitmentNavType()
-
-    @Serializable
     data object Notification : RecruitmentNavType()
 
     @Serializable

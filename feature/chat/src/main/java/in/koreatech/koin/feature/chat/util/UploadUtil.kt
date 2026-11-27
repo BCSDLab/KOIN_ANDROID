@@ -3,7 +3,7 @@ package `in`.koreatech.koin.feature.chat.util
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
-import kotlin.collections.forEach
+import android.webkit.MimeTypeMap
 
 internal fun handleSelectedImages(
     uris: List<Uri>,
@@ -17,11 +17,17 @@ internal fun handleSelectedImages(
             val fileNameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
             val fileSizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE)
 
-            if (fileNameIndex == -1 || fileSizeIndex == -1) return@use
+            val fileName = if (fileNameIndex != -1 && !cursor.isNull(fileNameIndex)) {
+                cursor.getString(fileNameIndex)
+            } else {
+                uri.lastPathSegment
+            } ?: return@use
 
-            val fileName = cursor.getString(fileNameIndex)
+            if (fileSizeIndex == -1 || cursor.isNull(fileSizeIndex)) return@use
             val fileSize = cursor.getLong(fileSizeIndex)
-            val fileType = context.contentResolver.getType(uri) ?: "image/${fileName.substringAfterLast(".")}"
+            val fileType = context.contentResolver.getType(uri)
+                ?: MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileName.substringAfterLast(".").lowercase())
+                ?: "image/*"
 
             uploadImage(fileSize, fileType, fileName, uri)
         }

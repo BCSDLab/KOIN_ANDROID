@@ -6,17 +6,22 @@ import androidx.core.net.toUri
 import `in`.koreatech.bus.BusSearchActivity
 import `in`.koreatech.bus.BusTimetableActivity
 import `in`.koreatech.koin.core.BuildConfig
+import `in`.koreatech.koin.core.navigation.ChatDomain
 import `in`.koreatech.koin.core.navigation.Navigator
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_APPLICATION_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_CONTEXT_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_DOMAIN_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_RECRUITMENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_URL
 import `in`.koreatech.koin.core.navigation.utils.buildDeepLinkIntent
 import `in`.koreatech.koin.core.navigation.utils.buildIntent
 import `in`.koreatech.koin.core.navigation.utils.isValidDeepLink
 import `in`.koreatech.koin.data.constant.URLConstant
 import `in`.koreatech.koin.feature.callvan.CallvanActivity
-import `in`.koreatech.koin.feature.chat.ui.groupchat.GroupChatActivity
-import `in`.koreatech.koin.feature.chat.ui.list.ChatListActivity
-import `in`.koreatech.koin.feature.chat.ui.room.ChatRoomActivity
+import `in`.koreatech.koin.feature.chat.ui.ChatActivity
 import `in`.koreatech.koin.feature.department.DepartmentActivity
 import `in`.koreatech.koin.feature.dining.ui.DiningActivity
 import `in`.koreatech.koin.feature.land.LandActivity
@@ -51,14 +56,33 @@ class NavigatorImpl @Inject constructor() : Navigator {
         type: Pair<String, String?>,
         vararg args: Pair<String, Any?>
     ): Intent {
-        val className = SchemeType.fromType(type.second)?.className ?: return if (context.isValidDeepLink(type.second)) {
+        val destination = SchemeType.fromType(type.second) ?: return if (context.isValidDeepLink(type.second)) {
             buildDeepLinkIntent(type.second ?: "").apply {
                 `package` = context.packageName
             }
         } else {
             context.buildIntent(MainActivity::class.java)
         }
-        val intent = context.buildIntent(className, type, *args)
+        val domainType = destination.chatDomainType
+        if (domainType != null) {
+            val contextKey = when (domainType) {
+                ChatDomain.LOST_ITEM -> EXTRA_ARTICLE_ID
+                ChatDomain.CALLVAN -> EXTRA_POST_ID
+                ChatDomain.TEAM_RECRUITMENT -> EXTRA_RECRUITMENT_ID
+            }
+            var contextId: Int? = null
+            var chatRoomId: Int? = null
+            var applicationId: Int? = null
+            for ((key, value) in args) {
+                when (key) {
+                    contextKey -> contextId = value as? Int
+                    EXTRA_CHAT_ROOM_ID -> chatRoomId = value as? Int
+                    EXTRA_APPLICATION_ID -> applicationId = value as? Int
+                }
+            }
+            return navigateToChatRoom(context, domainType, requireNotNull(contextId), chatRoomId, applicationId)
+        }
+        val intent = context.buildIntent(destination.className, type, *args)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         return intent
     }
@@ -161,26 +185,26 @@ class NavigatorImpl @Inject constructor() : Navigator {
     }
 
     override fun navigateToChatList(context: Context): Intent {
-        return context.buildIntent(ChatListActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
+        return context.buildIntent(ChatActivity::class.java)
     }
 
-    override fun navigateToChatRoom(context: Context): Intent {
-        return context.buildIntent(ChatRoomActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        }
-    }
-
-    override fun navigateToGroupChat(
+    override fun navigateToChatRoom(
         context: Context,
-        extraPostId: Int
+        domainType: ChatDomain,
+        contextId: Int,
+        chatRoomId: Int?,
+        applicationId: Int?
     ): Intent {
+        if (domainType == ChatDomain.TEAM_RECRUITMENT && applicationId == null) {
+            requireNotNull(chatRoomId)
+        }
         return context.buildIntent(
-            GroupChatActivity::class.java,
-            EXTRA_POST_ID to extraPostId
+            ChatActivity::class.java,
+            EXTRA_CHAT_DOMAIN_TYPE to domainType.name,
+            EXTRA_CHAT_CONTEXT_ID to contextId
         ).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            chatRoomId?.let { putExtra(EXTRA_CHAT_ROOM_ID, it) }
+            applicationId?.let { putExtra(EXTRA_APPLICATION_ID, it) }
         }
     }
 

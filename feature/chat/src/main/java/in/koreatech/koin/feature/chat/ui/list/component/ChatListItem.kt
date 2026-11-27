@@ -15,9 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,14 +22,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import `in`.koreatech.koin.core.designsystem.theme.KoinTheme
+import `in`.koreatech.koin.core.designsystem.theme.RebrandKoinTheme
 import `in`.koreatech.koin.feature.chat.R
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+
+private val CHAT_LIST_TIME_FORMATTER = DateTimeFormatter.ofPattern("a hh:mm")
 
 @Composable
 fun ChatListItem(
@@ -43,14 +41,7 @@ fun ChatListItem(
     unReadMessageCount: Int,
     modifier: Modifier = Modifier
 ) {
-    val lastMessageTimeFormatType = DateTimeFormatter.ofPattern("a hh:mm")
-    val convertedLastMessageTime by remember {
-        mutableStateOf(
-            lastMessageAt.format(
-                lastMessageTimeFormatType
-            )
-        )
-    }
+    val convertedLastMessageTime = lastMessageAt.format(CHAT_LIST_TIME_FORMATTER)
 
     Row(
         modifier =
@@ -73,7 +64,7 @@ fun ChatListItem(
                     Box(
                         modifier =
                         Modifier
-                            .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
+                            .border(1.dp, RebrandKoinTheme.colors.neutral300, shape = RebrandKoinTheme.shapes.medium),
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -87,10 +78,9 @@ fun ChatListItem(
             )
         } else {
             Box(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .size(48.dp)
-                    .border(1.dp, KoinTheme.colors.neutral300, shape = KoinTheme.shapes.medium),
+                    .border(1.dp, RebrandKoinTheme.colors.neutral300, shape = RebrandKoinTheme.shapes.medium),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -109,16 +99,16 @@ fun ChatListItem(
                 Text(
                     modifier = Modifier.weight(1f),
                     text = title,
-                    style = KoinTheme.typography.medium14,
-                    color = KoinTheme.colors.neutral800,
+                    style = RebrandKoinTheme.typography.medium14,
+                    color = RebrandKoinTheme.colors.neutral800,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
                 Text(
                     text = convertedLastMessageTime,
-                    style = KoinTheme.typography.regular12,
-                    color = KoinTheme.colors.neutral500
+                    style = RebrandKoinTheme.typography.regular12,
+                    color = RebrandKoinTheme.colors.neutral500
                 )
             }
 
@@ -127,8 +117,8 @@ fun ChatListItem(
             ) {
                 Text(
                     text = recentMessage,
-                    style = KoinTheme.typography.regular14,
-                    color = KoinTheme.colors.neutral500,
+                    style = RebrandKoinTheme.typography.regular14,
+                    color = RebrandKoinTheme.colors.neutral500,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
@@ -139,30 +129,18 @@ fun ChatListItem(
                         modifier =
                         Modifier
                             .clip(CircleShape)
-                            .background(KoinTheme.colors.primary500)
+                            .background(RebrandKoinTheme.colors.primary500)
                             .padding(horizontal = 6.dp),
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = "$unReadMessageCount",
-                            style = KoinTheme.typography.regular12,
-                            color = KoinTheme.colors.neutral0
+                            style = RebrandKoinTheme.typography.regular12,
+                            color = RebrandKoinTheme.colors.neutral0
                         )
                     }
                 }
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ChatListItemPreview() {
-    ChatListItem(
-        title = "Title",
-        recentMessage = " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vitae risus condimentum leo facilisis luctus. Vestibulum viverra justo eu leo dictum, sit amet fermentum nisi facilisis. Mauris sagittis dignissim massa, ac varius enim faucibus id. Etiam tempus dolor et diam tempus consectetur. Nulla facilisi. Pellentesque ex nisi, varius eu pellentesque in, scelerisque sed nisl. Morbi tincidunt vestibulum sapien, at mattis erat tempus in. Sed consequat non ligula eget eleifend. Nulla tempor eleifend ligula sed dapibus. Nunc fringilla cursus felis. Curabitur egestas arcu non sodales mollis. ",
-        imageUrl = "https://www.example.com/image.jpg",
-        lastMessageAt = LocalTime.now(),
-        unReadMessageCount = 1
-    )
 }

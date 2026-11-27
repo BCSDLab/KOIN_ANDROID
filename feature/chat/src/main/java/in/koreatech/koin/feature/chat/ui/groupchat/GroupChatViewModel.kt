@@ -3,252 +3,253 @@ package `in`.koreatech.koin.feature.chat.ui.groupchat
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
-import `in`.koreatech.koin.domain.model.callvan.CallvanChatMessage.CallvanMessage
-import `in`.koreatech.koin.domain.model.upload.PreSignedUrlDomain
-import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanChatMessagesUseCase
+import `in`.koreatech.koin.core.navigation.ChatDomain
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_CONTEXT_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_DOMAIN_TYPE
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
+import `in`.koreatech.koin.domain.error.chat.KoinChatException
+import `in`.koreatech.koin.domain.model.chat.ChatConnectionState
+import `in`.koreatech.koin.domain.model.chat.ChatDomainType
+import `in`.koreatech.koin.domain.model.chat.ChatRoomEvent
+import `in`.koreatech.koin.domain.model.chat.ChatRoomInfo
 import `in`.koreatech.koin.domain.usecase.callvan.GetCallvanPostDetailUseCase
-import `in`.koreatech.koin.domain.usecase.callvan.SendCallvanMessageUseCase
-import `in`.koreatech.koin.domain.usecase.presignedurl.UploadImageUseCase
-import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessage
-import `in`.koreatech.koin.feature.chat.ui.groupchat.model.GroupChatMessageGroup
-import `in`.koreatech.koin.feature.chat.ui.model.ConvertedChatMessage
-import java.time.LocalDateTime
-import java.util.UUID
+import `in`.koreatech.koin.domain.usecase.chat.GetChatConnectionStateUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomInfoUseCase
+import `in`.koreatech.koin.domain.usecase.chat.GetChatRoomsUseCase
+import `in`.koreatech.koin.domain.usecase.chat.SubscribeChatRoomEventsUseCase
+import `in`.koreatech.koin.domain.util.suspendRunCatching
+import `in`.koreatech.koin.feature.chat.ui.SharedChatConnection
+import `in`.koreatech.koin.feature.chat.ui.mapper.toChatDomainType
+import `in`.koreatech.koin.feature.chat.ui.model.ChatImageUploadException
+import `in`.koreatech.koin.feature.chat.ui.model.ChatMessageSession
+import java.net.UnknownHostException
 import javax.inject.Inject
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableMap
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.retryWhen
+import kotlinx.coroutines.job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
+import org.hildan.krossbow.websocket.WebSocketConnectionException
 import org.orbitmvi.orbit.ContainerHost
+import org.orbitmvi.orbit.annotation.OrbitExperimental
 import org.orbitmvi.orbit.syntax.simple.blockingIntent
 import org.orbitmvi.orbit.syntax.simple.intent
 import org.orbitmvi.orbit.syntax.simple.postSideEffect
 import org.orbitmvi.orbit.syntax.simple.reduce
+import org.orbitmvi.orbit.syntax.simple.repeatOnSubscription
+import org.orbitmvi.orbit.syntax.simple.subIntent
 import org.orbitmvi.orbit.viewmodel.container
+import timber.log.Timber
 
 @HiltViewModel
-class GroupChatViewModel @Inject constructor(
+@Suppress("LongParameterList", "TooManyFunctions")
+class GroupChatViewModel @Inject internal constructor(
     savedStateHandle: SavedStateHandle,
-    private val getCallvanChatMessagesUseCase: GetCallvanChatMessagesUseCase,
+    private val getRooms: GetChatRoomsUseCase,
+    private val getChatRoomInfo: GetChatRoomInfoUseCase,
     private val getCallvanPostDetailUseCase: GetCallvanPostDetailUseCase,
-    private val sendCallvanMessageUseCase: SendCallvanMessageUseCase,
-    private val uploadImageUseCase: UploadImageUseCase
+    private val messageSession: ChatMessageSession,
+    private val sharedConnection: SharedChatConnection,
+    private val getConnectionState: GetChatConnectionStateUseCase,
+    private val subscribeRoom: SubscribeChatRoomEventsUseCase
 ) : ViewModel(), ContainerHost<GroupChatState, GroupChatSideEffect> {
+    private val domainType = ChatDomain.valueOf(checkNotNull(savedStateHandle[EXTRA_CHAT_DOMAIN_TYPE])).toChatDomainType()
+    private val contextId: Int = checkNotNull(savedStateHandle[EXTRA_CHAT_CONTEXT_ID])
+    private val legacyChatRoomId: Int? = savedStateHandle[EXTRA_CHAT_ROOM_ID]
+    private var roomInfo: ChatRoomInfo? = null
+    private val loadedRoomId = CompletableDeferred<String>()
+    private var receivingMessagesJob: Job? = null
 
-    override val container = container<GroupChatState, GroupChatSideEffect>(GroupChatState()) {
-        val postId: Int? = savedStateHandle[EXTRA_POST_ID]
-        checkNotNull(postId)
-        getCallvanPostDetail(postId)
+    override val container = container<GroupChatState, GroupChatSideEffect>(GroupChatState(domainType = domainType)) {
+        observeMessages()
+        loadRoom()
     }
 
-    private var pollingJob: Job? = null
-    private val loadMessagesMutex: Mutex = Mutex()
+    private fun observeMessages() = intent {
+        repeatOnSubscription {
+            launch { messageSession.observeCurrentUser() }
+            messageSession.state.collect { sessionState ->
+                reduce {
+                    state.copy(
+                        messages = sessionState.messages,
+                        uploadingImages = sessionState.uploadingImages
+                    )
+                }
+            }
+        }
+    }
 
-    private fun getCallvanPostDetail(postId: Int) = intent {
-        getCallvanPostDetailUseCase(postId).onSuccess { postDetail ->
-            val currentUser = postDetail.participants.find { it.isMe }
-            val memberColors = postDetail.participants
-                .mapIndexed { index, participant -> participant.userId to (index % MAX_USER_COLORS) }
-                .toMap()
-                .toImmutableMap()
+    private fun loadRoom() = intent {
+        if (domainType == ChatDomainType.CALLVAN) {
+            val postDetail = getCallvanPostDetailUseCase(contextId).getOrElse {
+                failLoadingRoom()
+                return@intent
+            }
             reduce {
                 state.copy(
-                    isLoading = false,
-                    postId = postId,
-                    userId = currentUser?.userId ?: 0,
-                    userNickname = currentUser?.nickname ?: "",
                     departure = postDetail.departure,
                     arrival = postDetail.arrival,
                     departureTime = postDetail.departureTime,
                     currentMemberCount = postDetail.currentParticipants,
-                    maxMemberCount = postDetail.maxParticipants,
-                    memberColors = memberColors
+                    maxMemberCount = postDetail.maxParticipants
                 )
             }
-            loadMessages()
-        }.onFailure {
+        }
+        getRoom().onSuccess { room ->
+            roomInfo = room
+            messageSession.bind(room)
             reduce {
-                state.copy(isLoading = false)
+                state.copy(
+                    isLoading = false,
+                    title = room.roomName,
+                    currentMemberCount = room.memberCount ?: state.currentMemberCount,
+                    maxMemberCount = room.maxMemberCount ?: state.maxMemberCount,
+                    canSend = room.canSend,
+                    readReceiptRoomId = room.roomId.takeIf { room.supportsReadReceipts }
+                )
             }
-            postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
+            loadedRoomId.complete(room.roomId)
+        }.onFailure {
+            failLoadingRoom()
         }
     }
 
-    fun startPolling() {
-        if (pollingJob?.isActive == true) return
+    private suspend fun getRoom(): Result<ChatRoomInfo> = suspendRunCatching {
+        val room = getRooms(domainType).getOrThrow().singleOrNull {
+            it.domainType == domainType && it.contextId == contextId &&
+                (legacyChatRoomId == null || it.chatRoomId == legacyChatRoomId)
+        } ?: throw KoinChatException.RoomNotFoundException()
+        getChatRoomInfo(room.roomId).getOrThrow()
+    }
 
-        pollingJob = viewModelScope.launch {
-            while (isActive) {
-                loadMessages()
-                delay(POLLING_INTERVAL_MS)
+    private fun refreshRoomInfo(roomId: String) = intent {
+        getChatRoomInfo(roomId).onSuccess { room ->
+            roomInfo = room
+            messageSession.bind(room)
+            reduce {
+                state.copy(
+                    title = room.roomName,
+                    currentMemberCount = room.memberCount ?: state.currentMemberCount,
+                    maxMemberCount = room.maxMemberCount ?: state.maxMemberCount,
+                    canSend = room.canSend,
+                    readReceiptRoomId = room.roomId.takeIf { room.supportsReadReceipts }
+                )
+            }
+        }.onFailure { Timber.e(it) }
+    }
+
+    @OptIn(OrbitExperimental::class)
+    private suspend fun refreshMessages(roomId: String) = subIntent {
+        refreshRoomInfo(roomId)
+        messageSession.loadHistory().onFailure {
+            if (!messageSession.hasHistoryCursor && messageSession.state.value.messages.isEmpty()) {
+                postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
             }
         }
     }
 
-    fun stopPolling() {
-        pollingJob?.cancel()
-        pollingJob = null
+    private fun failLoadingRoom() = intent {
+        reduce { state.copy(isLoading = false) }
+        postSideEffect(GroupChatSideEffect.FailedToLoadChatRoom)
+    }
+
+    fun startReceivingMessages() {
+        if (receivingMessagesJob?.isActive == true) return
+        receivingMessagesJob = intent {
+            val roomId = loadedRoomId.await()
+            coroutineScope {
+                val owner = currentCoroutineContext().job
+                val history = async { refreshMessages(roomId) }
+                launch {
+                    var previous: ChatConnectionState? = null
+                    getConnectionState().collect { current ->
+                        if (previous == ChatConnectionState.RECONNECTING && current == ChatConnectionState.CONNECTED) {
+                            refreshMessages(roomId)
+                        }
+                        previous = current
+                    }
+                }
+                flow<ChatRoomEvent> {
+                    try {
+                        sharedConnection.acquire(owner).onSuccess {
+                            val events = subscribeRoom(roomId)
+                            history.await()
+                            refreshMessages(roomId)
+                            emitAll(events)
+                        }.onFailure {
+                            Timber.e(it)
+                            postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
+                        }
+                    } finally {
+                        sharedConnection.release(owner)
+                    }
+                }.retryWhen { error, _ ->
+                    val shouldRetry = error is UnknownHostException ||
+                        error is WebSocketConnectionException && error.cause is UnknownHostException
+                    if (shouldRetry) delay(RECONNECT_DELAY_MS)
+                    shouldRetry
+                }.catch {
+                    Timber.e(it)
+                    postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
+                }.collect { event ->
+                    when (event) {
+                        is ChatRoomEvent.MessageCreated -> messageSession.accept(event.message)
+                        is ChatRoomEvent.RoomChanged -> {
+                            refreshRoomInfo(roomId)
+                            messageSession.loadHistory()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun stopReceivingMessages() {
+        receivingMessagesJob?.cancel()
+        receivingMessagesJob = null
     }
 
     fun onChatInputValueChange(value: String) = blockingIntent {
-        reduce {
-            state.copy(chatInputValue = value)
-        }
+        reduce { state.copy(chatInputValue = value) }
     }
 
     fun sendMessage() = intent {
-        val message = state.chatInputValue
-        if (message.isBlank()) return@intent
-        val postId = state.postId ?: return@intent
-
-        sendCallvanMessageUseCase(
-            postId = postId,
-            isImage = false,
-            content = message
-        ).onSuccess {
-            reduce {
-                state.copy(chatInputValue = "")
-            }
-            loadMessages()
+        val room = roomInfo ?: return@intent
+        val message = if (domainType == ChatDomainType.TEAM_RECRUITMENT) {
+            state.chatInputValue.trim()
+        } else {
+            state.chatInputValue
+        }
+        if (message.isBlank() || !room.canSend) return@intent
+        messageSession.send(message).onSuccess {
+            reduce { state.copy(chatInputValue = "") }
         }.onFailure {
             postSideEffect(GroupChatSideEffect.FailedToSendMessage)
         }
     }
 
-    fun uploadImage(
-        fileSize: Long,
-        fileType: String,
-        fileName: String,
-        imageUri: Uri
-    ) = intent {
-        val postId = state.postId ?: return@intent
-        val imageUriString = imageUri.toString()
-        val uploadingImage = createUploadingImage(
-            userId = state.userId,
-            userNickname = state.userNickname,
-            imageUriString = imageUriString
-        )
-
-        reduce {
-            state.copy(uploadingImage = state.uploadingImage.addUploadingImage(uploadingImage))
-        }
-        uploadImageUseCase(
-            domain = PreSignedUrlDomain.CALLVAN_CHAT,
-            contentLength = fileSize,
-            contentType = fileType,
-            fileName = fileName,
-            imageUri = imageUriString
-        ).onSuccess { fileUrl ->
-            sendCallvanMessageUseCase(
-                postId = postId,
-                isImage = true,
-                content = fileUrl
-            ).onSuccess {
-                reduce {
-                    state.copy(uploadingImage = state.uploadingImage.removeUploadingImage(uploadingImage.uploadId))
-                }
-                loadMessages()
-            }.onFailure {
-                reduce {
-                    state.copy(uploadingImage = state.uploadingImage.removeUploadingImage(uploadingImage.uploadId))
-                }
+    fun uploadImage(fileSize: Long, fileType: String, fileName: String, imageUri: Uri) = intent {
+        val room = roomInfo ?: return@intent
+        if (!room.canSend) return@intent
+        messageSession.upload(fileSize, fileType, fileName, imageUri).onFailure { error ->
+            if (error is ChatImageUploadException) {
+                postSideEffect(GroupChatSideEffect.FailedToUploadImage)
+            } else {
                 postSideEffect(GroupChatSideEffect.FailedToSendMessage)
             }
-        }.onFailure {
-            reduce {
-                state.copy(uploadingImage = state.uploadingImage.removeUploadingImage(uploadingImage.uploadId))
-            }
-            postSideEffect(GroupChatSideEffect.FailedToUploadImage)
         }
     }
 
-    fun changeShowImageState(show: Boolean, uri: Uri) = blockingIntent {
-        reduce {
-            state.copy(showImage = Pair(show, uri.toString()))
-        }
-    }
-
-    private fun loadMessages() = intent {
-        val postId = state.postId ?: return@intent
-        if (!loadMessagesMutex.tryLock()) return@intent
-
-        try {
-            getCallvanChatMessagesUseCase(
-                postId = postId
-            ).onSuccess { chatMessage ->
-                val messageGroups = chatMessage.messages.groupBy { it.date }.map { (date, messages) ->
-                    val messageOccurrences = mutableMapOf<String, Int>()
-                    GroupChatMessageGroup(
-                        date = date,
-                        messages = messages.mapIndexed { index, message ->
-                            val prevMessage = messages.getOrNull(index - 1)
-                            val messageSignature = buildGroupChatMessageSignature(message)
-                            val occurrence = (messageOccurrences[messageSignature] ?: 0) + 1
-                            messageOccurrences[messageSignature] = occurrence
-                            GroupChatMessage(
-                                id = "${postId}_${date}_${messageSignature}_$occurrence",
-                                userId = message.userId,
-                                userNickname = message.senderNickname,
-                                content = message.content,
-                                timestamp = message.time,
-                                isImage = message.isImage,
-                                isSentByMe = message.isMine,
-                                isFirstInGroup = prevMessage?.userId != message.userId,
-                                isLeftUser = message.isLeftUser
-                            )
-                        }.toImmutableList()
-                    )
-                }.toImmutableList()
-                reduce {
-                    state.copy(messages = messageGroups)
-                }
-            }.onFailure {
-                if (state.messages.isEmpty()) {
-                    postSideEffect(GroupChatSideEffect.FailedToLoadMessages)
-                }
-            }
-        } finally {
-            loadMessagesMutex.unlock()
-        }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        stopPolling()
-    }
-
-    companion object {
-        const val MAX_USER_COLORS = 8
-        const val POLLING_INTERVAL_MS = 1000L
+    private companion object {
+        const val RECONNECT_DELAY_MS = 1000L
     }
 }
-
-private fun createUploadingImage(
-    userId: Int,
-    userNickname: String,
-    imageUriString: String
-): ConvertedChatMessage = ConvertedChatMessage(
-    userId = userId,
-    userNickname = userNickname,
-    content = imageUriString,
-    timestamp = LocalDateTime.now(),
-    isImage = true,
-    isSentByMe = true,
-    uploadId = UUID.randomUUID().toString()
-)
-
-private fun ImmutableList<ConvertedChatMessage>.addUploadingImage(uploadingImage: ConvertedChatMessage): ImmutableList<ConvertedChatMessage> =
-    (this + uploadingImage).toImmutableList()
-
-private fun ImmutableList<ConvertedChatMessage>.removeUploadingImage(uploadId: String): ImmutableList<ConvertedChatMessage> =
-    filterNot { it.uploadId == uploadId }.toImmutableList()
-
-private fun buildGroupChatMessageSignature(message: CallvanMessage): String =
-    "${message.userId}_${message.time}_${message.content.hashCode()}_${message.isImage}_${message.isMine}_${message.isLeftUser}"

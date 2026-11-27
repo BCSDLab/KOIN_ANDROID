@@ -28,6 +28,7 @@ import `in`.koreatech.koin.core.analytics.EventAction
 import `in`.koreatech.koin.core.analytics.EventLogger
 import `in`.koreatech.koin.core.analytics.HomeEventLabels
 import `in`.koreatech.koin.core.designsystem.util.enableEdgeToEdgeWithLightStatusBar
+import `in`.koreatech.koin.core.navigation.ChatDomain
 import `in`.koreatech.koin.core.navigation.Navigator
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ARTICLE_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_BOARD_ID
@@ -35,6 +36,7 @@ import `in`.koreatech.koin.core.navigation.utils.EXTRA_CHAT_ROOM_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_CLUB_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_EVENT_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_ID
+import `in`.koreatech.koin.core.navigation.utils.EXTRA_POST_ID
 import `in`.koreatech.koin.core.navigation.utils.EXTRA_TYPE
 import `in`.koreatech.koin.databinding.ActivityNewMainBinding
 import `in`.koreatech.koin.feature.banner.ui.BannerActivity
@@ -173,6 +175,7 @@ class MainActivity : AppCompatActivity() {
         val targetBoardId = intent.getIntExtra(EXTRA_BOARD_ID, -1)
         val targetArticleId = intent.getIntExtra(EXTRA_ARTICLE_ID, -1)
         val targetChatId = intent.getIntExtra(EXTRA_CHAT_ROOM_ID, -1)
+        val targetPostId = intent.getIntExtra(EXTRA_POST_ID, -1)
         val targetClubId = intent.getIntExtra(EXTRA_CLUB_ID, -1)
         val targetEventId = intent.getIntExtra(EXTRA_EVENT_ID, -1)
         val type = intent.getStringExtra(EXTRA_TYPE) ?: ""
@@ -192,9 +195,18 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+            SchemeType.CHAT.type, SchemeType.CALLVAN_CHAT.type -> {
+                val domainType = checkNotNull(SchemeType.fromType(type)?.chatDomainType)
+                navigator.navigateToChatRoom(
+                    context = this,
+                    domainType = domainType,
+                    contextId = if (domainType == ChatDomain.LOST_ITEM) targetArticleId else targetPostId,
+                    chatRoomId = targetChatId.takeIf { it != -1 }
+                ).let(::startActivity)
+            }
+
             SchemeType.SHOP.type,
             SchemeType.DINING.type,
-            SchemeType.CHAT.type,
             SchemeType.CLUB_RECRUIT.type,
             SchemeType.CLUB.type -> {
                 navigator.navigateTo(
